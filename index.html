@@ -362,6 +362,16 @@ openclaw config set agents.defaults.memorySearch.fallback none</div>
         <div class="callout gold-tip"><strong>Keep folders one level deep.</strong> Contacts, Lists, Memos, Tasks — every note directly in one folder. If you can't find it by filename, rename it. Tell the AI your system and it files things correctly.</div>
       </div>
 
+      <div class="step"><input type="checkbox">
+        <div class="step-title">Install ObsidianClaw (chat from Obsidian)</div>
+        <p>Skip Telegram entirely — chat with your AI from a sidebar in Obsidian. In Obsidian: Settings → Community Plugins → Browse → search <strong>"OpenClaw"</strong> → Install → Enable.</p>
+        <p>The setup wizard walks you through connecting. Same-machine: <code>ws://127.0.0.1:18789</code>. Cross-device (Tailscale): <code>ws://100.x.x.x:18789</code>.</p>
+        <p>First connection triggers device pairing. On the gateway machine:</p>
+        <div class="cmd"><span class="cmd-copy">copy</span>openclaw devices list
+openclaw devices approve &lt;requestId&gt;</div>
+        <div class="callout gold-tip"><strong>Three layers of security.</strong> Tailscale encrypts the network, the auth token verifies your identity, and Ed25519 device fingerprinting prevents unauthorized devices. Your private key never leaves your machine.</div>
+      </div>
+
       <div class="callout gold-tip"><strong>Put all code in Code/.</strong> Every repo, project, and skill. Excluded from Obsidian Sync — code uses Git, notes use Sync. Tell the AI: "Always clone into Code/."</div>
       <div class="callout tip"><strong>Let the AI finish its own setup.</strong> Paste this page's URL into Telegram and say "follow this guide." It can complete the remaining steps itself.</div>
     </div>
