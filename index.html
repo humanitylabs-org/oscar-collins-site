@@ -2,187 +2,254 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Bot Setup Guide — Humanity Labs</title>
   <meta name="description" content="Build your own AI assistant. OpenClaw + Obsidian + Telegram. Free step-by-step guide by Humanity Labs.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text y='62' font-size='40' font-family='Georgia,serif' fill='%23c59a2e' x='50' text-anchor='middle'>HL</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text y='66' font-size='44' font-family='system-ui' fill='%23fff' x='50' text-anchor='middle' font-weight='700'>B</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root{
+      --bg:#fff;--bg-subtle:#f9fafb;--bg-muted:#f3f4f6;
+      --border:#e5e7eb;--border-light:#f0f0f0;
+      --text:#111827;--text-secondary:#6b7280;--text-tertiary:#9ca3af;
+      --accent:#111827;--accent-light:#374151;
+      --green:#10b981;--green-bg:#ecfdf5;
+      --blue:#3b82f6;--blue-bg:#eff6ff;
+      --red:#ef4444;--red-bg:#fef2f2;
+      --amber:#f59e0b;--amber-bg:#fffbeb;
+      --radius:12px;--radius-sm:8px;--radius-lg:16px;
+    }
     *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Inter',-apple-system,sans-serif;background:#fafafa;color:#444;line-height:1.8;font-size:15px;overflow-x:hidden}
-    a{color:#b8860b}a:hover{text-decoration:underline}
-    strong{color:#222}
-    code{background:#f0ede6;padding:2px 7px;border-radius:4px;font-size:.84em;color:#6b5c3e}
+    html{-webkit-text-size-adjust:100%;touch-action:pan-y}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    a{color:var(--accent);text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:2px}
+    a:hover{text-decoration-color:var(--accent)}
+    strong{color:var(--text);font-weight:600}
+    code{background:var(--bg-muted);padding:2px 6px;border-radius:4px;font-size:.84em;font-family:'SF Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace}
 
+    /* LAYOUT */
     .app{display:flex;min-height:100vh}
 
+    /* SIDEBAR */
     .sidebar{
-      width:220px;flex-shrink:0;
-      background:#fff;border-right:1px solid #eee;
-      padding:20px 0;position:fixed;top:0;left:0;bottom:0;
+      width:240px;flex-shrink:0;
+      background:var(--bg);border-right:1px solid var(--border-light);
+      position:fixed;top:0;left:0;bottom:0;
       display:flex;flex-direction:column;overflow-y:auto;
+      z-index:40;
     }
-    .sidebar .brand{padding:0 20px 20px;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:#bbb;font-weight:600;border-bottom:1px solid #f0f0f0}
-    .sidebar .brand a{color:#bbb;text-decoration:none}.sidebar .brand a:hover{color:#b8860b}
+    .sidebar-header{
+      padding:24px 20px 20px;
+      border-bottom:1px solid var(--border-light);
+    }
+    .sidebar-logo{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-tertiary);font-weight:600}
+    .sidebar-logo a{color:inherit;text-decoration:none}
+    .sidebar-logo a:hover{color:var(--text-secondary)}
+    .sidebar-title{font-size:14px;font-weight:700;color:var(--text);margin-top:6px}
 
-    .sidebar .nav-items{padding:16px 0;flex:1}
+    .nav-items{padding:12px 8px;flex:1}
 
     .nav-item{
-      display:flex;align-items:center;gap:12px;
-      padding:10px 20px;cursor:pointer;
-      color:#999;font-size:.82rem;font-weight:500;
-      transition:all .12s;position:relative;
-      border-left:3px solid transparent;
+      display:flex;align-items:center;gap:10px;
+      padding:9px 12px;cursor:pointer;
+      color:var(--text-secondary);font-size:13.5px;font-weight:500;
+      border-radius:var(--radius-sm);
+      transition:all .15s ease;
+      margin-bottom:2px;
     }
-    .nav-item:hover{background:#fafafa;color:#666}
-    .nav-item.active{color:#b8860b;background:#fffbf0;border-left-color:#b8860b}
+    .nav-item:hover{background:var(--bg-subtle);color:var(--text)}
+    .nav-item.active{background:var(--bg-muted);color:var(--text);font-weight:600}
 
-    .nav-icon{width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:14px}
+    .nav-icon{width:18px;height:18px;display:flex;align-items:center;justify-content:center}
+    .nav-icon svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 
     .nav-progress{
-      width:20px;height:20px;border-radius:50%;
+      width:18px;height:18px;border-radius:50%;
       margin-left:auto;position:relative;
-      background:conic-gradient(#b8860b var(--pct,0%), #eee var(--pct,0%));
+      background:conic-gradient(var(--green) var(--pct,0%), var(--bg-muted) var(--pct,0%));
       display:flex;align-items:center;justify-content:center;
+      transition:all .3s ease;
     }
-    .nav-progress-inner{width:14px;height:14px;border-radius:50%;background:#fff}
-    .nav-item.active .nav-progress-inner{background:#fffbf0}
-    .nav-progress.complete{background:#b8860b}
+    .nav-progress-inner{width:12px;height:12px;border-radius:50%;background:var(--bg);transition:background .15s}
+    .nav-item.active .nav-progress-inner{background:var(--bg-muted)}
+    .nav-progress.complete{background:var(--green)}
     .nav-progress.complete .nav-progress-inner{display:none}
-    .nav-progress.complete::after{content:'✓';color:#fff;font-size:10px;font-weight:700}
+    .nav-progress.complete::after{content:'';width:6px;height:3px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg);margin-top:-1px}
 
-    .content{flex:1;margin-left:220px;padding:0 0 100px}
+    /* CONTENT */
+    .content{flex:1;margin-left:240px;min-height:100vh;display:flex;flex-direction:column}
 
-    .header{padding:40px 40px 32px;border-bottom:1px solid #eee;background:#fff}
-    .header h1{font-size:1.6rem;font-weight:700;color:#111;margin-bottom:6px}
-    .header p{color:#888;font-size:.88rem;max-width:520px}
+    .content-header{
+      padding:32px 48px 28px;
+      border-bottom:1px solid var(--border-light);
+      background:var(--bg);
+    }
+    .content-header h1{font-size:24px;font-weight:700;color:var(--text);letter-spacing:-.3px}
+    .content-header p{color:var(--text-secondary);font-size:14px;margin-top:6px;max-width:560px;line-height:1.6}
 
-    .panel-wrap{padding:32px 40px;max-width:720px}
+    .panel-wrap{padding:32px 48px 100px;max-width:740px;flex:1}
 
     .panel{display:none}
     .panel.active{display:block}
 
-    .sh{font-size:1.1rem;font-weight:700;color:#111;margin-bottom:4px}
-    .sd{color:#888;font-size:.86rem;margin-bottom:20px}
+    .section-label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-tertiary);font-weight:600;margin-bottom:16px}
 
-    .step{margin-bottom:20px;padding:16px 16px 16px 48px;position:relative;background:#fff;border:1px solid #f0ede8;border-radius:10px;transition:opacity .2s}
+    /* STEPS */
+    .step{
+      margin-bottom:16px;padding:20px 20px 20px 52px;
+      position:relative;background:var(--bg);
+      border:1px solid var(--border-light);
+      border-radius:var(--radius);
+      transition:all .2s ease;
+    }
+    .step:hover{border-color:var(--border)}
     .step input[type="checkbox"]{
-      position:absolute;left:16px;top:18px;
+      position:absolute;left:20px;top:22px;
       appearance:none;-webkit-appearance:none;
-      width:20px;height:20px;border:2px solid #ddd;border-radius:5px;
-      background:#fff;cursor:pointer;transition:all .12s}
-    .step input:hover{border-color:#b8860b}
-    .step input:checked{background:#b8860b;border-color:#b8860b}
-    .step input:checked::after{content:'✓';display:block;color:#fff;font-size:13px;font-weight:700;text-align:center;line-height:17px}
-    .step.done{opacity:.35}
-    .step-title{font-size:.92rem;font-weight:600;color:#222;margin-bottom:6px}
-    .step p{margin-bottom:8px;font-size:.86rem;color:#666}
+      width:18px;height:18px;border:1.5px solid var(--border);border-radius:5px;
+      background:var(--bg);cursor:pointer;transition:all .15s ease;
+    }
+    .step input:hover{border-color:var(--text-secondary)}
+    .step input:checked{background:var(--text);border-color:var(--text)}
+    .step input:checked::after{content:'';display:block;width:5px;height:8px;border:solid #fff;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);margin:2px auto 0}
+    .step.done{opacity:.4}
+    .step.done:hover{opacity:.6}
+    .step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px}
+    .step p{margin-bottom:8px;font-size:14px;color:var(--text-secondary);line-height:1.7}
     .step p:last-child{margin-bottom:0}
 
     .cmd{
-      background:#1e1e2e;color:#cdd6f4;
-      border-radius:8px;padding:14px 16px;margin:10px 0;
-      font-family:'SF Mono',Consolas,monospace;font-size:.78rem;
-      overflow-x:auto;white-space:pre-wrap;word-break:break-all;line-height:1.6;
-      cursor:pointer;position:relative}
-    .cmd:hover{opacity:.92}
-    .cmd-copy{position:absolute;right:8px;top:8px;font-family:'Inter',sans-serif;font-size:.55rem;letter-spacing:1px;text-transform:uppercase;color:#585b70;padding:2px 6px}
-    .cmd:hover .cmd-copy{color:#cdd6f4}
-    .cmd.copied .cmd-copy{color:#a6e3a1}
+      background:#1a1a2e;color:#e2e8f0;
+      border-radius:var(--radius-sm);padding:14px 16px;margin:12px 0;
+      font-family:'SF Mono',SFMono-Regular,Consolas,monospace;font-size:13px;
+      overflow-x:auto;white-space:pre-wrap;word-break:break-all;line-height:1.7;
+      cursor:pointer;position:relative;
+      border:1px solid rgba(255,255,255,.06);
+    }
+    .cmd:hover{background:#1e1e32}
+    .cmd-copy{position:absolute;right:10px;top:10px;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.3);padding:2px 6px;border-radius:4px;transition:all .15s}
+    .cmd:hover .cmd-copy{color:rgba(255,255,255,.6)}
+    .cmd.copied .cmd-copy{color:#10b981}
 
-    .config{background:#f8f6f2;border:1px solid #ede8df;border-radius:8px;padding:14px 16px;margin:10px 0;font-family:'SF Mono',Consolas,monospace;font-size:.72rem;color:#6b5c3e;overflow-x:auto;white-space:pre;line-height:1.5}
+    .config{background:var(--bg-subtle);border:1px solid var(--border-light);border-radius:var(--radius-sm);padding:14px 16px;margin:12px 0;font-family:'SF Mono',SFMono-Regular,Consolas,monospace;font-size:12px;color:var(--text-secondary);overflow-x:auto;white-space:pre;line-height:1.6}
 
-    .warn{background:#fef2f2;border-left:3px solid #ef4444;padding:12px 16px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.84rem;color:#666}
-    .warn strong{color:#dc2626}
-    .tip{background:#f0f7ff;border-left:3px solid #3b82f6;padding:12px 16px;border-radius:0 8px 8px 0;margin:10px 0;font-size:.84rem;color:#666}
-    .tip strong{color:#1d4ed8}
-    .pro{background:#fffbeb;border-left:3px solid #d4a843;padding:14px 18px;border-radius:0 8px 8px 0;margin:14px 0;font-size:.86rem;color:#555;line-height:1.7}
-    .pro strong{color:#92640d}
+    .callout{padding:14px 16px;border-radius:var(--radius-sm);margin:14px 0;font-size:13.5px;line-height:1.7;color:var(--text-secondary)}
+    .callout strong{font-weight:600}
+    .warn{background:var(--red-bg);border-left:3px solid var(--red)}.warn strong{color:var(--red)}
+    .tip{background:var(--blue-bg);border-left:3px solid var(--blue)}.tip strong{color:var(--blue)}
+    .pro{background:var(--bg-subtle);border-left:3px solid var(--border);padding:16px 20px;margin:16px 0;font-size:14px;line-height:1.7;color:var(--text-secondary)}
+    .pro strong{color:var(--text)}
 
-    footer{padding:32px 40px;color:#ccc;font-size:.72rem}
-    footer a{color:#aaa;text-decoration:none}footer a:hover{color:#b8860b}
+    footer{padding:32px 48px;border-top:1px solid var(--border-light);color:var(--text-tertiary);font-size:12px}
+    footer a{color:var(--text-tertiary);text-decoration:none}footer a:hover{color:var(--text-secondary)}
 
+    /* MOBILE */
     .mobile-header{display:none}
     .bottom-bar{display:none}
 
     @media(max-width:768px){
       .sidebar{display:none}
       .content{margin-left:0}
-      .header{display:none}
+      .content-header{display:none}
+
       .mobile-header{
-        display:block;padding:16px 20px;background:#fff;
-        border-bottom:1px solid #eee;position:sticky;top:0;z-index:50}
-      .mobile-header h1{font-size:1.1rem;font-weight:700;color:#111}
-      .mobile-header .brand{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#bbb;font-weight:600;margin-bottom:4px}
-      .mobile-header .brand a{color:#bbb;text-decoration:none}
-      .panel-wrap{padding:20px 16px 120px}
-      .step{padding:14px 14px 14px 44px}
-      .step input{left:12px;top:16px}
+        display:flex;align-items:center;justify-content:space-between;
+        padding:14px 20px;background:rgba(255,255,255,.85);
+        -webkit-backdrop-filter:blur(20px) saturate(180%);
+        backdrop-filter:blur(20px) saturate(180%);
+        border-bottom:1px solid rgba(0,0,0,.06);
+        position:sticky;top:0;z-index:50;
+      }
+      .mobile-header-text .brand{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-tertiary);font-weight:600}
+      .mobile-header-text .brand a{color:inherit;text-decoration:none}
+      .mobile-header-text h1{font-size:16px;font-weight:700;color:var(--text);margin-top:1px}
+
+      .panel-wrap{padding:20px 16px 110px}
+      .step{padding:16px 16px 16px 46px;border-radius:var(--radius)}
+      .step input{left:16px;top:18px}
+      footer{padding:24px 16px}
 
       .bottom-bar{
         display:flex;position:fixed;bottom:0;left:0;right:0;
-        background:#fff;border-top:1px solid #eee;
-        padding:6px 0 calc(6px + env(safe-area-inset-bottom));
-        z-index:100}
+        background:rgba(255,255,255,.75);
+        -webkit-backdrop-filter:blur(24px) saturate(200%);
+        backdrop-filter:blur(24px) saturate(200%);
+        border-top:1px solid rgba(0,0,0,.06);
+        padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+        z-index:100;
+        gap:2px;
+      }
       .btab{
-        flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
-        padding:6px 0;cursor:pointer;color:#bbb;font-size:.58rem;font-weight:600;
-        letter-spacing:.5px;transition:color .12s}
-      .btab.active{color:#b8860b}
-      .btab-icon{font-size:16px}
-      .btab-progress{width:16px;height:2px;border-radius:1px;background:#eee;margin-top:2px}
-      .btab-progress-fill{height:100%;background:#b8860b;border-radius:1px;transition:width .3s}
+        flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+        padding:6px 2px;cursor:pointer;
+        color:var(--text-tertiary);font-size:10px;font-weight:500;
+        letter-spacing:.2px;
+        transition:color .15s;border-radius:var(--radius-sm);
+      }
+      .btab:active{background:rgba(0,0,0,.04)}
+      .btab.active{color:var(--text)}
+      .btab-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+      .btab-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+      .btab-progress{width:20px;height:2px;border-radius:1px;background:var(--bg-muted);margin-top:1px;overflow:hidden}
+      .btab-progress-fill{height:100%;background:var(--green);border-radius:1px;transition:width .3s ease}
     }
   </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- DESKTOP SIDEBAR -->
   <aside class="sidebar">
-    <div class="brand"><a href="https://humanitylabs.org">Humanity Labs</a></div>
+    <div class="sidebar-header">
+      <div class="sidebar-logo"><a href="https://botsetupguide.com">Humanity Labs</a></div>
+      <div class="sidebar-title">Bot Setup Guide</div>
+    </div>
     <div class="nav-items">
       <div class="nav-item active" data-tab="hardware">
-        <span class="nav-icon">🖥</span> Hardware
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+        Hardware
         <div class="nav-progress" id="np-hardware"><div class="nav-progress-inner"></div></div>
       </div>
       <div class="nav-item" data-tab="openclaw">
-        <span class="nav-icon">🦞</span> OpenClaw
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+        OpenClaw
         <div class="nav-progress" id="np-openclaw"><div class="nav-progress-inner"></div></div>
       </div>
       <div class="nav-item" data-tab="obsidian">
-        <span class="nav-icon">💎</span> Obsidian
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
+        Obsidian
         <div class="nav-progress" id="np-obsidian"><div class="nav-progress-inner"></div></div>
       </div>
       <div class="nav-item" data-tab="security">
-        <span class="nav-icon">🔒</span> Security
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+        Security
         <div class="nav-progress" id="np-security"><div class="nav-progress-inner"></div></div>
       </div>
       <div class="nav-item" data-tab="tips">
-        <span class="nav-icon">💡</span> Tips
+        <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
+        Tips
       </div>
     </div>
   </aside>
 
-  <!-- CONTENT -->
   <div class="content">
 
     <div class="mobile-header">
-      <div class="brand"><a href="https://humanitylabs.org">Humanity Labs</a></div>
-      <h1>Bot Setup Guide</h1>
+      <div class="mobile-header-text">
+        <div class="brand"><a href="https://botsetupguide.com">Humanity Labs</a></div>
+        <h1>Bot Setup Guide</h1>
+      </div>
     </div>
 
-    <div class="header">
+    <div class="content-header">
       <h1>Bot Setup Guide</h1>
-      <p>Build a personal AI that runs 24/7 on your own machine. Each section is independent — jump to the one you need and check off steps as you go. Your progress is saved automatically.</p>
+      <p>Build a personal AI that runs 24/7 on your own machine. Each section is independent. Check off steps as you go — progress saves automatically.</p>
     </div>
 
     <div class="panel-wrap">
 
     <!-- ==================== HARDWARE ==================== -->
     <div class="panel active" id="hardware">
-      <div class="sh">Hardware</div>
-      <div class="sd">You need a computer that stays on all the time. This is where your AI lives.</div>
+      <div class="section-label">Hardware</div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Get a dedicated computer</div>
@@ -204,21 +271,20 @@
         <p>Your AI can't work if the computer falls asleep. Open Terminal (Command + Space, type "terminal", press Enter) and paste this command:</p>
         <div class="cmd"><span class="cmd-copy">copy</span>sudo pmset -a sleep 0</div>
         <p>The word <code>sudo</code> means "do this with administrator permission." It will ask for your password again (same invisible typing as before). This tells your Mac to never go to sleep.</p>
-        <p>Also go to <strong>System Settings > Displays > Advanced</strong> and turn off "Automatically adjust brightness." If this is a laptop, go to <strong>System Settings > Battery > Options</strong> and turn on "Prevent automatic sleeping on power adapter."</p>
+        <p>Also go to <strong>System Settings → Displays → Advanced</strong> and turn off "Automatically adjust brightness." If this is a laptop, go to <strong>System Settings → Battery → Options</strong> and turn on "Prevent automatic sleeping on power adapter."</p>
       </div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Create a Gmail account for the AI</div>
         <p>Your AI needs its own email address to sign up for services like GitHub and Vercel. Go to <a href="https://accounts.google.com/signup">Gmail signup</a> <strong>on your phone</strong> (Google often requires a phone number for verification, and it's easier to do this from a phone where it can text you automatically).</p>
         <p>Pick any name you like — this is a throwaway identity, not something you'll use personally. Once created, open a browser on the AI's computer (the dedicated machine), go to <a href="https://gmail.com">gmail.com</a>, and log in with this new account. Leave it logged in.</p>
-        <div class="warn"><strong>Never use your personal Gmail.</strong> The AI's accounts are separate from yours on purpose. If something ever goes wrong, the only thing at risk is a throwaway email — not your personal life.</div>
+        <div class="callout warn"><strong>Never use your personal Gmail.</strong> The AI's accounts are separate from yours on purpose. If something ever goes wrong, the only thing at risk is a throwaway email — not your personal life.</div>
       </div>
     </div>
 
     <!-- ==================== OPENCLAW ==================== -->
     <div class="panel" id="openclaw">
-      <div class="sh">OpenClaw</div>
-      <div class="sd">The software that makes your AI work. It gives your AI tools, memory, and the ability to chat with you through messaging apps.</div>
+      <div class="section-label">OpenClaw</div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Install and start OpenClaw</div>
@@ -234,7 +300,7 @@ openclaw gateway start</div>
         <p>Telegram is a free messaging app (like WhatsApp or iMessage). This is how you'll talk to your AI every day — you send a message on Telegram, and the AI replies in the same chat, just like texting a friend.</p>
         <p>If you don't have Telegram, install it on your phone from the <a href="https://apps.apple.com/app/telegram-messenger/id686449807">App Store</a> or <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger">Play Store</a>. Then follow the <a href="https://docs.openclaw.ai">OpenClaw Telegram setup guide</a>. The process takes about 5 minutes and involves creating a "bot" through Telegram and pasting a token into OpenClaw's settings.</p>
         <p>Once connected, send your AI a test message like "Hello, are you there?" It should reply within a few seconds.</p>
-        <div class="tip"><strong>Telegram isn't the only option.</strong> OpenClaw also works with Signal, Discord, Slack, WhatsApp, and iMessage. But Telegram is the easiest to set up and works on every platform, so we recommend starting there.</div>
+        <div class="callout tip"><strong>Telegram isn't the only option.</strong> OpenClaw also works with Signal, Discord, Slack, WhatsApp, and iMessage. But Telegram is the easiest to set up and works on every platform, so we recommend starting there.</div>
       </div>
 
       <div class="step"><input type="checkbox">
@@ -248,19 +314,18 @@ openclaw gateway start</div>
       <div class="step"><input type="checkbox">
         <div class="step-title">Share your existing projects</div>
         <p>If you already have projects on services like GitHub or Vercel, invite the AI so it can work on them with you:</p>
-        <p><strong>GitHub:</strong> Go to your repository > Settings > Collaborators > Add people > type the AI's GitHub username.</p>
-        <p><strong>Vercel:</strong> Go to your team settings > Members > Invite > enter the AI's Gmail address.</p>
-        <p><strong>Supabase:</strong> Go to your organization settings > Members > Invite > enter the AI's Gmail address.</p>
-        <p><strong>Google Docs:</strong> Open the doc > click Share > enter the AI's Gmail address.</p>
+        <p><strong>GitHub:</strong> Go to your repository → Settings → Collaborators → Add people → type the AI's GitHub username.</p>
+        <p><strong>Vercel:</strong> Go to your team settings → Members → Invite → enter the AI's Gmail address.</p>
+        <p><strong>Supabase:</strong> Go to your organization settings → Members → Invite → enter the AI's Gmail address.</p>
+        <p><strong>Google Docs:</strong> Open the doc → click Share → enter the AI's Gmail address.</p>
       </div>
 
-      <div class="tip"><strong>You can stop here and have a fully working setup.</strong> At this point you have an AI assistant on Telegram that can write code, deploy websites, manage databases, search the web, and research anything you throw at it. Everything below makes the experience better — but nothing below is required.</div>
+      <div class="callout tip"><strong>You can stop here and have a fully working setup.</strong> At this point you have an AI assistant on Telegram that can write code, deploy websites, manage databases, search the web, and research anything you throw at it. Everything below makes the experience better — but nothing below is required.</div>
     </div>
 
     <!-- ==================== OBSIDIAN ==================== -->
     <div class="panel" id="obsidian">
-      <div class="sh">Obsidian</div>
-      <div class="sd">See everything your AI writes — on your phone, laptop, and tablet. Beautifully formatted, end-to-end encrypted, synced in seconds.</div>
+      <div class="section-label">Obsidian</div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Install Obsidian on the AI's computer</div>
@@ -274,9 +339,9 @@ openclaw gateway start</div>
       <div class="step"><input type="checkbox">
         <div class="step-title">Enable Obsidian Sync</div>
         <p>Obsidian Sync ($4/month) encrypts all your files with a password that only you know and syncs them across all your devices. Not even Obsidian's servers can read your content — everything is end-to-end encrypted.</p>
-        <p><strong>To set it up:</strong> In Obsidian, click the gear icon (⚙️) at the bottom left > click <strong>Core plugins</strong> in the sidebar > scroll down to find <strong>Sync</strong> > toggle it on. Now click <strong>Sync</strong> in the left sidebar (a new icon appeared) > log in with your Obsidian account (create one if needed at <a href="https://obsidian.md/account">obsidian.md/account</a>) > click <strong>Create new remote vault</strong> and give it any name you like.</p>
+        <p><strong>To set it up:</strong> In Obsidian, click the gear icon (⚙️) at the bottom left → click <strong>Core plugins</strong> in the sidebar → scroll down to find <strong>Sync</strong> → toggle it on. Now click <strong>Sync</strong> in the left sidebar (a new icon appeared) → log in with your Obsidian account (create one if needed at <a href="https://obsidian.md/account">obsidian.md/account</a>) → click <strong>Create new remote vault</strong> and give it any name you like.</p>
         <p>Then open the Sync settings and find <strong>"Excluded folders."</strong> Add <code>Code</code> to this list. Code repositories use Git for version control, which is completely separate from Obsidian Sync. If you don't exclude this folder, thousands of build files would flood your sync and use up all your storage.</p>
-        <div class="warn"><strong>Leave "Sync all file types" turned off.</strong> The default setting (Markdown files only) is correct. Code projects contain binary files, compiled assets, and dependency folders that would overwhelm your sync storage and cause conflicts.</div>
+        <div class="callout warn"><strong>Leave "Sync all file types" turned off.</strong> The default setting (Markdown files only) is correct. Code projects contain binary files, compiled assets, and dependency folders that would overwhelm your sync storage and cause conflicts.</div>
       </div>
 
       <div class="step"><input type="checkbox">
@@ -305,7 +370,7 @@ launchctl load ~/Library/LaunchAgents/md.obsidian.keepalive.plist</div>
         <p>Install the Obsidian app on each device you want to use:</p>
         <p><strong>Phone:</strong> Download from the <a href="https://apps.apple.com/us/app/obsidian-connected-notes/id1557175442">App Store</a> or <a href="https://play.google.com/store/apps/details?id=md.obsidian">Play Store</a> (free).</p>
         <p><strong>Laptop/Desktop:</strong> Download from <a href="https://obsidian.md/download">obsidian.md/download</a> (free).</p>
-        <p>On each device: open Obsidian > create a new vault (any name) > go to Settings (gear icon) > Sync > log in with the <strong>same Obsidian account</strong> you used on the AI's computer > select the remote vault you created earlier.</p>
+        <p>On each device: open Obsidian → create a new vault (any name) → go to Settings (gear icon) → Sync → log in with the <strong>same Obsidian account</strong> you used on the AI's computer → select the remote vault you created earlier.</p>
         <p>Wait about a minute for it to download all the files. Once synced, everything the AI writes appears on your phone within seconds. You can also write notes from your phone and the AI will see them.</p>
       </div>
 
@@ -324,14 +389,13 @@ openclaw config set agents.defaults.memorySearch.fallback none</div>
         <p>Finally, restart OpenClaw so it picks up the changes. Paste this in Terminal:</p>
         <div class="cmd"><span class="cmd-copy">copy</span>openclaw gateway restart</div>
         <p>The first time semantic search runs, it downloads a small AI model (~313MB) and builds an index of all your notes. This takes 2-5 minutes depending on your internet speed and how many notes you have. After that, searches are instant.</p>
-        <div class="tip"><strong>This is the most impactful step in this section.</strong> Without semantic search, the AI can only look through its own daily logs. With it, the AI can find information across everything you've ever written — contacts, meeting notes, lists, ideas, anything in your vault.</div>
+        <div class="callout tip"><strong>This is the most impactful step in this section.</strong> Without semantic search, the AI can only look through its own daily logs. With it, the AI can find information across everything you've ever written — contacts, meeting notes, lists, ideas, anything in your vault.</div>
       </div>
     </div>
 
     <!-- ==================== SECURITY ==================== -->
     <div class="panel" id="security">
-      <div class="sh">Security</div>
-      <div class="sd">You're giving an AI real tools. Here's how to keep the risk manageable.</div>
+      <div class="section-label">Security</div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Dedicated machine, separate accounts</div>
@@ -361,19 +425,18 @@ openclaw config set agents.defaults.memorySearch.fallback none</div>
       <div class="step"><input type="checkbox">
         <div class="step-title">Set up remote screen access</div>
         <p>About 5% of the time, the AI will hit something it can't handle on its own: a CAPTCHA puzzle, a credit card form, or a browser security check. When that happens, you need to see its screen.</p>
-        <p><strong>Mac to Mac (same network):</strong> On the AI's computer, go to System Settings > General > Sharing > turn on <strong>Screen Sharing</strong>. From your Mac, open Finder > in the menu bar click Go > Network. You'll see the AI's computer listed. Double-click it to connect.</p>
+        <p><strong>Mac to Mac (same network):</strong> On the AI's computer, go to System Settings → General → Sharing → turn on <strong>Screen Sharing</strong>. From your Mac, open Finder → in the menu bar click Go → Network. You'll see the AI's computer listed. Double-click it to connect.</p>
         <p><strong>From anywhere (different network):</strong> Install <a href="https://tailscale.com">Tailscale</a> on both machines. Once connected, you can use any VNC app (like the built-in Screen Sharing app on Mac) to connect to the AI's Tailscale IP address. This works from anywhere in the world as if you were on the same local network.</p>
       </div>
 
-      <div class="warn">
+      <div class="callout warn">
         <p><strong>What's still risky and why we do all of the above:</strong> Prompt injection — where malicious content on a webpage tricks the AI into doing something unintended — is an unsolved problem across the entire AI industry. That's exactly why the AI uses throwaway accounts with limited permissions. The LLM provider (Anthropic, OpenAI, etc.) processes your conversations on their servers, so avoid sharing truly sensitive information like passwords, financial account numbers, or social security numbers through the AI. Only install OpenClaw skills from sources you trust.</p>
       </div>
     </div>
 
     <!-- ==================== TIPS ==================== -->
     <div class="panel" id="tips">
-      <div class="sh">Pro Tips</div>
-      <div class="sd">Things we've learned from running this setup every day. None are required, but all are worth knowing.</div>
+      <div class="section-label">Pro Tips</div>
 
       <div class="pro"><strong>Keep your folders one level deep.</strong> When you create folders in your vault (Contacts, Lists, Memos, Tasks, etc.), resist the urge to nest folders inside folders. Put every note directly inside one top-level folder. If you can't find a note by scanning a flat list of filenames, the fix is to rename the file to something more descriptive — not to bury it three levels deep. Deep folder trees make things invisible. A flat structure keeps everything discoverable. Once you've set up your folder structure, tell the AI how you like things organized (e.g., "contact info goes in Contacts, project notes go in Memos") and it will file things correctly on its own.</div>
 
@@ -387,58 +450,61 @@ openclaw config set agents.defaults.memorySearch.fallback none</div>
 
       <div class="pro"><strong>Run updates weekly.</strong> Open Terminal on the AI's computer (Command + Space, type "terminal", press Enter) and paste:</div>
       <div class="cmd"><span class="cmd-copy">copy</span>openclaw update</div>
-      <p style="font-size:.86rem;color:#888;margin-top:8px;">OpenClaw ships new features and security patches frequently. Staying on the latest version means fewer bugs and better capabilities. You can also just ask your AI to update itself — send it "run openclaw update" on Telegram.</p>
+      <p style="font-size:13.5px;color:var(--text-secondary);margin-top:8px;">OpenClaw ships new features and security patches frequently. Staying on the latest version means fewer bugs and better capabilities. You can also just ask your AI to update itself — send it "run openclaw update" on Telegram.</p>
     </div>
 
     </div><!-- /panel-wrap -->
 
     <footer>
-      <p>A free guide by <a href="https://humanitylabs.org">Humanity Labs</a> · <a href="https://vajra.to">Vajra</a></p>
+      <p>A free guide by <a href="https://botsetupguide.com">Humanity Labs</a> · Creators of <a href="https://vajra.to">Vajra</a></p>
     </footer>
-  </div><!-- /content -->
+  </div>
 
-</div><!-- /app -->
+</div>
 
 <!-- MOBILE BOTTOM BAR -->
 <div class="bottom-bar" id="bottomBar">
   <div class="btab active" data-tab="hardware">
-    <span class="btab-icon">🖥</span>Hardware
+    <span class="btab-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+    Hardware
     <div class="btab-progress"><div class="btab-progress-fill" id="bp-hardware"></div></div>
   </div>
   <div class="btab" data-tab="openclaw">
-    <span class="btab-icon">🦞</span>OpenClaw
+    <span class="btab-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+    OpenClaw
     <div class="btab-progress"><div class="btab-progress-fill" id="bp-openclaw"></div></div>
   </div>
   <div class="btab" data-tab="obsidian">
-    <span class="btab-icon">💎</span>Obsidian
+    <span class="btab-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
+    Obsidian
     <div class="btab-progress"><div class="btab-progress-fill" id="bp-obsidian"></div></div>
   </div>
   <div class="btab" data-tab="security">
-    <span class="btab-icon">🔒</span>Security
+    <span class="btab-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+    Security
     <div class="btab-progress"><div class="btab-progress-fill" id="bp-security"></div></div>
   </div>
   <div class="btab" data-tab="tips">
-    <span class="btab-icon">💡</span>Tips
+    <span class="btab-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
+    Tips
   </div>
 </div>
 
 <script>
-// Tab switching
 const navItems=[...document.querySelectorAll('.nav-item'),...document.querySelectorAll('.btab')];
 const panels=document.querySelectorAll('.panel');
 function switchTab(tab){
   document.querySelectorAll('.nav-item,.btab').forEach(n=>n.classList.toggle('active',n.dataset.tab===tab));
   panels.forEach(p=>p.classList.toggle('active',p.id===tab));
-  window.scrollTo({top:0});
+  document.querySelector('.panel-wrap').scrollTop=0;
+  window.scrollTo(0,0);
 }
 navItems.forEach(n=>n.addEventListener('click',()=>switchTab(n.dataset.tab)));
 
-// Checkboxes + per-section progress
-const K='bot-setup-v5';
+const K='bot-setup-v6';
 const allChecks=[...document.querySelectorAll('.step input[type="checkbox"]')];
 const allSteps=[...document.querySelectorAll('.step')];
 
-// Load saved state
 try{const s=JSON.parse(localStorage.getItem(K)||'[]');s.forEach(i=>{if(allChecks[i]){allChecks[i].checked=true;allSteps[i].classList.add('done')}})}catch(e){}
 
 const trackedSections=['hardware','openclaw','obsidian','security'];
@@ -466,7 +532,6 @@ function updateProgress(){
 allChecks.forEach((cb,i)=>{cb.addEventListener('change',()=>{allSteps[i].classList.toggle('done',cb.checked);updateProgress()})});
 updateProgress();
 
-// Copy commands
 document.querySelectorAll('.cmd').forEach(el=>{el.addEventListener('click',e=>{
   const text=el.textContent.replace(/^copy/,'').trim();
   navigator.clipboard.writeText(text);
