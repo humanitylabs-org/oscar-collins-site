@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Bot Setup Guide — Humanity Labs</title>
-  <meta name="description" content="Build your own AI assistant. OpenClaw + Obsidian + Telegram. Free step-by-step guide by Humanity Labs.">
+  <meta name="description" content="Build your own AI assistant in under an hour. Free step-by-step guide by Humanity Labs.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text y='66' font-size='44' font-family='system-ui' fill='%23d4a843' x='50' text-anchor='middle' font-weight='700'>HL</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
   <style>
@@ -55,7 +55,8 @@
 
     /* Typography */
     .phase-label { font-family: var(--sans); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 8px }
-    .phase-title { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--text); margin-bottom: 16px; line-height: 1.3 }
+    .phase-title { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.3 }
+    .phase-desc { font-size: 16px; color: var(--dim); margin-bottom: 24px; line-height: 1.6 }
 
     /* Steps */
     .step { margin-bottom: 18px; padding: 20px 20px 20px 48px; position: relative; background: var(--card); border: 1px solid var(--border-light); border-radius: var(--radius) }
@@ -91,14 +92,10 @@
     .note.warn { border-left-color: #c44; background: #fdf5f4 }
     .note.warn strong { color: #a33 }
 
-    /* Branch */
-    .branch { margin: 24px 0 12px; padding: 16px; background: var(--muted); border-radius: var(--radius) }
-    .branch-title { font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--text) }
-    .branch-desc { font-size: 14px; color: var(--dim); margin-top: 2px }
-    .branch-tag { display: inline-block; font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px }
-
     /* Done banner */
     .done-banner { padding: 16px; background: var(--accent-bg); border-radius: var(--radius); margin: 24px 0; text-align: center; font-family: var(--sans); font-size: 14px; color: var(--text) }
+    .next-btn { display: inline-block; margin-top: 8px; padding: 8px 20px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none }
+    .next-btn:hover { opacity: .9; text-decoration: none }
 
     /* Overview hero */
     .overview-hero { text-align: center; padding: 48px 0 36px }
@@ -116,7 +113,7 @@
       border-radius: var(--radius); cursor: pointer; transition: all .15s;
     }
     .overview-card:hover { border-color: var(--accent) }
-    .overview-card-num { font-family: var(--sans); font-size: 13px; font-weight: 700; color: #fff; background: var(--accent); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0 }
+    .overview-card-icon { font-size: 28px; flex-shrink: 0 }
     .overview-card h3 { font-family: var(--sans); font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px }
     .overview-card p { font-size: 14px; color: var(--dim); margin: 0; line-height: 1.5 }
 
@@ -154,10 +151,9 @@
       .pill {
         flex: 1; text-align: center;
         padding: 10px 0; cursor: pointer;
-        font-family: var(--sans); font-size: 12px; font-weight: 500;
+        font-family: var(--sans); font-size: 11px; font-weight: 500;
         color: var(--dim); transition: all .15s;
         border-bottom: 2px solid transparent;
-        position: relative;
       }
       .pill.active {
         color: var(--accent); font-weight: 700;
@@ -167,7 +163,7 @@
       .panel-wrap { padding: 24px 16px 60px; width: 100%; max-width: 100vw; overflow-x: hidden }
       .step { padding: 16px 14px 16px 42px }
       .step input { left: 14px; top: 18px }
-      .step p, .note, .branch-desc { overflow-wrap: break-word; word-break: break-word }
+      .step p, .note { overflow-wrap: break-word; word-break: break-word }
       .cmd { font-size: 12px; padding: 12px 14px; word-break: break-all; max-width: 100%; overflow-x: auto }
       .config { font-size: 11px; max-width: 100%; overflow-x: auto }
       code { word-break: break-all }
@@ -187,9 +183,9 @@
       <div class="sidebar-title" data-tab="overview">Bot Setup Guide</div>
     </div>
     <div class="nav-items">
-      <div class="nav-item" data-tab="install"><span class="nav-dot"></span> 1. Install OpenClaw</div>
-      <div class="nav-item" data-tab="connect"><span class="nav-dot"></span> 2. Start Chatting</div>
-      <div class="nav-item" data-tab="sync"><span class="nav-dot"></span> 3. Sync Your Files</div>
+      <div class="nav-item" data-tab="alive"><span class="nav-dot"></span> 1. Bring It to Life</div>
+      <div class="nav-item" data-tab="talk"><span class="nav-dot"></span> 2. Talk to It</div>
+      <div class="nav-item" data-tab="see"><span class="nav-dot"></span> 3. See What It Does</div>
     </div>
   </aside>
 
@@ -199,9 +195,9 @@
       <div class="mobile-by"><a href="https://humanitylabs.org">Humanity Labs</a></div>
     </div>
     <nav class="mobile-nav">
-      <div class="pill" data-tab="install">Install</div>
-      <div class="pill" data-tab="connect">Chat</div>
-      <div class="pill" data-tab="sync">Sync</div>
+      <div class="pill" data-tab="alive">1. Life</div>
+      <div class="pill" data-tab="talk">2. Talk</div>
+      <div class="pill" data-tab="see">3. See</div>
     </nav>
 
     <div class="panel-wrap">
@@ -210,173 +206,180 @@
     <div class="panel active" id="overview">
       <div class="overview-hero">
         <div class="overview-icon">🤖</div>
-        <h1>Bot Setup Guide</h1>
+        <h1>Build Your Own AI Assistant</h1>
         <div class="overview-by">by <a href="https://humanitylabs.org">Humanity Labs</a></div>
-        <p>Build a personal AI assistant that runs 24/7 on your own hardware. Three steps from zero to a working assistant you can talk to from anywhere.</p>
+        <p>A personal AI that runs 24/7 on your own hardware. It reads your files, runs code, searches the web, and remembers everything. Three steps from zero to a working assistant.</p>
       </div>
 
       <div class="overview-cards">
-        <div class="overview-card" data-tab="install">
-          <div class="overview-card-num">1</div>
+        <div class="overview-card" data-tab="alive">
+          <div class="overview-card-icon">⚡</div>
           <div>
-            <h3>Install OpenClaw</h3>
-            <p>Set up a dedicated machine running your AI with remote access. ~30 min.</p>
+            <h3>1. Bring it to life</h3>
+            <p>Set up a machine, install OpenClaw, and give your bot secure remote access. ~30 min.</p>
           </div>
         </div>
-        <div class="overview-card" data-tab="connect">
-          <div class="overview-card-num">2</div>
+        <div class="overview-card" data-tab="talk">
+          <div class="overview-card-icon">💬</div>
           <div>
-            <h3>Start Chatting</h3>
-            <p>Connect Telegram and talk to your AI from your phone. ~15 min.</p>
+            <h3>2. Talk to it</h3>
+            <p>Connect Telegram and have your first conversation from your phone. ~10 min.</p>
           </div>
         </div>
-        <div class="overview-card" data-tab="sync">
-          <div class="overview-card-num">3</div>
+        <div class="overview-card" data-tab="see">
+          <div class="overview-card-icon">👀</div>
           <div>
-            <h3>Sync Your Files</h3>
-            <p>See everything your AI writes on all your devices. Chat from Obsidian. ~20 min.</p>
+            <h3>3. See what it does</h3>
+            <p>Watch your bot think, read files, and work — live in a sidebar on any device. ~15 min.</p>
           </div>
         </div>
       </div>
 
       <div class="overview-needs">
-        <strong>What you need:</strong> A spare Mac mini, old laptop, or $5/mo cloud server. A phone. About an hour.
+        <strong>What you need:</strong> A spare Mac, old laptop, or $5/mo cloud server. A phone. About an hour.
       </div>
     </div>
 
-    <!-- 1. INSTALL -->
-    <div class="panel" id="install">
+    <!-- 1. BRING IT TO LIFE -->
+    <div class="panel" id="alive">
       <div class="phase-label">Step 1</div>
-      <div class="phase-title">Install OpenClaw</div>
+      <div class="phase-title">Bring it to life</div>
+      <div class="phase-desc">Your bot needs a computer to live on. It runs 24/7, so use a dedicated machine — not your daily driver.</div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Pick a machine</div>
-        <p><strong>Mac mini or spare laptop</strong> (recommended) -- silent, low power. A spare laptop with the lid closed works. Should not be the computer you use daily.</p>
-        <p><strong>VPS</strong> -- rent from <a href="https://hetzner.com">Hetzner</a> or <a href="https://digitalocean.com">DigitalOcean</a> for $5-10/month if you don't have spare hardware.</p>
-        <div class="note warn"><strong>Use a dedicated machine.</strong> The AI gets its own computer, Gmail, and accounts. If something goes wrong, only throwaway accounts are at risk.</div>
+        <p><strong>Mac mini or spare laptop</strong> — silent, low power, always on. Close the lid and forget about it.</p>
+        <p><strong>No spare hardware?</strong> Rent a cloud server from <a href="https://hetzner.com">Hetzner</a> or <a href="https://digitalocean.com">DigitalOcean</a> for $5-10/month.</p>
       </div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Open a terminal</div>
-        <p><strong>Mac:</strong> Press Command + Space, type <strong>terminal</strong>, press Enter.</p>
-        <p><strong>VPS:</strong> <code>ssh root@your-vps-ip</code></p>
+        <p><strong>Mac:</strong> Press <strong>Command + Space</strong>, type <strong>Terminal</strong>, press Enter. This is how you'll talk to your machine.</p>
+        <p><strong>Cloud server:</strong> <code>ssh root@your-server-ip</code></p>
       </div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">Install prerequisites</div>
-        <p><strong>Mac</strong> -- install Homebrew:</p>
+        <div class="step-title">Install Homebrew (Mac only)</div>
+        <p>Homebrew is a tool that installs other tools. Paste this and press Enter:</p>
         <div class="cmd"><span class="cmd-copy">copy</span>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</div>
-        <p>Password prompt shows nothing when you type. That's normal. Wait 2-5 minutes.</p>
-        <p><strong>VPS (Ubuntu/Debian):</strong></p>
-        <div class="cmd"><span class="cmd-copy">copy</span>apt update && apt upgrade -y</div>
+        <p>It asks for your password. Nothing shows when you type — that's normal. Wait 2-5 minutes.</p>
       </div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">Prevent sleeping (Mac only)</div>
+        <div class="step-title">Keep it awake (Mac only)</div>
         <div class="cmd"><span class="cmd-copy">copy</span>sudo pmset -a sleep 0</div>
-        <p>Also turn off auto-brightness in System Settings. VPS users skip this.</p>
-      </div>
-
-      <div class="step"><input type="checkbox">
-        <div class="step-title">Create a Gmail for the AI</div>
-        <p>Go to <a href="https://accounts.google.com/signup">Gmail signup</a> on your phone. Pick any name. Log in on the AI's machine and leave it signed in.</p>
+        <p>Prevents the machine from sleeping. Your bot needs to be awake to work.</p>
       </div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Install OpenClaw</div>
+        <p>This is the brain. One command installs everything:</p>
         <div class="cmd"><span class="cmd-copy">copy</span>curl -fsSL https://openclaw.ai/install.sh | bash</div>
-        <p>Installs, registers as a background service, and starts immediately. Auto-starts on boot.</p>
+        <p>It installs, registers itself to start on boot, and starts running immediately.</p>
       </div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Install Tailscale</div>
-        <p><a href="https://tailscale.com">Tailscale</a> (free) creates a private encrypted network between all your devices.</p>
+        <p><a href="https://tailscale.com">Tailscale</a> creates an encrypted private network between all your devices. Free for personal use.</p>
         <p><strong>Mac:</strong></p>
         <div class="cmd"><span class="cmd-copy">copy</span>brew install --cask tailscale</div>
-        <p><strong>VPS:</strong></p>
+        <p><strong>Cloud server:</strong></p>
         <div class="cmd"><span class="cmd-copy">copy</span>curl -fsSL https://tailscale.com/install.sh | sh
 sudo tailscale up</div>
-        <p>Sign in. Note the Tailscale IP (<code>100.x.x.x</code>). Install Tailscale on your phone and laptop too -- same account.</p>
-        <div class="note">VPS: lock down the firewall so only Tailscale reaches OpenClaw:<br><code>ufw default deny incoming && ufw allow ssh && ufw allow in on tailscale0 && ufw enable</code></div>
+        <p>Sign in and note the IP address it shows (<code>100.x.x.x</code>). You'll need this later.</p>
+        <p><strong>Also install Tailscale on your phone and laptop</strong> — same account.</p>
       </div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">Enable the dashboard</div>
-        <div class="cmd"><span class="cmd-copy">copy</span>openclaw config set gateway.controlUI.enabled true
+        <div class="step-title">Connect OpenClaw to Tailscale</div>
+        <div class="cmd"><span class="cmd-copy">copy</span>openclaw config set gateway.bind tailnet
 openclaw gateway restart</div>
-        <p>Open <code>http://[Tailscale IP]:18789</code> from any device. Bookmark it.</p>
+        <p>Now your bot is accessible from any device on your Tailscale network.</p>
       </div>
 
-      <div class="done-banner">Step 1 complete. Your AI is running 24/7 with remote access.</div>
+      <div class="step"><input type="checkbox">
+        <div class="step-title">Open the dashboard</div>
+        <p>From any device on your Tailscale network, open a browser and go to:</p>
+        <p><code>http://[your Tailscale IP]:18789</code></p>
+        <p>You should see the OpenClaw dashboard. Bookmark it.</p>
+      </div>
+
+      <div class="done-banner">
+        ✅ Your bot is alive and running 24/7.
+        <br><a class="next-btn" onclick="switchTab('talk')">Next: Talk to it →</a>
+      </div>
     </div>
 
-    <!-- 2. CONNECT -->
-    <div class="panel" id="connect">
+    <!-- 2. TALK TO IT -->
+    <div class="panel" id="talk">
       <div class="phase-label">Step 2</div>
-      <div class="phase-title">Start Chatting</div>
+      <div class="phase-title">Talk to it</div>
+      <div class="phase-desc">Your bot is running. Now give it a way to hear you. We'll use Telegram — it works on every device and takes 10 minutes.</div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">Set up Telegram</div>
-        <p>Install Telegram (<a href="https://apps.apple.com/app/telegram-messenger/id686449807">iOS</a> / <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger">Android</a>). Follow the <a href="https://docs.openclaw.ai">OpenClaw Telegram guide</a> (~5 min). You create a bot and paste a token.</p>
-        <div class="note">Also works with Signal, Discord, Slack, WhatsApp, iMessage. Telegram is easiest to start.</div>
+        <div class="step-title">Install Telegram</div>
+        <p>Download Telegram on your phone: <a href="https://apps.apple.com/app/telegram-messenger/id686449807">iPhone</a> · <a href="https://play.google.com/store/apps/details?id=org.telegram.messenger">Android</a></p>
+        <p>If you already have Telegram, skip this.</p>
+      </div>
+
+      <div class="step"><input type="checkbox">
+        <div class="step-title">Create a Telegram bot</div>
+        <p>Follow the <a href="https://docs.openclaw.ai/guides/telegram">OpenClaw Telegram guide</a>. Short version: message <a href="https://t.me/BotFather">@BotFather</a> on Telegram, create a bot, copy the token, paste it into OpenClaw.</p>
+        <p>Takes about 5 minutes.</p>
       </div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Send your first message</div>
-        <p>Message your AI: <em>"Hello, are you there?"</em> It should reply within seconds.</p>
-        <p>If not, check the dashboard for errors. Common fix: <code>openclaw gateway restart</code></p>
+        <p>Open the bot chat in Telegram and type: <em>"Hey, are you there?"</em></p>
+        <p>It should reply within a few seconds. You now have an AI assistant in your pocket.</p>
+        <div class="note"><strong>Not responding?</strong> Check the dashboard for errors. Usually fixed with: <code>openclaw gateway restart</code></div>
       </div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">Give it accounts</div>
-        <p>Tell it: <em>"Sign up for GitHub, Vercel, and Supabase using your Gmail."</em></p>
-        <p>It handles registration. Help with CAPTCHAs via screen sharing (Mac) or paste codes (VPS). For purchases, use <a href="https://privacy.com">Privacy.com</a> virtual cards with a $20/month limit.</p>
-        <div class="note">When the AI creates API keys, make sure they have minimum permissions and expire after 90 days.</div>
+        <div class="step-title">Set the ground rules</div>
+        <p>Tell your bot: <em>"Never send emails, make purchases, or post anything publicly without asking me first."</em></p>
+        <p>It remembers. You can always change these boundaries later.</p>
       </div>
 
-      <div class="step"><input type="checkbox">
-        <div class="step-title">Invite it to your projects</div>
-        <p><strong>GitHub:</strong> Repo → Settings → Collaborators → add AI's username.<br>
-        <strong>Vercel/Supabase:</strong> Team → Members → invite AI's Gmail.<br>
-        <strong>Google Docs:</strong> Share → AI's Gmail.</p>
+      <div class="done-banner">
+        ✅ You have a working AI assistant you can talk to from anywhere.
+        <br><a class="next-btn" onclick="switchTab('see')">Next: See what it does →</a>
       </div>
 
-      <div class="step"><input type="checkbox">
-        <div class="step-title">Set safety boundaries</div>
-        <p>Open <code>SOUL.md</code> in the workspace and add: <em>"Never send emails, make purchases, or post publicly without asking me first. Use trash instead of delete."</em></p>
-      </div>
-
-      <div class="done-banner">Step 2 complete. You have a working AI assistant.</div>
-
-      <div class="note"><strong>Your bot can finish the rest.</strong> Send it: <em>"Read botsetupguide.com and set up file syncing for me."</em></div>
+      <div class="note"><strong>Want to skip ahead?</strong> Just tell your bot: <em>"Read botsetupguide.com and do Step 3 for me."</em> It can set up the rest itself.</div>
     </div>
 
-    <!-- 3. SYNC -->
-    <div class="panel" id="sync">
+    <!-- 3. SEE WHAT IT DOES -->
+    <div class="panel" id="see">
       <div class="phase-label">Step 3</div>
-      <div class="phase-title">Sync Your Files</div>
+      <div class="phase-title">See what it does</div>
+      <div class="phase-desc">Your bot writes notes, reads files, and keeps a memory. Right now that all happens invisibly. Let's fix that — you'll be able to watch it work and chat with it in a sidebar, on any device.</div>
 
-      <div class="note"><strong>Which sync method?</strong> Already use Obsidian Sync? Keep it (Path A). Starting fresh or on a VPS? Use Syncthing (Path B, recommended). VPS users must use Path B.</div>
-
-      <div class="branch">
-        <div class="branch-tag">Path A — Obsidian Sync</div>
-        <div class="branch-title">If you already have Obsidian Sync</div>
-        <div class="branch-desc">Keep using it. Skip Path B.</div>
+      <div class="step"><input type="checkbox">
+        <div class="step-title">Install Obsidian</div>
+        <p><a href="https://obsidian.md">Obsidian</a> is a free note-taking app. Your bot's workspace is just a folder of files — Obsidian makes them beautiful and searchable.</p>
+        <p>Install it on <strong>every device</strong> you want to use: laptop, phone, tablet.</p>
       </div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">A: Install Obsidian on the AI's Mac</div>
+        <div class="step-title">Install Obsidian on the bot's machine too</div>
         <div class="cmd"><span class="cmd-copy">copy</span>brew install --cask obsidian</div>
-        <p>Open Obsidian → "Open folder as vault" → Command+Shift+G → <code>~/.openclaw/workspace</code></p>
+        <p>Open Obsidian → "Open folder as vault" → press <strong>Command+Shift+G</strong> and type:</p>
+        <div class="cmd"><span class="cmd-copy">copy</span>~/.openclaw/workspace</div>
+        <p>Now Obsidian is looking at the same files your bot works with.</p>
       </div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">A: Enable Sync</div>
-        <p>Settings → Core plugins → Sync → log in → Create new remote vault. Exclude <code>Code</code> folder. Leave "Sync all file types" off.</p>
+        <div class="step-title">Turn on Obsidian Sync</div>
+        <p>Obsidian Sync ($4/mo) keeps everything in sync across all your devices, encrypted end-to-end.</p>
+        <p>On the bot's machine: Settings → Core plugins → Sync → sign in → create a remote vault.</p>
+        <p>On your other devices: open Obsidian → Sync → same account → select the vault.</p>
+        <div class="note"><strong>Free alternative:</strong> Use <a href="https://syncthing.net">Syncthing</a> (free, peer-to-peer). More setup, but no subscription.</div>
       </div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">A: Keep Obsidian running</div>
+        <div class="step-title">Keep Obsidian running on the bot's machine</div>
+        <p>So Sync keeps working even when you're not looking at it:</p>
         <div class="cmd"><span class="cmd-copy">copy</span>cat > ~/Library/LaunchAgents/md.obsidian.keepalive.plist << 'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -394,105 +397,39 @@ launchctl load ~/Library/LaunchAgents/md.obsidian.keepalive.plist</div>
       </div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">A: Connect your devices</div>
-        <p>Install Obsidian on phone and laptop. New vault → Sync → same account → select remote vault.</p>
-      </div>
-
-      <div class="branch">
-        <div class="branch-tag">Path B — Recommended</div>
-        <div class="branch-title">Syncthing over Tailscale (free)</div>
-        <div class="branch-desc">Peer-to-peer. No server, no subscription, no one sees your data.</div>
-      </div>
-
-      <div class="step"><input type="checkbox">
-        <div class="step-title">B: Install Syncthing on the AI's machine</div>
-        <p><strong>Mac:</strong></p>
-        <div class="cmd"><span class="cmd-copy">copy</span>brew install syncthing
-brew services start syncthing</div>
-        <p><strong>VPS:</strong></p>
-        <div class="cmd"><span class="cmd-copy">copy</span>apt install -y syncthing
-cat > /etc/systemd/system/syncthing.service << 'EOF'
-[Unit]
-Description=Syncthing
-After=network.target
-[Service]
-ExecStart=/usr/bin/syncthing serve --no-browser --no-restart
-Restart=on-failure
-User=root
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl enable syncthing && systemctl start syncthing</div>
-        <p>Web UI at <code>http://[Tailscale IP]:8384</code>. VPS: set a password in Settings → GUI first.</p>
-      </div>
-
-      <div class="step"><input type="checkbox">
-        <div class="step-title">B: Install Syncthing on your devices</div>
-        <p><strong>Mac/PC:</strong> <code>brew install syncthing</code> or <a href="https://syncthing.net/downloads/">syncthing.net</a><br>
-        <strong>iPhone:</strong> <a href="https://apps.apple.com/app/m%C3%B6bius-sync/id1539203216">Mobius Sync</a> ($6)<br>
-        <strong>Android:</strong> <a href="https://play.google.com/store/apps/details?id=com.nutomic.syncthingandroid">Syncthing</a> (free)</p>
-      </div>
-
-      <div class="step"><input type="checkbox">
-        <div class="step-title">B: Pair and share</div>
-        <p>On the AI's Syncthing: Actions → Show ID. On your device: Add Remote Device → paste ID. Accept on both sides.</p>
-        <p>Add Folder → <code>~/.openclaw/workspace</code> → share with your device. Add ignore patterns: <code>Code</code>, <code>.obsidian</code>, <code>node_modules</code>.</p>
-      </div>
-
-      <div class="step"><input type="checkbox">
-        <div class="step-title">B: Open in Obsidian</div>
-        <p>Install <a href="https://obsidian.md">Obsidian</a> (free). Open the synced folder as a vault.</p>
-      </div>
-
-      <div class="branch">
-        <div class="branch-tag">Both paths</div>
-        <div class="branch-title">Chat plugin + search</div>
-      </div>
-
-      <div class="step"><input type="checkbox">
-        <div class="step-title">Install the OpenClaw plugin (via BRAT)</div>
-        <p>The plugin is pending community approval. Install via BRAT on <strong>every device</strong> (desktop + mobile):</p>
-        <p>1. Obsidian → Settings → Community Plugins → Browse → search "<strong>BRAT</strong>" → Install → Enable</p>
-        <p>2. BRAT Settings → <strong>Add Beta Plugin</strong> → enter: <code>oscarhenrycollins/obsidianclaw</code></p>
-        <p>BRAT auto-updates when new releases are published. Works on desktop and mobile.</p>
+        <div class="step-title">Install the ObsidianClaw plugin</div>
+        <p>This puts a <strong>chat sidebar</strong> inside Obsidian — talk to your bot, see it think, watch it read and write files in real time.</p>
+        <p>On <strong>every device</strong> with Obsidian:</p>
+        <p>1. Settings → Community Plugins → Browse → search <strong>"BRAT"</strong> → Install → Enable</p>
+        <p>2. Settings → BRAT → Add Beta Plugin → enter: <code>oscarhenrycollins/obsidianclaw</code></p>
+        <div class="note"><strong>What's BRAT?</strong> It's a trusted plugin that installs beta plugins from GitHub. ObsidianClaw is pending approval in the official plugin store — BRAT gets you early access. When it's approved, you won't need BRAT anymore.</div>
       </div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Connect the plugin</div>
-        <p>The setup wizard opens automatically. Enter your Tailscale gateway URL and auth token:</p>
-        <p>Gateway URL: <code>ws://[Tailscale IP]:18789</code> — get your IP with <code>tailscale ip -4</code></p>
-        <p>Auth Token: from <code>~/.openclaw/openclaw.json</code> → <code>gateway.auth.token</code></p>
+        <p>The setup wizard opens automatically:</p>
+        <p><strong>Gateway URL:</strong> <code>ws://[your Tailscale IP]:18789</code></p>
+        <p><strong>Auth Token:</strong> found in <code>~/.openclaw/openclaw.json</code> → <code>gateway.auth.token</code></p>
+        <p>Click Test → it connects. Then approve the device from your dashboard or tell your bot via Telegram: <em>"Approve my new device."</em></p>
       </div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">Approve device pairing</div>
-        <p>Each new device generates a unique keypair and requests pairing. Approve from the OpenClaw dashboard (<code>http://[Tailscale IP]:18789/</code>) or via CLI:</p>
-        <div class="cmd"><span class="cmd-copy">copy</span>openclaw devices list
-openclaw devices approve &lt;requestId&gt;</div>
-        <p>Pair once per device — the keypair syncs across reinstalls via Obsidian Sync.</p>
+        <div class="step-title">Start chatting from Obsidian</div>
+        <p>Click the 💬 icon in the sidebar. You can now:</p>
+        <p>• Chat with your bot while looking at its files</p>
+        <p>• Watch tool calls appear in real time (files read, web searches, commands)</p>
+        <p>• Send any note as context: <strong>Command+P → "Ask about this note"</strong></p>
+        <p>• Use it on your phone, tablet, and laptop — all synced</p>
       </div>
 
-      <div class="step"><input type="checkbox">
-        <div class="step-title">Enable semantic search</div>
-        <div class="cmd"><span class="cmd-copy">copy</span>openclaw config set agents.defaults.memorySearch.provider local
-openclaw config set agents.defaults.memorySearch.fallback none</div>
-        <p>Add folders in <code>~/.openclaw/openclaw.json</code>:</p>
-        <div class="config">"extraPaths": ["Contacts", "Lists", "Memos", "Tasks"]</div>
-        <div class="cmd"><span class="cmd-copy">copy</span>openclaw gateway restart</div>
+      <div class="done-banner">
+        🎉 You're done. Personal AI, running 24/7, synced everywhere, visible in real time.
       </div>
-
-      <div class="step"><input type="checkbox">
-        <div class="step-title">Keep it updated</div>
-        <div class="cmd"><span class="cmd-copy">copy</span>openclaw update</div>
-        <p>Run weekly, or tell the AI to do it.</p>
-      </div>
-
-      <div class="done-banner">All done. Personal AI, running 24/7, synced everywhere.</div>
     </div>
 
     </div>
     <footer>
-      <a href="https://humanitylabs.org">Humanity Labs</a> · Creators of <a href="https://vajra.to">Vajra</a>
+      <a href="https://humanitylabs.org">Humanity Labs</a> · <a href="https://obsidianclaw.ai">ObsidianClaw</a> · <a href="https://openclaw.ai">OpenClaw</a> · <a href="https://vajra.to">Vajra</a>
     </footer>
   </div>
 </div>
@@ -500,22 +437,18 @@ openclaw config set agents.defaults.memorySearch.fallback none</div>
 <script>
 const panels=document.querySelectorAll('.panel');
 function switchTab(t){
-  // Update sidebar
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.tab===t));
-  // Update mobile pills
   document.querySelectorAll('.pill').forEach(n=>n.classList.toggle('active',n.dataset.tab===t));
-  // Show panel
   panels.forEach(p=>p.classList.toggle('active',p.id===t));
   window.scrollTo(0,0);
 }
 
-// All clickable nav elements
 document.querySelectorAll('.nav-item,.pill,.overview-card,.sidebar-title,.mobile-brand').forEach(el=>{
   if(el.dataset.tab) el.addEventListener('click',()=>switchTab(el.dataset.tab));
 });
 
 // Checkbox persistence
-const K='bot-setup-v15';
+const K='bot-setup-v16';
 const allChecks=[...document.querySelectorAll('.step input[type="checkbox"]')];
 const allSteps=[...document.querySelectorAll('.step')];
 try{const s=JSON.parse(localStorage.getItem(K)||'[]');s.forEach(i=>{if(allChecks[i]){allChecks[i].checked=true;allSteps[i].classList.add('done')}})}catch(e){}
