@@ -353,33 +353,50 @@ openclaw gateway restart</div>
     <div class="panel" id="see">
       <div class="phase-label">Step 3</div>
       <div class="phase-title">See what it does</div>
-      <div class="phase-desc">Your bot writes notes, reads files, and keeps a memory. Right now that all happens invisibly. Let's fix that — you'll be able to watch it work and chat with it in a sidebar, on any device.</div>
+      <div class="phase-desc">Your bot writes notes, reads files, and keeps a memory. Right now that all happens invisibly. Let's fix that — you'll watch it work and chat with it in a sidebar, on any device.</div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">Install Obsidian</div>
+        <div class="step-title">Install Obsidian on your devices</div>
         <p><a href="https://obsidian.md">Obsidian</a> is a free note-taking app. Your bot's workspace is just a folder of files — Obsidian makes them beautiful and searchable.</p>
         <p>Install it on <strong>every device</strong> you want to use: laptop, phone, tablet.</p>
       </div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">Install Obsidian on the bot's machine too</div>
+        <div class="step-title">Install Obsidian on the bot's machine</div>
+        <p><strong>Mac / desktop:</strong></p>
         <div class="cmd"><span class="cmd-copy">copy</span>brew install --cask obsidian</div>
-        <p>Open Obsidian → "Open folder as vault" → press <strong>Command+Shift+G</strong> and type:</p>
-        <div class="cmd"><span class="cmd-copy">copy</span>~/.openclaw/workspace</div>
-        <p>Now Obsidian is looking at the same files your bot works with.</p>
+        <p>Open Obsidian → "Open folder as vault" → press <strong>Cmd+Shift+G</strong> and type <code>~/.openclaw/workspace</code></p>
+        <p><strong>Cloud server (headless):</strong></p>
+        <div class="cmd"><span class="cmd-copy">copy</span># Install Obsidian AppImage
+wget https://github.com/obsidianmd/obsidian-releases/releases/latest/download/Obsidian-1.8.9.AppImage
+chmod +x Obsidian-*.AppImage
+
+# Install virtual display + VNC for one-time setup
+sudo apt install -y xvfb x11vnc
+
+# Start Obsidian headlessly
+export DISPLAY=:99
+Xvfb :99 -screen 0 1280x720x24 &
+./Obsidian-*.AppImage --no-sandbox &
+
+# Start VNC so you can log in once
+x11vnc -display :99 -forever -nopw &</div>
+        <p>Connect to the VNC (<code>your-server-ip:5900</code>) using any VNC viewer. Log into Obsidian, open <code>~/.openclaw/workspace</code> as vault, then disconnect. You won't need VNC again.</p>
       </div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Turn on Obsidian Sync</div>
-        <p>Obsidian Sync ($4/mo) keeps everything in sync across all your devices, encrypted end-to-end.</p>
-        <p>On the bot's machine: Settings → Core plugins → Sync → sign in → create a remote vault.</p>
-        <p>On your other devices: open Obsidian → Sync → same account → select the vault.</p>
-        <div class="note"><strong>Free alternative:</strong> Use <a href="https://syncthing.net">Syncthing</a> (free, peer-to-peer). More setup, but no subscription.</div>
+        <p><a href="https://obsidian.md/sync">Obsidian Sync</a> ($4/mo) keeps everything in sync across all your devices, encrypted end-to-end. It's the simplest option and works natively on every platform including phones.</p>
+        <p><strong>On the bot's machine:</strong> Settings → Core plugins → Sync → sign in → create a remote vault.</p>
+        <p><strong>On your other devices:</strong> Open Obsidian → Sync → same account → select the vault.</p>
+        <p>Now when your bot writes a note, it appears on your phone seconds later. When you edit a file on your laptop, the bot sees it immediately.</p>
+        <div class="note"><strong>Power users:</strong> <a href="https://syncthing.net">Syncthing</a> (free, open-source, peer-to-peer) also works great. More setup, but no subscription. Note: Syncthing has no native iOS client — <a href="https://www.mobiussync.com">Mobius Sync</a> ($5) is the only option on iPhone.</div>
       </div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Keep Obsidian running on the bot's machine</div>
-        <p>So Sync keeps working even when you're not looking at it:</p>
+        <p>Obsidian needs to stay open so Sync keeps working.</p>
+        <p><strong>Mac:</strong></p>
         <div class="cmd"><span class="cmd-copy">copy</span>cat > ~/Library/LaunchAgents/md.obsidian.keepalive.plist << 'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -394,6 +411,26 @@ openclaw gateway restart</div>
 </plist>
 PLIST
 launchctl load ~/Library/LaunchAgents/md.obsidian.keepalive.plist</div>
+        <p><strong>Cloud server:</strong></p>
+        <div class="cmd"><span class="cmd-copy">copy</span># Create a systemd service to keep Obsidian running
+sudo tee /etc/systemd/system/obsidian.service << 'EOF'
+[Unit]
+Description=Obsidian (headless)
+After=network.target
+
+[Service]
+Type=simple
+User=YOUR_USERNAME
+Environment=DISPLAY=:99
+ExecStartPre=/usr/bin/Xvfb :99 -screen 0 1280x720x24
+ExecStart=/path/to/Obsidian.AppImage --no-sandbox
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl enable --now obsidian</div>
       </div>
 
       <div class="step"><input type="checkbox">
@@ -401,25 +438,29 @@ launchctl load ~/Library/LaunchAgents/md.obsidian.keepalive.plist</div>
         <p>This puts a <strong>chat sidebar</strong> inside Obsidian — talk to your bot, see it think, watch it read and write files in real time.</p>
         <p>On <strong>every device</strong> with Obsidian:</p>
         <p>1. Settings → Community Plugins → Browse → search <strong>"BRAT"</strong> → Install → Enable</p>
-        <p>2. Settings → BRAT → Add Beta Plugin → enter: <code>oscarhenrycollins/obsidianclaw</code></p>
-        <div class="note"><strong>What's BRAT?</strong> It's a trusted plugin that installs beta plugins from GitHub. ObsidianClaw is pending approval in the official plugin store — BRAT gets you early access. When it's approved, you won't need BRAT anymore.</div>
+        <p>2. Settings → BRAT → Add Beta Plugin → paste: <code>oscarhenrycollins/obsidianclaw</code></p>
+        <div class="note"><strong>What's BRAT?</strong> A trusted plugin that installs beta plugins from GitHub. ObsidianClaw is pending approval in the official store — BRAT gives you early access. Once approved, you can switch to the store version.</div>
       </div>
 
       <div class="step"><input type="checkbox">
         <div class="step-title">Connect the plugin</div>
-        <p>The setup wizard opens automatically:</p>
-        <p><strong>Gateway URL:</strong> <code>ws://[your Tailscale IP]:18789</code></p>
-        <p><strong>Auth Token:</strong> found in <code>~/.openclaw/openclaw.json</code> → <code>gateway.auth.token</code></p>
-        <p>Click Test → it connects. Then approve the device from your dashboard or tell your bot via Telegram: <em>"Approve my new device."</em></p>
+        <p>A setup wizard opens automatically with 4 steps:</p>
+        <p><strong>1. Prerequisites</strong> — confirms you have OpenClaw + Tailscale ready</p>
+        <p><strong>2. Connect</strong> — enter your gateway URL (<code>ws://[Tailscale IP]:18789</code>) and auth token. The wizard tests the connection before continuing.</p>
+        <p><strong>3. Pair device</strong> — generates a unique security keypair for this device. You'll need to approve it from your dashboard or tell your bot: <em>"Approve my new device."</em></p>
+        <p><strong>4. Done</strong> — you're connected!</p>
+        <div class="note"><strong>Where's the auth token?</strong> On your bot's machine: <code>cat ~/.openclaw/openclaw.json | grep token</code></div>
       </div>
 
       <div class="step"><input type="checkbox">
-        <div class="step-title">Start chatting from Obsidian</div>
+        <div class="step-title">Start chatting</div>
         <p>Click the 💬 icon in the sidebar. You can now:</p>
         <p>• Chat with your bot while looking at its files</p>
         <p>• Watch tool calls appear in real time (files read, web searches, commands)</p>
-        <p>• Send any note as context: <strong>Command+P → "Ask about this note"</strong></p>
-        <p>• Use it on your phone, tablet, and laptop — all synced</p>
+        <p>• Send any note as context: <strong>Cmd/Ctrl+P → "Ask about this note"</strong></p>
+        <p>• Send images by pasting or using the 📎 button</p>
+        <p>• See context usage and switch models from the top bar</p>
+        <p>• Use it on your phone, tablet, and laptop — all synced via Obsidian Sync</p>
       </div>
 
       <div class="done-banner">
