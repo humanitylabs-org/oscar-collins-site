@@ -14,7 +14,7 @@
       --text: #1a1a1a; --body: #444; --dim: #888;
       --accent: #b8922a; --accent-bg: rgba(184,146,42,.08); --accent-border: rgba(184,146,42,.3);
       --green: #16a34a; --green-bg: rgba(22,163,74,.07);
-      --blue: #2563eb;
+      --blue: #2563eb; --red: #dc2626;
       --radius: 12px;
       --sans: 'Inter', -apple-system, sans-serif;
     }
@@ -24,41 +24,18 @@
     strong { color: var(--text) }
     code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-size: .85em; font-family: 'SF Mono', Consolas, monospace }
 
-    /* Header */
     header { padding: 18px 24px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center }
     .logo { font-size: 13px; font-weight: 700; color: var(--text) }
     .logo span { color: var(--dim); font-weight: 400 }
     header nav a { font-size: 13px; color: var(--dim); margin-left: 20px } header nav a:hover { color: var(--text) }
 
-    /* Wizard shell */
-    .wizard {
-      min-height: calc(100vh - 57px);
-      display: flex; flex-direction: column; align-items: center;
-      padding: 40px 24px 80px;
-    }
+    .wizard { min-height: calc(100vh - 57px); display: flex; flex-direction: column; align-items: center; padding: 40px 24px 80px }
+    .progress { width: 100%; max-width: 580px; margin-bottom: 40px }
+    .progress-track { height: 3px; background: var(--border-light); border-radius: 2px; overflow: hidden }
+    .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .4s ease }
+    .progress-label { font-size: 12px; color: var(--dim); margin-top: 8px; text-align: right }
 
-    /* Progress bar */
-    .progress {
-      width: 100%; max-width: 580px; margin-bottom: 40px;
-    }
-    .progress-track {
-      height: 3px; background: var(--border-light); border-radius: 2px; overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%; background: var(--accent); border-radius: 2px;
-      transition: width .4s ease;
-    }
-    .progress-label {
-      font-size: 12px; color: var(--dim); margin-top: 8px; text-align: right;
-    }
-
-    /* Step card */
-    .step-card {
-      width: 100%; max-width: 580px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 36px 40px;
-      animation: slide-in .25s ease;
-    }
+    .step-card { width: 100%; max-width: 580px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 36px 40px; animation: slide-in .25s ease }
     @keyframes slide-in { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: translateY(0) } }
     @media (max-width: 640px) { .step-card { padding: 24px 20px } }
 
@@ -68,60 +45,26 @@
     .step-body p { margin-bottom: 12px } .step-body p:last-child { margin-bottom: 0 }
     .step-body ul { padding-left: 20px; margin-bottom: 12px }
     .step-body li { margin-bottom: 6px }
-    .step-body strong { color: var(--text) }
 
-    /* Bot message (copy-paste for Telegram) */
-    .bot-msg {
-      margin: 16px 0;
-      background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: 10px;
-      padding: 14px 16px; cursor: pointer; position: relative;
-      transition: border-color .15s;
-    }
-    .bot-msg:hover { border-color: var(--accent) }
-    .bot-msg p { font-size: 14px; color: #78350f; font-style: italic; margin: 0; padding-right: 60px; line-height: 1.6 }
-    .bot-msg-badge {
-      position: absolute; right: 12px; top: 12px;
-      font-size: 10px; font-weight: 700; color: #92400e;
-      background: #fde68a; padding: 3px 8px; border-radius: 4px;
-    }
-    .bot-msg.copied .bot-msg-badge { background: #bbf7d0; color: var(--green) }
-
-    /* Command box */
-    .cmd-box {
-      background: #1e1e2e; border-radius: 8px;
-      padding: 13px 14px; margin: 12px 0; cursor: pointer;
-      display: flex; align-items: center; gap: 10px;
-      transition: opacity .15s;
-    }
+    .cmd-box { background: #1e1e2e; border-radius: 8px; padding: 13px 14px; margin: 12px 0; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: opacity .15s }
     .cmd-box:hover { opacity: .9 }
     .cmd-box code { flex: 1; font-size: 13px; color: #a5b4fc; background: none; padding: 0; white-space: pre-wrap; word-break: break-all; line-height: 1.6 }
-    .cmd-box-copy { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.25); flex-shrink: 0; white-space: nowrap }
+    .cmd-box-copy { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.25); flex-shrink: 0 }
     .cmd-box.copied .cmd-box-copy { color: #6ee7b7 }
 
-    /* Confirm check */
-    .confirm-check {
-      margin: 20px 0 0;
-      padding: 16px; border: 1.5px solid var(--border);
-      border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px;
-      transition: border-color .15s, background .15s;
-    }
+    .confirm-check { margin: 20px 0 0; padding: 16px; border: 1.5px solid var(--border); border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: border-color .15s, background .15s }
     .confirm-check:hover { border-color: var(--accent); background: var(--accent-bg) }
     .confirm-check.checked { border-color: var(--green); background: var(--green-bg) }
-    .check-box {
-      width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--border);
-      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-      transition: all .15s;
-    }
+    .check-box { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s }
     .confirm-check.checked .check-box { border-color: var(--green); background: var(--green) }
     .check-mark { display: none; color: #fff; font-size: 12px; font-weight: 800 }
     .confirm-check.checked .check-mark { display: block }
     .check-label { font-size: 14px; color: var(--body) }
     .confirm-check.checked .check-label { color: var(--text) }
 
-    /* Note box */
     .note { padding: 12px 14px; border-radius: 8px; background: var(--border-light); font-size: 13px; color: var(--body); margin: 12px 0; line-height: 1.6 }
+    .note.gold { background: var(--accent-bg); border: 1px solid var(--accent-border) }
 
-    /* Nav buttons */
     .step-nav { display: flex; gap: 10px; margin-top: 28px; align-items: center }
     .btn { padding: 11px 24px; border-radius: 9px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all .15s; font-family: var(--sans); border: none }
     .btn-primary { background: var(--accent); color: #fff }
@@ -131,6 +74,29 @@
     .btn-secondary:hover { background: var(--border) }
     .btn-skip { background: none; color: var(--dim); font-size: 13px; padding: 11px 16px; margin-left: auto }
     .btn-skip:hover { color: var(--body) }
+
+    /* Form inputs */
+    .key-field { margin: 14px 0 }
+    .key-field label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px }
+    .key-field .key-sub { font-size: 12px; color: var(--dim); font-weight: 400; margin-left: 4px }
+    .key-field input { width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'SF Mono', Consolas, monospace; background: var(--card); color: var(--text); transition: border-color .15s }
+    .key-field input:focus { outline: none; border-color: var(--accent) }
+    .key-field input::placeholder { color: var(--dim) }
+    .key-field .key-help { font-size: 12px; color: var(--dim); margin-top: 4px }
+    .key-field .key-help a { color: var(--accent) }
+
+    /* Bot config */
+    .bot-card { border: 1.5px solid var(--border); border-radius: 10px; padding: 16px; margin: 12px 0 }
+    .bot-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px }
+    .bot-card-header input { flex: 1; padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 14px; font-family: var(--sans) }
+    .bot-card-header select { padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; font-family: var(--sans); background: var(--card) }
+    .bot-remove { font-size: 18px; color: var(--dim); cursor: pointer; padding: 4px 8px; border-radius: 4px } .bot-remove:hover { color: var(--red); background: rgba(220,38,38,.08) }
+    .add-bot-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1.5px dashed var(--border); border-radius: 8px; font-size: 13px; color: var(--dim); cursor: pointer; background: none; font-family: var(--sans); transition: all .15s }
+    .add-bot-btn:hover { border-color: var(--accent); color: var(--accent) }
+
+    /* Generated config */
+    .config-box { background: #1e1e2e; border-radius: 10px; padding: 16px; margin: 16px 0; max-height: 300px; overflow: auto }
+    .config-box pre { font-size: 12px; color: #c4b5fd; line-height: 1.6; white-space: pre-wrap; word-break: break-all; font-family: 'SF Mono', Consolas, monospace }
 
     footer { text-align: center; padding: 20px; font-size: 12px; color: var(--dim) }
     footer a { color: var(--dim) } footer a:hover { color: var(--accent) }
@@ -159,268 +125,170 @@
 </footer>
 
 <script>
-// ─── Steps definition ────────────────────────────────────────────────────────
+// ─── State ───────────────────────────────────────────────────────────────────
+
+const state = {
+  hasOpenclaw: null,
+  keys: { claude1: '', claude2: '', googleai: '', brave: '', elevenlabs: '' },
+  bots: [{ name: 'Assistant', model: 'anthropic/claude-sonnet-4-6' }],
+};
+
+const models = [
+  { id: 'anthropic/claude-opus-4-6', label: 'Claude Opus 4' },
+  { id: 'anthropic/claude-sonnet-4-6', label: 'Claude Sonnet 4' },
+  { id: 'anthropic/claude-sonnet-4-5', label: 'Claude Sonnet 4.5' },
+  { id: 'google/gemini-2.5-pro', label: 'Gemini 2.5 Pro' },
+  { id: 'google/gemini-2.5-flash', label: 'Gemini 2.5 Flash' },
+];
+
+// ─── Steps ───────────────────────────────────────────────────────────────────
 
 const steps = [
 
   // 0: Welcome
   {
     phase: '', title: 'Build your own AI assistant',
-    body: `
-      <p>This guide takes you from zero to a personal AI that runs 24/7 on your own machine — reads your files, searches the web, and chats with you from any device.</p>
-      <p><strong>Before we start:</strong> where are you right now?</p>
-    `,
+    body: `<p>This guide helps you set up a personal AI that runs 24/7, reads your files, searches the web, and chats from any device.</p>`,
     choices: [
-      { label: "I'm starting from scratch", goto: 1 },
-      { label: "OpenClaw is running, but I can't chat yet", goto: 8 },
-      { label: "I can chat, I want the Obsidian sidebar", goto: 11 },
+      { label: "I need to install OpenClaw", goto: 1 },
+      { label: "OpenClaw is already running", goto: 5 },
     ]
   },
 
-  // 1: Pick a machine
+  // 1: API Keys
   {
-    phase: 'Phase 1 · Bring it to life',
-    title: 'Pick a machine for your bot',
-    body: `
-      <p>Your bot needs a computer that stays on 24/7. Good options:</p>
-      <ul>
-        <li><strong>Mac mini or spare laptop</strong> — plug it in, close the lid, forget about it</li>
-        <li><strong>Raspberry Pi</strong> — tiny, silent, $35</li>
-        <li><strong>Cloud server</strong> — Hetzner or DigitalOcean start at $5/month, no hardware needed</li>
-      </ul>
-      <p>Don't use your daily laptop — you need something that runs while you're out.</p>
-    `,
-    confirm: 'I have a machine ready',
+    phase: 'Setup',
+    title: 'Your API keys',
+    body: `<p>Your bot needs access to AI models and tools. Paste your keys below — they'll be baked into the install command. Nothing leaves your browser.</p>`,
+    custom: 'keys',
     next: 2
   },
 
-  // 2: Open terminal
+  // 2: Configure bots
   {
-    phase: 'Phase 1 · Bring it to life',
-    title: 'Open a terminal on that machine',
-    body: `
-      <p>A terminal is how you type commands to the machine directly. Everything from here runs inside it.</p>
-      <p><strong>Mac:</strong> Press <strong>Cmd + Space</strong>, type <strong>Terminal</strong>, press Enter.</p>
-      <p><strong>Cloud server:</strong></p>
-    `,
-    cmd: 'ssh root@your-server-ip',
-    confirm: 'Terminal is open',
+    phase: 'Setup',
+    title: 'Configure your bots',
+    body: `<p>How many AI assistants do you want? Each gets its own personality, memory, and workspace folder.</p>`,
+    custom: 'bots',
     next: 3
   },
 
-  // 3: Homebrew (Mac only step — skippable for servers)
+  // 3: Pick a machine
   {
-    phase: 'Phase 1 · Bring it to life',
-    title: 'Install Homebrew (Mac only)',
+    phase: 'Setup',
+    title: 'Pick a machine',
     body: `
-      <p>Homebrew installs other software for you. Paste this in the terminal and press Enter:</p>
+      <p>Your bot needs a computer that stays on 24/7:</p>
+      <ul>
+        <li><strong>Mac mini or spare laptop</strong> — plug it in, close the lid</li>
+        <li><strong>Cloud server</strong> — Hetzner or DigitalOcean, $5/month</li>
+        <li><strong>Raspberry Pi</strong> — tiny, silent, $35</li>
+      </ul>
+      <p>Open a <strong>terminal</strong> on that machine. Mac: press <strong>Cmd+Space</strong>, type <strong>Terminal</strong>, Enter. Cloud: <code>ssh root@your-server-ip</code>.</p>
     `,
-    cmd: '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
-    body2: `<p>Takes 2–5 minutes. When it asks for your password, type it — nothing will appear, that's normal.</p>
-      <p><em>Running a cloud server, not a Mac?</em> Skip this step.</p>`,
-    confirm: 'Homebrew installed (or I\'m on a server)',
+    confirm: 'Terminal is open on my machine',
     next: 4
   },
 
-  // 4: Install OpenClaw
+  // 4: Install command
   {
-    phase: 'Phase 1 · Bring it to life',
+    phase: 'Setup',
     title: 'Install OpenClaw',
-    body: `
-      <p>OpenClaw is the AI brain. One command installs it and sets it to start automatically:</p>
-    `,
-    cmd: 'curl -fsSL https://openclaw.ai/install.sh | bash',
-    body2: `<p>When it finishes, OpenClaw is running. It'll start automatically every time the machine turns on.</p>`,
-    confirm: 'OpenClaw installed',
-    next: 5
-  },
-
-  // 5: Install Tailscale
-  {
-    phase: 'Phase 1 · Bring it to life',
-    title: 'Install Tailscale',
-    body: `
-      <p>Tailscale creates a private encrypted network between all your devices. Free for personal use.</p>
-      <p><strong>On the bot's machine:</strong></p>
-    `,
-    cmd: '# Mac:\nbrew install --cask tailscale\n\n# Linux / cloud server:\ncurl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up',
-    body2: `
-      <p>Sign in to Tailscale and note the IP it shows — it starts with <code>100.x.x.x</code>. You'll need it soon.</p>
-      <p><strong>Also install Tailscale on your phone and laptop</strong> using the same account: <a href="https://tailscale.com/download" target="_blank">tailscale.com/download</a></p>`,
-    confirm: 'Tailscale running, I have the IP',
+    body: `<p>Run this command. It installs OpenClaw, Tailscale Serve, and your configuration in one shot:</p>`,
+    custom: 'install',
+    confirm: 'OpenClaw is installed and running',
     next: 6
   },
 
-  // 6: Bind to Tailscale
+  // 5: Already have OpenClaw — Tailscale Serve
   {
-    phase: 'Phase 1 · Bring it to life',
-    title: 'Connect OpenClaw to Tailscale',
-    body: `<p>Tell OpenClaw to listen on your Tailscale network:</p>`,
-    cmd: 'openclaw config set gateway.bind tailnet\nopenclaw gateway restart',
-    body2: `<p>Now open a browser on any device connected to Tailscale and go to:</p><p><code>http://[your Tailscale IP]:18789</code></p><p>You should see the OpenClaw dashboard.</p>`,
-    confirm: 'Dashboard is open',
+    phase: 'Configure',
+    title: 'Set up Tailscale Serve',
+    body: `
+      <p>Tailscale Serve gives your bot a private HTTPS address — no ports to open, no VPN to configure.</p>
+      <p><strong>1. Install Tailscale</strong> (if you haven't):</p>
+    `,
+    cmd: '# Mac:\nbrew install --cask tailscale\n\n# Linux:\ncurl -fsSL https://tailscale.com/install.sh | sh && sudo tailscale up',
+    body2: `<p><strong>2. Configure OpenClaw to use Tailscale Serve:</strong></p>`,
+    cmd2: 'openclaw config set gateway.bind loopback\nopenclaw config set gateway.tailscale.mode serve\nopenclaw gateway restart',
+    body3: `<p>Your bot is now reachable at <code>https://your-machine.tailXXXX.ts.net</code> from any device on your Tailscale network.</p>`,
+    confirm: 'Tailscale Serve is working',
+    next: 6
+  },
+
+  // 6: Configure bots (for existing users too)
+  {
+    phase: 'Configure',
+    title: 'Configure your bots',
+    body: `<p>Set up your AI assistants. Each gets its own workspace folder (like <code>AGENT-OSCAR</code>), personality, and memory.</p>`,
+    custom: 'bots',
     next: 7
   },
 
-  // 7: Phase 1 done
+  // 7: Obsidian on server
   {
-    phase: 'Phase 1 complete ✅',
-    title: 'Your bot is alive',
+    phase: 'Sync',
+    title: 'Install Obsidian on the server',
     body: `
-      <p>OpenClaw is running 24/7 on your machine and reachable over Tailscale.</p>
-      <p>Next up: give it a way to hear you. We'll set up Telegram — it works on every device and takes 10 minutes.</p>
+      <p>Obsidian is where your bot's files live. Install it on the bot's machine:</p>
     `,
-    next: 8, nextLabel: 'Set up Telegram →'
+    cmd: '# Mac:\nbrew install --cask obsidian\n\n# Linux: download from obsidian.md/download',
+    body2: `
+      <p>Open Obsidian → <strong>"Open folder as vault"</strong> → select <code>~/.openclaw/workspace</code></p>
+      <p>Your vault will look like this:</p>
+      <div class="config-box"><pre>~/.openclaw/workspace/
+├── AGENT-YOURBOT/     ← bot workspace (one per bot)
+│   ├── SOUL.md
+│   ├── MEMORY.md
+│   └── memory/
+├── Your folders/      ← your personal notes
+└── ...</pre></div>
+    `,
+    confirm: 'Obsidian is open with the vault',
+    next: 8
   },
 
-  // 8: Install Telegram
+  // 8: Obsidian Sync
   {
-    phase: 'Phase 2 · Talk to it',
-    title: 'Install Telegram',
+    phase: 'Sync',
+    title: 'Sync to your devices',
     body: `
-      <p>Telegram is how you'll talk to your bot. <a href="https://telegram.org/dl" target="_blank">Download it on your phone</a> if you haven't already.</p>
-      <p>Already have Telegram? Skip ahead.</p>
+      <p><a href="https://obsidian.md/sync" target="_blank">Obsidian Sync</a> ($4/month) keeps your bot's notes on all your devices in real time.</p>
+      <p><strong>On the server:</strong> Obsidian → Settings → Sync → Enable → Sign in → "Create new remote vault"</p>
+      <p><strong>On your phone + laptop:</strong> Install <a href="https://obsidian.md/download" target="_blank">Obsidian</a> + <a href="https://tailscale.com/download" target="_blank">Tailscale</a>, then: Settings → Sync → Sign in → Connect to your vault</p>
     `,
-    confirm: 'Telegram is on my phone',
+    confirm: 'Notes sync across my devices',
     next: 9
   },
 
-  // 9: Create Telegram bot
+  // 9: Install plugin
   {
-    phase: 'Phase 2 · Talk to it',
-    title: 'Create your bot',
+    phase: 'Connect',
+    title: 'Install the chat plugin',
     body: `
-      <p>1. Open Telegram → search for <strong>@BotFather</strong> → tap it → tap Start</p>
-      <p>2. Send <code>/newbot</code> → pick a name → BotFather gives you a token</p>
-      <p>3. Follow the <a href="https://docs.openclaw.ai/guides/telegram" target="_blank">OpenClaw Telegram guide</a> to paste the token into your config</p>
+      <p>On <strong>each device</strong> (phone, laptop, server):</p>
+      <p><strong>1.</strong> Obsidian → Settings → Community Plugins → turn off Safe Mode → Browse → search <strong>BRAT</strong> → Install → Enable</p>
+      <p><strong>2.</strong> Settings → BRAT → "Add Beta Plugin" → paste:</p>
     `,
-    confirm: 'Bot is created and token is saved',
+    cmd: 'oscarhenrycollins/obsidianclaw',
+    body2: `<p>→ click "Add Plugin". The setup wizard opens automatically and walks you through connecting to your bot.</p>
+      <p>It needs your <strong>Gateway URL</strong> (shown after Tailscale Serve setup, like <code>https://your-machine.tailXXXX.ts.net</code>) and <strong>auth token</strong>:</p>`,
+    cmd2: 'cat ~/.openclaw/openclaw.json | grep token',
+    confirm: 'Plugin connected — I can see the chat sidebar',
     next: 10
   },
 
-  // 10: Phase 2 done
-  {
-    phase: 'Phase 2 complete ✅',
-    title: 'Say hello',
-    body: `
-      <p>Open your bot in Telegram and send: <em>"Hey, are you there?"</em></p>
-      <p>It should reply within a few seconds.</p>
-      <p>You now have an AI assistant in your pocket that you can talk to from anywhere.</p>
-    `,
-    confirm: 'Bot replied',
-    next: 11, nextLabel: 'Set up the sidebar →'
-  },
-
-  // 11: Phase 3 intro — let bot do it
-  {
-    phase: 'Phase 3 · See what it does',
-    title: 'Let your bot guide you',
-    body: `
-      <p>You can talk to your bot right now on Telegram. The easiest way to finish setup is to just ask it to walk you through Phase 3.</p>
-      <p>Copy this message and send it:</p>
-    `,
-    botMsg: `Help me set up Phase 3 from botsetupguide.com. I want to:
-1) Install Obsidian on all my devices (my phone, my laptop, and your machine)
-2) Set up Obsidian Sync so all devices stay in sync
-3) Install the ObsidianClaw plugin so I can chat with you in a sidebar
-
-Ask me what device I'm setting up first and walk me through it step by step.`,
-    body2: `<p>Your bot will read this page and guide you through everything. If you'd rather do it yourself, tap Next.</p>`,
-    next: 12, nextLabel: 'Do it myself →', skipLabel: 'My bot is helping me'
-  },
-
-  // 12: Install Obsidian everywhere
-  {
-    phase: 'Phase 3 · See what it does',
-    title: 'Install Obsidian on 3 places',
-    body: `
-      <p>Obsidian is a free note app. Your bot's files live in it. Install it on:</p>
-      <ul>
-        <li><strong>📱 Phone:</strong> <a href="https://apps.apple.com/app/obsidian-connected-notes/id1557175442" target="_blank">iPhone</a> or <a href="https://play.google.com/store/apps/details?id=md.obsidian" target="_blank">Android</a></li>
-        <li><strong>💻 Laptop:</strong> <a href="https://obsidian.md/download" target="_blank">obsidian.md/download</a></li>
-        <li><strong>🤖 Bot's machine (Mac):</strong></li>
-      </ul>
-    `,
-    cmd: 'brew install --cask obsidian',
-    body2: `<p>Then open Obsidian on the bot's machine → "Open folder as vault" → press <strong>Cmd+Shift+G</strong> → type <code>~/.openclaw/workspace</code> → Open.</p>
-    <div class="note">Cloud server with no screen? Tell your bot on Telegram: <em>"Install Obsidian on your machine and open ~/.openclaw/workspace as a vault."</em></div>`,
-    confirm: 'Obsidian installed on all devices',
-    next: 13
-  },
-
-  // 13: Tailscale on all devices
-  {
-    phase: 'Phase 3 · See what it does',
-    title: 'Tailscale on phone and laptop too',
-    body: `
-      <p>You already have Tailscale on the bot's machine. Now add it to your phone and laptop.</p>
-      <p><a href="https://tailscale.com/download" target="_blank">tailscale.com/download</a> → install → sign in with <strong>the same account</strong> as the bot's machine.</p>
-      <p>Once signed in, open the Tailscale app on your phone. You should see the bot's machine in the list with its <code>100.x.x.x</code> IP address.</p>
-    `,
-    confirm: 'All 3 devices are on Tailscale',
-    next: 14
-  },
-
-  // 14: Obsidian Sync
-  {
-    phase: 'Phase 3 · See what it does',
-    title: 'Sync files with Obsidian Sync',
-    body: `
-      <p><a href="https://obsidian.md/sync" target="_blank">Obsidian Sync</a> costs $4/month. It keeps all your notes — and your bot's notes — in sync across every device, encrypted.</p>
-      <p><strong>On the bot's machine:</strong> Obsidian → Settings → Core plugins → Sync → turn on → sign in → "Create new remote vault"</p>
-      <p><strong>On your phone and laptop:</strong> same thing — Settings → Sync → sign in with the same account → select the vault you just made.</p>
-      <p>When your bot writes a note, it appears on your phone in seconds. ✅</p>
-    `,
-    note: 'Free alternative: Syncthing (open-source, peer-to-peer) also works — but has no native iPhone app.',
-    confirm: 'Obsidian Sync is set up',
-    next: 15
-  },
-
-  // 15: Install BRAT + plugin
-  {
-    phase: 'Phase 3 · See what it does',
-    title: 'Install ObsidianClaw',
-    body: `
-      <p>Do this on your phone, laptop, and the bot's machine:</p>
-      <p><strong>Step 1:</strong> Obsidian → Settings → Community Plugins → turn off Safe Mode → Browse → search <strong>BRAT</strong> → Install → Enable</p>
-      <p><strong>Step 2:</strong> Settings → BRAT → "Add Beta Plugin" → paste this:</p>
-    `,
-    cmd: 'oscarhenrycollins/obsidianclaw',
-    body2: `<p>→ click "Add Plugin". It installs automatically.</p>
-    <div class="note">ObsidianClaw is pending in the official plugin store. BRAT installs it early. When we're approved, you won't need BRAT anymore.</div>`,
-    confirm: 'Plugin installed on all devices',
-    next: 16
-  },
-
-  // 16: Run setup wizard
-  {
-    phase: 'Phase 3 · See what it does',
-    title: 'Connect the plugin',
-    body: `
-      <p>A setup wizard opens automatically in Obsidian. It will ask for two things:</p>
-      <p><strong>Gateway URL:</strong> <code>ws://[bot's Tailscale IP]:18789</code><br>Find the IP in the Tailscale app.</p>
-      <p><strong>Auth token:</strong> run this on the bot's machine:</p>
-    `,
-    cmd: 'cat ~/.openclaw/openclaw.json | grep token',
-    body2: `<p>The wizard tests the connection and guides you through approving this device. If it fails, run this on the bot's machine:</p>`,
-    cmd2: 'openclaw doctor --fix && openclaw gateway restart',
-    body3: `<p>Or just tell your bot on Telegram: <em>"My ObsidianClaw plugin can't connect. Help me fix it."</em></p>`,
-    confirm: 'Wizard completed, I can see the chat sidebar',
-    next: 17
-  },
-
-  // 17: Done
+  // 10: Done
   {
     phase: '🎉 All done',
-    title: 'You\'re set up',
+    title: "You're set up",
     body: `
-      <p>Your personal AI is running 24/7, synced across all your devices, and visible right inside Obsidian.</p>
-      <p>You can now:</p>
+      <p>Your personal AI is running 24/7 and accessible from every device.</p>
       <ul>
-        <li>Chat with it in the Obsidian sidebar on your phone, laptop, and anywhere</li>
-        <li>Watch it read files, search the web, and run commands in real time</li>
-        <li>Send any note as context: <strong>Cmd+P → "Ask about this note"</strong></li>
-        <li>Talk to it on Telegram from anywhere, even when Obsidian isn't open</li>
+        <li>💬 Chat in the Obsidian sidebar on phone, laptop, anywhere</li>
+        <li>📁 Browse your bot's files, memory, and notes in the vault</li>
+        <li>🔀 Switch between bots with the agent switcher</li>
+        <li>🗣️ Send any note as context: <strong>Cmd+P → "Ask about this note"</strong></li>
       </ul>
     `,
     isDone: true
@@ -436,62 +304,44 @@ function render(index) {
   const step = steps[index];
   const total = steps.length - 1;
   const pct = Math.round((index / total) * 100);
-
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent =
-    step.isDone ? 'Complete!' : (step.phase || `Step ${index + 1} of ${total}`);
+  document.getElementById('progressLabel').textContent = step.isDone ? 'Complete!' : (step.phase || 'Getting started');
 
   const container = document.getElementById('stepContainer');
   container.innerHTML = '';
-
   const card = document.createElement('div');
   card.className = 'step-card';
 
   let html = '';
   if (step.phase) html += `<div class="step-phase">${step.phase}</div>`;
   html += `<div class="step-title">${step.title}</div>`;
-  html += `<div class="step-body">`;
-  if (step.body) html += step.body;
-  html += `</div>`;
+  html += `<div class="step-body">${step.body || ''}</div>`;
 
-  // Choices (quiz style)
+  // Choices
   if (step.choices) {
     html += `<div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">`;
     step.choices.forEach((c, i) => {
-      html += `<button class="confirm-check" id="choice${i}" onclick="goTo(${c.goto})" style="cursor:pointer;text-align:left">
-        <div class="check-box"><span class="check-mark">→</span></div>
+      html += `<button class="confirm-check" onclick="goTo(${c.goto})" style="cursor:pointer;text-align:left">
+        <div class="check-box"><span class="check-mark" style="display:block">→</span></div>
         <span class="check-label">${c.label}</span>
       </button>`;
     });
     html += `</div>`;
   }
 
-  // Command box(es)
-  if (step.cmd) {
-    html += `<div class="cmd-box" id="cmd1" onclick="copyCmd(this,'${escapeAttr(step.cmd)}')">
-      <code>${escapeHtml(step.cmd)}</code>
-      <span class="cmd-box-copy">copy</span>
-    </div>`;
-  }
+  // Custom sections
+  if (step.custom === 'keys') html += renderKeysForm();
+  if (step.custom === 'bots') html += renderBotsForm();
+  if (step.custom === 'install') html += renderInstallCommand();
+
+  // Commands
+  if (step.cmd) html += cmdBox(step.cmd, 'cmd1');
   if (step.body2) html += `<div class="step-body">${step.body2}</div>`;
-  if (step.cmd2) {
-    html += `<div class="cmd-box" id="cmd2" onclick="copyCmd(this,'${escapeAttr(step.cmd2)}')">
-      <code>${escapeHtml(step.cmd2)}</code>
-      <span class="cmd-box-copy">copy</span>
-    </div>`;
-  }
+  if (step.cmd2) html += cmdBox(step.cmd2, 'cmd2');
   if (step.body3) html += `<div class="step-body">${step.body3}</div>`;
   if (step.note) html += `<div class="note">${step.note}</div>`;
 
-  // Bot message
-  if (step.botMsg) {
-    html += `<div class="bot-msg" id="botMsgEl" onclick="copyBotMsg()">
-      <span class="bot-msg-badge">tap to copy</span>
-      <p>${escapeHtml(step.botMsg)}</p>
-    </div>`;
-  }
-
-  // Confirm checkbox
+  // Confirm
   if (step.confirm && !step.isDone) {
     html += `<div class="confirm-check" id="confirmBox" onclick="toggleConfirm()">
       <div class="check-box"><span class="check-mark">✓</span></div>
@@ -502,16 +352,11 @@ function render(index) {
   // Nav
   if (!step.choices) {
     html += `<div class="step-nav">`;
-    if (index > 0) {
-      html += `<button class="btn btn-secondary" onclick="goTo(${index - 1})">← Back</button>`;
-    }
+    if (index > 0) html += `<button class="btn btn-secondary" onclick="goTo(${index - 1})">← Back</button>`;
     if (!step.isDone) {
       const nextLabel = step.nextLabel || 'Next →';
       const disabled = step.confirm ? 'disabled id="nextBtn"' : 'id="nextBtn"';
       html += `<button class="btn btn-primary" ${disabled} onclick="goTo(${step.next})">${nextLabel}</button>`;
-      if (step.skipLabel) {
-        html += `<button class="btn btn-skip" onclick="goTo(${step.next})">${step.skipLabel}</button>`;
-      }
     } else {
       html += `<a href="https://obsidianclaw.ai" class="btn btn-primary" style="text-decoration:none">Learn more about ObsidianClaw →</a>`;
     }
@@ -520,14 +365,175 @@ function render(index) {
 
   card.innerHTML = html;
   container.appendChild(card);
-
-  // Scroll to top
+  if (step.custom === 'keys') bindKeyInputs();
+  if (step.custom === 'bots') bindBotInputs();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function goTo(index) {
-  if (index >= 0 && index < steps.length) render(index);
+// ─── API Keys form ─────────────────────────────────────────────────────────
+
+function renderKeysForm() {
+  return `
+    <div class="key-field">
+      <label>Claude OAuth Token <span class="key-sub">(required)</span></label>
+      <input type="password" id="key-claude1" placeholder="sk-ant-..." value="${esc(state.keys.claude1)}">
+      <div class="key-help">From <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a> — or a Claude Max subscription OAuth token</div>
+    </div>
+    <div class="key-field">
+      <label>Claude Token #2 <span class="key-sub">(optional — for parallel requests)</span></label>
+      <input type="password" id="key-claude2" placeholder="sk-ant-..." value="${esc(state.keys.claude2)}">
+    </div>
+    <div class="key-field">
+      <label>Google AI API Key <span class="key-sub">(optional — enables Gemini models)</span></label>
+      <input type="password" id="key-googleai" placeholder="AIza..." value="${esc(state.keys.googleai)}">
+      <div class="key-help">Free at <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com</a></div>
+    </div>
+    <div class="key-field">
+      <label>Brave Search API Key <span class="key-sub">(optional — web search)</span></label>
+      <input type="password" id="key-brave" placeholder="BSA..." value="${esc(state.keys.brave)}">
+      <div class="key-help">Free at <a href="https://brave.com/search/api/" target="_blank">brave.com/search/api</a></div>
+    </div>
+    <div class="key-field">
+      <label>ElevenLabs API Key <span class="key-sub">(optional — voice/TTS)</span></label>
+      <input type="password" id="key-elevenlabs" placeholder="sk_..." value="${esc(state.keys.elevenlabs)}">
+      <div class="key-help">Free at <a href="https://elevenlabs.io" target="_blank">elevenlabs.io</a></div>
+    </div>
+    <div class="note gold">🔒 Keys stay in your browser. Nothing is sent to any server. The install command runs entirely on your machine.</div>
+  `;
 }
+
+function bindKeyInputs() {
+  ['claude1','claude2','googleai','brave','elevenlabs'].forEach(k => {
+    const el = document.getElementById('key-' + k);
+    if (el) el.addEventListener('input', () => { state.keys[k] = el.value.trim(); });
+  });
+}
+
+// ─── Bot config form ───────────────────────────────────────────────────────
+
+function renderBotsForm() {
+  let html = '<div id="botList">';
+  state.bots.forEach((bot, i) => {
+    html += `
+      <div class="bot-card">
+        <div class="bot-card-header">
+          <input type="text" id="bot-name-${i}" placeholder="Bot name" value="${esc(bot.name)}">
+          <select id="bot-model-${i}">
+            ${models.map(m => `<option value="${m.id}" ${m.id === bot.model ? 'selected' : ''}>${m.label}</option>`).join('')}
+          </select>
+          ${state.bots.length > 1 ? `<span class="bot-remove" onclick="removeBot(${i})">×</span>` : ''}
+        </div>
+      </div>`;
+  });
+  html += '</div>';
+  html += `<button class="add-bot-btn" onclick="addBot()">+ Add another bot</button>`;
+  html += `<div class="note">Each bot gets a folder like <code>AGENT-YOURBOT/</code> in your Obsidian vault with its own personality and memory.</div>`;
+  return html;
+}
+
+function bindBotInputs() {
+  state.bots.forEach((bot, i) => {
+    const nameEl = document.getElementById('bot-name-' + i);
+    const modelEl = document.getElementById('bot-model-' + i);
+    if (nameEl) nameEl.addEventListener('input', () => { bot.name = nameEl.value; });
+    if (modelEl) modelEl.addEventListener('change', () => { bot.model = modelEl.value; });
+  });
+}
+
+function addBot() {
+  state.bots.push({ name: '', model: 'anthropic/claude-sonnet-4-6' });
+  render(current);
+}
+
+function removeBot(i) {
+  if (state.bots.length <= 1) return;
+  state.bots.splice(i, 1);
+  render(current);
+}
+
+// ─── Install command generator ─────────────────────────────────────────────
+
+function renderInstallCommand() {
+  const config = generateConfig();
+  const configB64 = btoa(unescape(encodeURIComponent(JSON.stringify(config, null, 2))));
+  const installCmd = `curl -fsSL https://openclaw.ai/install.sh | bash && echo '${configB64}' | base64 -d > ~/.openclaw/openclaw.json && openclaw gateway restart`;
+
+  return `
+    <div class="cmd-box" onclick="copyCmd(this, document.getElementById('installCmdText').textContent)">
+      <code id="installCmdText" style="font-size:12px">${escHtml(installCmd)}</code>
+      <span class="cmd-box-copy">copy</span>
+    </div>
+    <p style="font-size:13px;color:var(--dim);margin-top:8px">This installs OpenClaw, writes your config with all API keys, and starts the gateway.</p>
+    <details style="margin-top:16px">
+      <summary style="font-size:13px;color:var(--dim);cursor:pointer">Preview generated config</summary>
+      <div class="config-box"><pre>${escHtml(JSON.stringify(config, null, 2))}</pre></div>
+    </details>
+  `;
+}
+
+function generateConfig() {
+  const config = {
+    auth: { profiles: {} },
+    agents: {
+      defaults: {
+        model: { primary: state.bots[0]?.model || 'anthropic/claude-sonnet-4-6' },
+      }
+    },
+    gateway: {
+      port: 18789,
+      bind: 'loopback',
+      tailscale: { mode: 'serve' },
+      auth: { mode: 'token', allowTailscale: true }
+    }
+  };
+
+  // Claude tokens
+  if (state.keys.claude1) {
+    config.auth.profiles['anthropic:default'] = { provider: 'anthropic', mode: 'token' };
+  }
+  if (state.keys.claude2) {
+    config.auth.profiles['anthropic:secondary'] = { provider: 'anthropic', mode: 'token' };
+  }
+
+  // Google AI
+  if (state.keys.googleai) {
+    config.auth.profiles['google:default'] = { provider: 'google', mode: 'api_key' };
+  }
+
+  // Brave search
+  if (state.keys.brave) {
+    config.tools = config.tools || {};
+    config.tools.web = { search: { apiKey: state.keys.brave } };
+  }
+
+  // ElevenLabs
+  if (state.keys.elevenlabs) {
+    config.messages = { tts: { provider: 'elevenlabs', elevenlabs: { apiKey: state.keys.elevenlabs } } };
+  }
+
+  // Multi-agent
+  if (state.bots.length > 1) {
+    config.agents.list = state.bots.map((bot, i) => {
+      const id = i === 0 ? 'main' : bot.name.toLowerCase().replace(/[^a-z0-9]/g, '-') || `bot-${i}`;
+      const folderName = 'AGENT-' + (bot.name || 'BOT').toUpperCase().replace(/[^A-Z0-9]/g, '-');
+      return {
+        id,
+        name: bot.name || `Bot ${i + 1}`,
+        workspace: `~/.openclaw/workspace/${folderName}`,
+        model: bot.model !== config.agents.defaults.model.primary ? bot.model : undefined
+      };
+    }).map(a => { if (!a.model) delete a.model; return a; });
+  } else if (state.bots[0]?.name) {
+    const folderName = 'AGENT-' + state.bots[0].name.toUpperCase().replace(/[^A-Z0-9]/g, '-');
+    config.agents.defaults.workspace = `~/.openclaw/workspace/${folderName}`;
+  }
+
+  return config;
+}
+
+// ─── Utilities ─────────────────────────────────────────────────────────────
+
+function goTo(i) { if (i >= 0 && i < steps.length) render(i); }
 
 function toggleConfirm() {
   const box = document.getElementById('confirmBox');
@@ -537,33 +543,22 @@ function toggleConfirm() {
   if (btn) btn.disabled = !box.classList.contains('checked');
 }
 
-function copyCmd(el, cmd) {
-  navigator.clipboard.writeText(cmd.replace(/\\n/g, '\n'));
+function copyCmd(el, text) {
+  navigator.clipboard.writeText(text.replace(/\\n/g, '\n'));
   el.classList.add('copied');
   const s = el.querySelector('.cmd-box-copy'); if (s) s.textContent = 'copied ✓';
-  setTimeout(() => { el.classList.remove('copied'); if (s) s.textContent = 'copy' }, 1500);
+  setTimeout(() => { el.classList.remove('copied'); if (s) s.textContent = 'copy'; }, 1500);
 }
 
-function copyBotMsg() {
-  const step = steps[current];
-  if (!step.botMsg) return;
-  navigator.clipboard.writeText(step.botMsg);
-  const el = document.getElementById('botMsgEl');
-  if (el) {
-    el.classList.add('copied');
-    const b = el.querySelector('.bot-msg-badge'); if (b) b.textContent = 'copied ✓';
-    setTimeout(() => { el.classList.remove('copied'); if (b) b.textContent = 'tap to copy' }, 2000);
-  }
+function cmdBox(cmd, id) {
+  return `<div class="cmd-box" id="${id}" onclick="copyCmd(this,'${escAttr(cmd)}')">
+    <code>${escHtml(cmd)}</code><span class="cmd-box-copy">copy</span></div>`;
 }
 
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function escapeAttr(s) {
-  return s.replace(/'/g,"\\'").replace(/\n/g,'\\n');
-}
+function esc(s) { return (s||'').replace(/"/g, '&quot;'); }
+function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escAttr(s) { return (s||'').replace(/'/g,"\\'").replace(/\n/g,'\\n'); }
 
-// Init
 render(0);
 </script>
 </body>
