@@ -4,85 +4,96 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Set up your AI assistant — Bot Setup Guide</title>
-  <meta name="description" content="Get your own 24/7 AI assistant in 10 minutes. No technical experience needed.">
+  <meta name="description" content="Get your own 24/7 AI assistant. No technical experience needed.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='70' font-size='70'>🤖</text></svg>">
   <style>
-    * { margin:0; padding:0; box-sizing:border-box }
-    body { font-family: -apple-system, system-ui, sans-serif; background: #fafafa; color: #333; line-height: 1.6; font-size: 17px }
-    a { color: #0066cc; text-decoration: none } a:hover { text-decoration: underline }
-    strong { color: #111 }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,system-ui,sans-serif;background:#0a0a0a;color:#e0e0e0;line-height:1.6;font-size:17px;min-height:100vh}
+    a{color:#6db3f2;text-decoration:none}a:hover{text-decoration:underline}
 
-    .container { max-width: 640px; margin: 0 auto; padding: 40px 20px }
+    .container{max-width:580px;margin:0 auto;padding:40px 20px}
 
-    header { text-align: center; margin-bottom: 50px }
-    header h1 { font-size: 32px; font-weight: 700; color: #111; margin-bottom: 10px }
-    header p { font-size: 19px; color: #666 }
+    header{text-align:center;margin-bottom:48px}
+    header h1{font-size:28px;font-weight:700;color:#fff;margin-bottom:6px}
+    header p{font-size:16px;color:#888}
 
-    .step { background: #fff; border-radius: 16px; padding: 32px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08) }
-    .step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px }
-    .step-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; min-width: 32px; background: #0066cc; color: #fff; border-radius: 50%; font-weight: 700; font-size: 15px }
-    .step h2 { font-size: 22px; font-weight: 600; color: #111; margin: 0 }
-    .step p { margin-bottom: 12px; color: #555 }
-    .step p:last-child { margin-bottom: 0 }
+    .progress{width:100%;height:3px;background:#222;border-radius:2px;margin-bottom:40px;overflow:hidden}
+    .progress-bar{height:100%;background:linear-gradient(90deg,#6db3f2,#a78bfa);width:0%;transition:width 0.4s}
 
-    .choices { display: flex; flex-direction: column; gap: 12px; margin-top: 16px }
-    .choice { background: #f5f5f5; border: 2px solid #e5e5e5; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s }
-    .choice:hover { border-color: #0066cc; background: #f0f7ff }
-    .choice.selected { border-color: #0066cc; background: #e6f2ff }
-    .choice h3 { font-size: 18px; font-weight: 600; color: #111; margin-bottom: 6px }
-    .choice p { font-size: 15px; color: #666; margin: 0 }
+    .card{background:#141414;border:1px solid #222;border-radius:16px;padding:32px;margin-bottom:20px}
 
-    .input-group { margin-top: 16px }
-    .input-group label { display: block; font-weight: 600; color: #111; margin-bottom: 8px; font-size: 15px }
-    .input-group .help { font-size: 14px; color: #666; margin-bottom: 8px }
-    .input-group .help a { color: #0066cc }
-    .input-group input, .input-group select { width: 100%; padding: 12px; border: 2px solid #e5e5e5; border-radius: 8px; font-size: 16px; font-family: inherit }
-    .input-group input:focus, .input-group select:focus { outline: none; border-color: #0066cc }
+    /* Visual choice cards */
+    .pick{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+    .pick-card{background:#1a1a1a;border:2px solid #2a2a2a;border-radius:16px;padding:28px 20px;text-align:center;cursor:pointer;transition:all 0.2s}
+    .pick-card:hover{border-color:#6db3f2;background:#1e2530}
+    .pick-card svg{width:80px;height:80px;margin-bottom:16px;display:block;margin-left:auto;margin-right:auto}
+    .pick-card h3{font-size:17px;font-weight:600;color:#fff;margin-bottom:4px}
+    .pick-card p{font-size:13px;color:#888;margin:0}
 
-    .cmd-box { background: #1a1a1a; border-radius: 10px; padding: 16px; margin: 16px 0; position: relative }
-    .cmd-box code { display: block; color: #a5d6ff; font-size: 14px; font-family: 'SF Mono', Consolas, monospace; white-space: pre-wrap; word-break: break-all; line-height: 1.5 }
-    .cmd-box .copy-btn { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.1); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: inherit }
-    .cmd-box .copy-btn:hover { background: rgba(255,255,255,0.2) }
+    h2{font-size:22px;font-weight:600;color:#fff;margin-bottom:16px}
+    .card p{color:#aaa;margin-bottom:12px;font-size:15px}
 
-    .note { background: #fff8e6; border-left: 4px solid #ffcc00; padding: 16px; border-radius: 8px; margin: 16px 0; font-size: 15px }
-    .note.green { background: #e6f7ed; border-left-color: #00cc66 }
-    .note.blue { background: #e6f0ff; border-left-color: #0066cc }
+    .field{margin-top:20px}
+    .field label{display:block;font-weight:600;color:#ddd;margin-bottom:6px;font-size:14px}
+    .field input{width:100%;padding:12px;background:#1a1a1a;border:1px solid #333;border-radius:8px;color:#fff;font-size:15px;font-family:inherit}
+    .field input:focus{outline:none;border-color:#6db3f2}
+    .field input::placeholder{color:#555}
+    .field .hint{font-size:13px;color:#666;margin-top:6px}
 
-    button { background: #0066cc; color: #fff; border: none; padding: 14px 28px; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background 0.2s }
-    button:hover { background: #0052a3 }
-    button:disabled { opacity: 0.5; cursor: not-allowed }
-    button.secondary { background: #f5f5f5; color: #333; margin-right: 8px }
-    button.secondary:hover { background: #e5e5e5 }
+    .cmd{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:14px 16px;margin:14px 0;position:relative;font-family:'SF Mono',Consolas,monospace;font-size:14px;color:#a5d6ff;white-space:pre-wrap;word-break:break-all;line-height:1.5;cursor:pointer;transition:border-color 0.2s}
+    .cmd:hover{border-color:#444}
+    .cmd:active{border-color:#6db3f2}
+    .cmd::after{content:'Copy';position:absolute;top:10px;right:12px;font-size:11px;color:#666;font-family:-apple-system,system-ui,sans-serif;pointer-events:none}
+    .cmd.copied::after{content:'Copied ✓';color:#6db3f2}
 
-    .btn-row { display: flex; align-items: center; margin-top: 24px; gap: 8px }
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 28px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all 0.2s}
+    .btn-primary{background:linear-gradient(135deg,#6db3f2,#a78bfa);color:#fff}
+    .btn-primary:hover{opacity:0.9;transform:translateY(-1px)}
+    .btn-primary:disabled{opacity:0.3;cursor:not-allowed;transform:none}
+    .btn-back{background:transparent;color:#888;padding:13px 16px}
+    .btn-back:hover{color:#fff}
+    .btn-row{display:flex;align-items:center;gap:8px;margin-top:24px}
 
-    .hidden { display: none !important }
+    .link-btn{display:inline-flex;align-items:center;gap:8px;background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:12px 20px;color:#6db3f2;font-weight:600;font-size:14px;text-decoration:none;transition:all 0.2s;width:100%}
+    .link-btn:hover{border-color:#6db3f2;text-decoration:none;background:#1e2530}
+    .link-btn .arrow{margin-left:auto;color:#444}
 
-    .progress { width: 100%; height: 4px; background: #e5e5e5; border-radius: 2px; margin-bottom: 40px; overflow: hidden }
-    .progress-bar { height: 100%; background: #0066cc; width: 0%; transition: width 0.3s }
+    .check-row{display:flex;align-items:center;gap:10px;margin-top:20px;font-size:14px;color:#aaa}
+    .check-row input[type=checkbox]{width:18px;height:18px;accent-color:#6db3f2}
 
-    .connect-card { margin-top: 16px; padding: 20px; background: #f9f9f9; border-radius: 12px }
-    .connect-card h3 { font-size: 18px; margin-bottom: 12px }
-    .connect-card ol { margin-left: 20px; margin-top: 12px; line-height: 1.8 }
-    .connect-card + .connect-card { margin-top: 12px }
+    .region-select{width:100%;padding:12px;background:#1a1a1a;border:1px solid #333;border-radius:8px;color:#fff;font-size:15px;font-family:inherit;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23888'%3E%3Cpath d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+    .region-select:focus{outline:none;border-color:#6db3f2}
 
-    .tag { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-left: 8px; vertical-align: middle }
-    .tag.easiest { background: #e6f7ed; color: #00804d }
-    .tag.recommended { background: #e6f0ff; color: #0052a3 }
+    .status-box{text-align:center;padding:40px 20px}
+    .spinner{width:48px;height:48px;border:3px solid #333;border-top-color:#6db3f2;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 20px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .status-text{color:#aaa;font-size:15px}
+    .status-text strong{color:#fff}
 
-    .plan-card { background: #f5f5f5; border: 2px solid #e5e5e5; border-radius: 12px; padding: 16px; margin-top: 8px }
-    .plan-card.highlight { border-color: #0066cc; background: #f0f7ff }
-    .plan-card h4 { font-size: 16px; font-weight: 600; color: #111; margin-bottom: 4px }
-    .plan-card p { font-size: 14px; color: #666; margin: 0 }
-    .plan-card + .plan-card { margin-top: 8px }
+    .connect-opt{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:20px;margin-top:12px}
+    .connect-opt h3{font-size:16px;color:#fff;margin-bottom:8px}
+    .connect-opt p{font-size:14px;color:#888;margin:0}
+    .connect-opt ol{margin:12px 0 0 20px;font-size:14px;color:#aaa;line-height:2}
 
-    footer { text-align: center; padding: 40px 20px; color: #999; font-size: 14px }
-    footer a { color: #999 }
+    .done-box{text-align:center;padding:32px;background:linear-gradient(135deg,rgba(109,179,242,0.1),rgba(167,139,250,0.1));border:1px solid rgba(109,179,242,0.2);border-radius:16px;margin-top:24px}
+    .done-box h3{font-size:24px;color:#fff;margin-bottom:8px}
+    .done-box p{color:#888;font-size:14px}
+    .done-box a{color:#6db3f2}
 
-    @media (max-width: 640px) {
-      header h1 { font-size: 26px }
-      header p { font-size: 17px }
-      .step { padding: 24px }
+    .plan-row{display:flex;gap:8px;margin:16px 0}
+    .plan{flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:14px;text-align:center;cursor:default}
+    .plan.rec{border-color:#6db3f2;background:#1e2530}
+    .plan .price{font-size:20px;font-weight:700;color:#fff}
+    .plan .name{font-size:12px;color:#888;margin-top:2px}
+    .plan.rec .name{color:#6db3f2}
+
+    footer{text-align:center;padding:40px 20px;color:#555;font-size:13px}
+    footer a{color:#555}
+
+    @media(max-width:480px){
+      .pick{grid-template-columns:1fr}
+      .plan-row{flex-direction:column}
+      header h1{font-size:24px}
     }
   </style>
 </head>
@@ -91,561 +102,367 @@
 <div class="container">
   <header>
     <h1>Set up your AI assistant</h1>
-    <p>Get your own 24/7 AI in 10 minutes. No tech skills needed.</p>
+    <p>Your own 24/7 AI. Takes about 10 minutes.</p>
   </header>
-
   <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
-
   <div id="app"></div>
 </div>
 
 <footer>
-  Made by <a href="https://humanitylabs.org">Humanity Labs</a> ·
-  <a href="https://obsidianclaw.ai">ObsidianClaw</a> ·
-  <a href="https://openclaw.ai">OpenClaw</a>
+  <a href="https://humanitylabs.org">Humanity Labs</a> · <a href="https://openclaw.ai">OpenClaw</a> · <a href="https://discord.com/invite/clawd">Discord</a>
 </footer>
 
 <script>
-// State
-const state = {
-  step: 0,
-  hostingChoice: null, // 'local' or 'cloud'
-  keys: { brave: '', google: '', elevenlabs: '', venice: '' },
-};
+const S = { step:0, path:null, claudeToken:'', braveKey:'', hostingerKey:'', region:'', vmId:null, vmIp:null };
 
-// All steps. Each can have an `if` condition for path-specific steps.
+// SVGs for choice cards
+const cloudSvg = `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M20 52c-6.6 0-12-5.4-12-12 0-5.5 3.7-10.2 9-11.6C18.2 20.6 25.4 15 34 15c7.4 0 13.8 4.2 17 10.3C52.2 24.4 53.6 24 55 24c6.6 0 12 5.4 12 12 0 1-.1 2-.4 3 4.6 1.8 8.4 6.8 8.4 12 0 7.2-5.4 13-12 13H20z" fill="#1e2530" stroke="#6db3f2" stroke-width="2"/>
+  <circle cx="40" cy="42" r="8" fill="#6db3f2" opacity="0.3"/>
+  <path d="M37 42l2 2 4-4" stroke="#6db3f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const localSvg = `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="12" y="16" width="56" height="36" rx="4" fill="#1e2530" stroke="#a78bfa" stroke-width="2"/>
+  <rect x="18" y="22" width="44" height="24" rx="2" fill="#0a0a0a"/>
+  <path d="M30 58h20v4a2 2 0 01-2 2H32a2 2 0 01-2-2v-4z" fill="#1e2530" stroke="#a78bfa" stroke-width="2"/>
+  <circle cx="40" cy="34" r="6" fill="#a78bfa" opacity="0.3"/>
+  <path d="M38 34l1.5 1.5 3-3" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
 const steps = [
-  // Step 0: Choose hosting
+  // 0: Choose path
   {
-    title: 'Where will your assistant live?',
     render: () => `
-      <p>Your AI needs a computer that stays on 24/7. Pick one:</p>
-      <div class="choices">
-        <div class="choice" onclick="choose('local')">
-          <h3>💻 My own computer</h3>
-          <p>Free · Mac, Linux, or Raspberry Pi · Full control</p>
+      <h2 style="text-align:center">Where should your AI live?</h2>
+      <div class="pick">
+        <div class="pick-card" onclick="S.path='cloud';next()">
+          ${cloudSvg}
+          <h3>Cloud Server</h3>
+          <p>~$2/month · Always on</p>
         </div>
-        <div class="choice" onclick="choose('cloud')">
-          <h3>☁️ Cloud server (VPS)</h3>
-          <p>~$2-5/month · Always on · Runs remotely</p>
+        <div class="pick-card" onclick="S.path='local';next()">
+          ${localSvg}
+          <h3>My Computer</h3>
+          <p>Free · Mac, Linux, or Pi</p>
         </div>
       </div>
     `
   },
 
-  // Step 1: Claude subscription
+  // 1: Accounts
   {
-    title: 'Subscribe to Claude',
     render: () => `
-      <p>Your assistant's brain is Claude, made by Anthropic. You need a Claude subscription to use it with OpenClaw.</p>
+      <h2>Set up your accounts</h2>
 
-      <p style="margin-top:16px"><strong>Go to <a href="https://claude.ai/upgrade" target="_blank">claude.ai/upgrade</a> and pick a plan:</strong></p>
+      <p style="margin-bottom:20px">You need two things: a Claude subscription (the AI brain) and a Brave Search key (so it can search the web).</p>
 
-      <div class="plan-card" style="margin-top:16px">
-        <h4>Pro — $20/month</h4>
-        <p>Good for getting started. You can upgrade anytime.</p>
-      </div>
-      <div class="plan-card">
-        <h4>Max 5x — $100/month</h4>
-        <p>5x the usage limits. Good for regular use.</p>
-      </div>
-      <div class="plan-card highlight">
-        <h4>Max 20x — $200/month ★ Recommended</h4>
-        <p>20x the usage limits + priority access. This is what power users end up on. If you plan to use your AI daily, start here and save yourself the upgrade later.</p>
-      </div>
-
-      <div class="note" style="margin-top:16px">
-        <strong>Why a subscription instead of pay-per-use?</strong> The Claude subscription gives you a fixed monthly cost with generous limits. For an always-on AI assistant, this is much more predictable than API billing. You can start with Pro and upgrade when you hit limits.
-      </div>
-
-      <div style="margin-top:24px">
-        <label><input type="checkbox" id="hasSubscription" onchange="toggleBtn('subContinue', this.checked)"> I have a Claude subscription</label>
-      </div>
-      <div class="btn-row">
-        <button class="secondary" onclick="prevStep()">← Back</button>
-        <button onclick="nextStep()" id="subContinue" disabled>Continue →</button>
-      </div>
-    `
-  },
-
-  // Step 2: Brave Search (required) + optional keys
-  {
-    title: 'Get your search & tool keys',
-    render: () => `
-      <p>Your assistant needs a few extra services to be fully capable.</p>
-
-      <h3 style="font-size:17px;margin-top:20px;margin-bottom:8px">🔍 Brave Search API <span style="color:#cc0000;font-size:14px;font-weight:400">(required)</span></h3>
-      <p>This lets your AI search the web. Free tier gives you $5 in credits per month.</p>
-      <ol style="margin-left:20px;margin-top:8px">
-        <li style="margin-bottom:8px">Go to <a href="https://brave.com/search/api" target="_blank">brave.com/search/api</a></li>
-        <li style="margin-bottom:8px">Create a free account</li>
-        <li>Copy your API key</li>
-      </ol>
-      <div class="input-group" style="margin-top:12px">
-        <label>Brave Search API Key</label>
-        <input type="password" id="braveKeyInput" placeholder="BSA..." autocomplete="off">
-        <div class="help">🔒 Stays in your browser only</div>
-      </div>
-
-      <details style="margin-top:24px">
-        <summary style="cursor:pointer;color:#0066cc;font-weight:600">+ Add optional tools (recommended for full experience)</summary>
-        <div style="margin-top:16px">
-
-          <div class="input-group">
-            <label>Google AI / Gemini Key</label>
-            <input type="password" id="googleKeyInput" placeholder="AIza..." autocomplete="off">
-            <div class="help">Free at <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com</a> — adds Gemini models, image generation, and search grounding</div>
-          </div>
-
-          <div class="input-group" style="margin-top:16px">
-            <label>ElevenLabs Key</label>
-            <input type="password" id="elevenlabsKeyInput" placeholder="sk_..." autocomplete="off">
-            <div class="help">Free at <a href="https://elevenlabs.io" target="_blank">elevenlabs.io</a> (10k chars/month) — gives your AI a voice (text-to-speech)</div>
-          </div>
-
-          <div class="input-group" style="margin-top:16px">
-            <label>Venice AI Key</label>
-            <input type="password" id="veniceKeyInput" placeholder="..." autocomplete="off">
-            <div class="help">At <a href="https://venice.ai/settings/api" target="_blank">venice.ai</a> — adds 30+ fallback models (GPT, Gemini, Llama, Qwen, and more). Great for model variety and redundancy.</div>
-          </div>
-
+      <div style="margin-bottom:24px">
+        <p style="font-weight:600;color:#fff;margin-bottom:8px">1. Subscribe to Claude</p>
+        <a href="https://claude.ai/upgrade" target="_blank" class="link-btn">
+          claude.ai/upgrade <span class="arrow">→</span>
+        </a>
+        <div class="plan-row">
+          <div class="plan"><div class="price">$20</div><div class="name">Pro</div></div>
+          <div class="plan"><div class="price">$100</div><div class="name">Max 5x</div></div>
+          <div class="plan rec"><div class="price">$200</div><div class="name">★ Max 20x</div></div>
         </div>
-      </details>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <p style="font-weight:600;color:#fff;margin-bottom:8px">2. Get a Brave Search key</p>
+        <a href="https://brave.com/search/api" target="_blank" class="link-btn">
+          brave.com/search/api <span class="arrow">→</span>
+        </a>
+        <div class="field" style="margin-top:12px">
+          <input type="password" id="braveInput" placeholder="Paste your Brave API key" autocomplete="off">
+        </div>
+      </div>
 
       <div class="btn-row">
-        <button class="secondary" onclick="prevStep()">← Back</button>
-        <button onclick="saveKeys()">Continue →</button>
+        <button class="btn btn-back" onclick="back()">← Back</button>
+        <button class="btn btn-primary" onclick="saveAccounts()">Continue →</button>
       </div>
     `
   },
 
-  // Step 3 (cloud only): Cloud server guide
+  // 2a: Cloud — Hostinger setup
   {
-    if: () => state.hostingChoice === 'cloud',
-    title: 'Set up your cloud server',
+    if: () => S.path === 'cloud',
     render: () => `
-      <p>You need a small Linux VPS (Virtual Private Server). Any provider works. Here are good options:</p>
+      <h2>Create your server</h2>
 
-      <div style="margin-top:16px">
-        <p><strong>Recommended providers:</strong></p>
-        <ul style="margin-left:20px;margin-top:8px;line-height:2">
-          <li><a href="https://www.hostinger.com/vps-hosting?REFERRALCODE=XLSMIGUELN7E" target="_blank">Hostinger</a> — from $2/mo (cheapest)</li>
-          <li><a href="https://www.digitalocean.com" target="_blank">DigitalOcean</a> — from $4/mo (beginner-friendly)</li>
-          <li><a href="https://www.hetzner.com/cloud" target="_blank">Hetzner</a> — from $4/mo (great value)</li>
-        </ul>
+      <div style="margin-bottom:20px">
+        <p style="font-weight:600;color:#fff;margin-bottom:8px">1. Sign up for Hostinger</p>
+        <a href="https://www.hostinger.com/vps-hosting?REFERRALCODE=XLSMIGUELN7E" target="_blank" class="link-btn">
+          Get a VPS from $2/mo <span class="arrow">→</span>
+        </a>
+        <p style="margin-top:8px">Pick the cheapest plan (KVM 1). Add a payment method.</p>
       </div>
 
-      <div class="note blue" style="margin-top:16px">
-        <strong>What to pick:</strong> The smallest plan (1 CPU, 1-2GB RAM) is plenty. Choose Ubuntu 22.04 or 24.04. Pick a location close to you.
+      <div style="margin-bottom:20px">
+        <p style="font-weight:600;color:#fff;margin-bottom:8px">2. Get your API key</p>
+        <p>In Hostinger dashboard: go to <strong style="color:#fff">Account → API</strong> and create a key.</p>
+        <div class="field" style="margin-top:12px">
+          <input type="password" id="hostingerInput" placeholder="Paste your Hostinger API key" autocomplete="off">
+        </div>
       </div>
 
-      <p style="margin-top:20px">Once your server is running, SSH into it:</p>
-      <div class="cmd-box">
-        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-        <code>ssh root@YOUR_SERVER_IP</code>
+      <div style="margin-bottom:20px">
+        <p style="font-weight:600;color:#fff;margin-bottom:8px">3. Pick a location</p>
+        <select class="region-select" id="regionSelect">
+          <option value="">Loading locations...</option>
+        </select>
       </div>
 
-      <p>Then continue to the next step to install OpenClaw on it.</p>
-
-      <div style="margin-top:24px">
-        <label><input type="checkbox" id="hasServer" onchange="toggleBtn('cloudContinue', this.checked)"> I have a server and I'm connected via SSH</label>
-      </div>
       <div class="btn-row">
-        <button class="secondary" onclick="prevStep()">← Back</button>
-        <button onclick="nextStep()" id="cloudContinue" disabled>Continue →</button>
+        <button class="btn btn-back" onclick="back()">← Back</button>
+        <button class="btn btn-primary" id="createBtn" onclick="createServer()">Create My Server →</button>
       </div>
-    `
+    `,
+    onMount: () => loadRegions()
   },
 
-  // Step 4: Install OpenClaw
+  // 2a-progress: Cloud — Creating server
   {
-    title: 'Install OpenClaw',
+    if: () => S.path === 'cloud',
+    id: 'creating',
     render: () => `
-      <p>Open <strong>Terminal</strong> on your ${state.hostingChoice === 'cloud' ? 'server (via SSH)' : 'computer'}:</p>
-      ${state.hostingChoice === 'local' ? `
-      <ul style="margin-left:20px;margin-top:8px;margin-bottom:16px">
-        <li><strong>Mac:</strong> Press <kbd>Cmd</kbd>+<kbd>Space</kbd>, type "Terminal", press Enter</li>
-        <li><strong>Linux:</strong> Press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd></li>
-      </ul>
-      ` : ''}
-
-      <p>Run this command to install OpenClaw:</p>
-      <div class="cmd-box">
-        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-        <code>curl -fsSL https://openclaw.ai/install.sh | bash</code>
-      </div>
-
-      <div class="note green">
-        <strong>What this does:</strong> Downloads and installs OpenClaw and its dependencies (Node.js if needed). Takes about 1-2 minutes.
-      </div>
-
-      <p style="margin-top:16px">When it finishes, verify the install:</p>
-      <div class="cmd-box">
-        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-        <code>openclaw --version</code>
-      </div>
-      <p>You should see a version number. If you see "command not found", close Terminal and open a new one, then try again.</p>
-
-      <div style="margin-top:24px">
-        <label><input type="checkbox" id="installed" onchange="toggleBtn('installContinue', this.checked)"> OpenClaw is installed and working</label>
-      </div>
-      <div class="btn-row">
-        <button class="secondary" onclick="prevStep()">← Back</button>
-        <button onclick="nextStep()" id="installContinue" disabled>Continue →</button>
+      <div class="status-box">
+        <div class="spinner"></div>
+        <p class="status-text" id="statusText"><strong>Creating your server...</strong><br>This takes 2-5 minutes. Don't close this page.</p>
       </div>
     `
   },
 
-  // Step 5: Connect Claude subscription
+  // 2b: Local — Install
   {
-    title: 'Connect your Claude subscription',
-    render: () => `
-      <p>Now we'll link your Claude subscription to OpenClaw. This uses a "setup token" from the Claude desktop app.</p>
-
-      <p style="margin-top:16px"><strong>1. Generate a setup token:</strong></p>
-      <p>If you have <a href="https://claude.ai/download" target="_blank">Claude Code</a> installed, run:</p>
-      <div class="cmd-box">
-        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-        <code>claude setup-token</code>
-      </div>
-      <p>This will print a long token. Copy it.</p>
-
-      <p style="margin-top:16px"><strong>2. Paste it into OpenClaw:</strong></p>
-      <div class="cmd-box">
-        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-        <code>openclaw models auth setup-token --provider anthropic</code>
-      </div>
-      <p>Follow the prompts and paste your token when asked.</p>
-
-      <p style="margin-top:16px"><strong>3. Verify it works:</strong></p>
-      <div class="cmd-box">
-        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-        <code>openclaw models status</code>
-      </div>
-      <p>You should see Anthropic listed with your subscription tier.</p>
-
-      <div class="note blue" style="margin-top:16px">
-        <strong>No Claude Code?</strong> Install it first: <a href="https://claude.ai/download" target="_blank">claude.ai/download</a>. You can also use <code>openclaw models auth paste-token --provider anthropic</code> if you have the token from another source.
-      </div>
-
-      <div style="margin-top:24px">
-        <label><input type="checkbox" id="claudeConnected" onchange="toggleBtn('claudeContinue', this.checked)"> Claude is connected</label>
-      </div>
-      <div class="btn-row">
-        <button class="secondary" onclick="prevStep()">← Back</button>
-        <button onclick="nextStep()" id="claudeContinue" disabled>Continue →</button>
-      </div>
-    `
-  },
-
-  // Step 6: Configure tool keys
-  {
-    title: 'Add your tool keys',
+    if: () => S.path === 'local',
     render: () => {
-      const cmds = [];
-
-      // Brave is always present (required)
-      if (state.keys.brave) {
-        cmds.push({ label: 'Brave Search', cmd: `openclaw config set tools.web.search.apiKey "${state.keys.brave}"` });
-      }
-
-      // Optional keys
-      if (state.keys.google) {
-        cmds.push({ label: 'Google / Gemini', cmd: `openclaw config set tools.web.search.gemini.apiKey "${state.keys.google}"` });
-      }
-      if (state.keys.elevenlabs) {
-        cmds.push({ label: 'ElevenLabs TTS', cmd: `openclaw config set agents.defaults.tts.provider elevenlabs` });
-        cmds.push({ label: '', cmd: `openclaw config set agents.defaults.tts.elevenlabs.apiKey "${state.keys.elevenlabs}"` });
-      }
-      if (state.keys.venice) {
-        cmds.push({ label: 'Venice AI', cmd: `openclaw config set auth.profiles.venice:default.provider venice` });
-        cmds.push({ label: '', cmd: `openclaw config set auth.profiles.venice:default.mode api_key` });
-        cmds.push({ label: '', cmd: `openclaw config set auth.profiles.venice:default.apiKey "${state.keys.venice}"` });
-      }
-
+      const installScript = buildLocalScript();
       return `
-        <p>Run ${cmds.length > 1 ? 'these commands' : 'this command'} in Terminal to save your keys:</p>
-        ${cmds.map(c => `
-          ${c.label ? `<p style="margin-top:12px;margin-bottom:0;font-weight:600;font-size:14px;color:#888">${c.label}</p>` : ''}
-          <div class="cmd-box" style="margin-top:${c.label ? '4px' : '4px'}">
-            <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-            <code>${escapeHtml(c.cmd)}</code>
-          </div>
-        `).join('')}
+        <h2>Install OpenClaw</h2>
+        <p>Open <strong style="color:#fff">Terminal</strong> and run this:</p>
+        <div class="cmd" onclick="copyEl(this)">${escHtml(installScript)}</div>
+        <p style="font-size:13px;color:#666">This installs OpenClaw, configures your keys, and starts everything.</p>
 
-        <div class="note" style="margin-top:16px">
-          <strong>What this does:</strong> Saves your keys to OpenClaw's config file on your ${state.hostingChoice === 'cloud' ? 'server' : 'computer'}. They stay local and private.
-        </div>
-
-        <div style="margin-top:24px">
-          <label><input type="checkbox" id="keysSet" onchange="toggleBtn('keysContinue', this.checked)"> I ran the commands</label>
+        <div class="check-row">
+          <input type="checkbox" id="localDone" onchange="toggle('localNext',this.checked)">
+          <label for="localDone">I ran the command and it finished</label>
         </div>
         <div class="btn-row">
-          <button class="secondary" onclick="prevStep()">← Back</button>
-          <button onclick="nextStep()" id="keysContinue" disabled>Continue →</button>
+          <button class="btn btn-back" onclick="back()">← Back</button>
+          <button class="btn btn-primary" id="localNext" disabled onclick="next()">Continue →</button>
         </div>
       `;
     }
   },
 
-  // Step 7: Configure gateway
+  // 3: Connect
   {
-    title: 'Configure your gateway',
     render: () => `
-      <p>The "gateway" is the server that your devices connect to. Run these commands:</p>
+      <h2>Talk to your AI</h2>
+      <p>Your assistant is live. Pick how to connect:</p>
 
-      <div class="cmd-box">
-        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-        <code>openclaw config set gateway.bind loopback
-openclaw config set gateway.tailscale.mode serve
-openclaw config set gateway.auth.mode token
-openclaw config set gateway.auth.allowTailscale true</code>
-      </div>
-
-      <div class="note green">
-        <strong>What this does:</strong>
-        <ul style="margin-left:16px;margin-top:8px">
-          <li><strong>bind: loopback</strong> — Only listens on localhost (safe, not exposed to the internet)</li>
-          <li><strong>tailscale.mode: serve</strong> — Uses Tailscale to securely expose it to your devices</li>
-          <li><strong>auth: token</strong> — Requires a password to connect</li>
-        </ul>
-      </div>
-
-      <div style="margin-top:24px">
-        <label><input type="checkbox" id="configured" onchange="toggleBtn('configContinue', this.checked)"> I ran the commands</label>
-      </div>
-      <div class="btn-row">
-        <button class="secondary" onclick="prevStep()">← Back</button>
-        <button onclick="nextStep()" id="configContinue" disabled>Continue →</button>
-      </div>
-    `
-  },
-
-  // Step 8: Install Tailscale
-  {
-    title: 'Install Tailscale',
-    render: () => `
-      <p><strong>What's Tailscale?</strong> It creates a private network between your devices. This lets you securely access your AI from your phone, laptop, or tablet without exposing it to the internet. It's free for personal use.</p>
-
-      <p style="margin-top:16px"><strong>1. Create a Tailscale account:</strong></p>
-      <p style="margin-left:16px">Go to <a href="https://tailscale.com" target="_blank">tailscale.com</a> and sign up (free).</p>
-
-      <p style="margin-top:16px"><strong>2. Install Tailscale on your ${state.hostingChoice === 'cloud' ? 'server' : 'computer'}:</strong></p>
-      <div class="cmd-box">
-        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-        <code>curl -fsSL https://tailscale.com/install.sh | sh</code>
-      </div>
-
-      <p style="margin-top:16px"><strong>3. Connect to your Tailscale network:</strong></p>
-      <div class="cmd-box">
-        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-        <code>sudo tailscale up</code>
-      </div>
-      <p>This will print a URL. Open it in your browser to authorize the device.</p>
-
-      <p style="margin-top:16px"><strong>4. Install Tailscale on your other devices too:</strong></p>
-      <p>Download it on your phone, laptop, etc. from <a href="https://tailscale.com/download" target="_blank">tailscale.com/download</a>. Sign in with the same account.</p>
-
-      <div class="note blue" style="margin-top:16px">
-        <strong>Why do I need this?</strong> Without Tailscale, your AI only works on the machine it's running on. With it, you can chat from anywhere on any device, securely.
-      </div>
-
-      <div style="margin-top:24px">
-        <label><input type="checkbox" id="tailscaleInstalled" onchange="toggleBtn('tailscaleContinue', this.checked)"> Tailscale is installed and connected</label>
-      </div>
-      <div class="btn-row">
-        <button class="secondary" onclick="prevStep()">← Back</button>
-        <button onclick="nextStep()" id="tailscaleContinue" disabled>Continue →</button>
-      </div>
-    `
-  },
-
-  // Step 9: Start the gateway
-  {
-    title: 'Start your AI',
-    render: () => `
-      <p>Everything is configured. Start the gateway:</p>
-      <div class="cmd-box">
-        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-        <code>openclaw gateway start</code>
-      </div>
-
-      <p style="margin-top:16px">You should see output that includes your Tailscale URL. It looks like:</p>
-      <div class="cmd-box" style="background:#0d1117">
-        <code style="color:#8b949e">https://your-machine-name.tailXXXX.ts.net</code>
-      </div>
-
-      <p style="margin-top:16px"><strong>Save this URL!</strong> You'll need it in the next step to connect.</p>
-
-      <p style="margin-top:16px">Also grab your auth token:</p>
-      <div class="cmd-box">
-        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-        <code>openclaw config get gateway.auth.token</code>
-      </div>
-      <p><strong>Save this token too!</strong> It's your password for connecting.</p>
-
-      <div class="note green" style="margin-top:16px">
-        <strong>Troubleshooting:</strong> If something looks wrong, run this fix-all command:
-        <div class="cmd-box" style="margin-top:8px;margin-bottom:0">
-          <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-          <code>openclaw doctor --fix && openclaw gateway restart</code>
-        </div>
-      </div>
-
-      <div style="margin-top:24px">
-        <label><input type="checkbox" id="started" onchange="toggleBtn('startContinue', this.checked)"> Gateway is running and I have my URL and token</label>
-      </div>
-      <div class="btn-row">
-        <button class="secondary" onclick="prevStep()">← Back</button>
-        <button onclick="nextStep()" id="startContinue" disabled>Continue →</button>
-      </div>
-    `
-  },
-
-  // Step 10: Connect
-  {
-    title: 'Connect to your assistant',
-    render: () => `
-      <p>Your AI is running! Now pick how you want to talk to it:</p>
-
-      <div class="connect-card">
-        <h3>💬 Telegram <span class="tag easiest">Easiest</span></h3>
-        <p>Chat with your AI in Telegram, just like messaging a friend.</p>
+      <div class="connect-opt">
+        <h3>💬 Telegram</h3>
+        <p>Chat like you're texting a friend.</p>
         <ol>
-          <li>Open Telegram and message <a href="https://t.me/botfather" target="_blank">@BotFather</a></li>
-          <li>Send <code>/newbot</code> and follow the prompts to name your bot</li>
-          <li>Copy the token BotFather gives you</li>
-          <li>Back in Terminal, run:
-            <div class="cmd-box" style="margin-top:8px">
-              <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-              <code>openclaw channels add --channel telegram --token YOUR_BOT_TOKEN</code>
-            </div>
-          </li>
-          <li>Restart the gateway:
-            <div class="cmd-box" style="margin-top:8px">
-              <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-              <code>openclaw gateway restart</code>
-            </div>
-          </li>
-          <li>Open Telegram and message your new bot. That's it!</li>
+          <li>Message <a href="https://t.me/botfather" target="_blank">@BotFather</a> on Telegram</li>
+          <li>Send <code>/newbot</code>, follow the prompts</li>
+          <li>Copy the token, then in Terminal run:</li>
         </ol>
+        <div class="cmd" onclick="copyEl(this)">openclaw channels add --channel telegram --token YOUR_BOT_TOKEN && openclaw gateway restart</div>
       </div>
 
-      <div class="connect-card">
-        <h3>📝 Obsidian Plugin <span class="tag recommended">Most powerful</span></h3>
-        <p>Chat inside Obsidian with your notes synced across all devices.</p>
+      <div class="connect-opt">
+        <h3>📝 Obsidian</h3>
+        <p>Chat inside your notes app.</p>
         <ol>
-          <li>Install <a href="https://obsidian.md/download" target="_blank">Obsidian</a> on your devices</li>
-          <li>In Obsidian: Settings → Community Plugins → Turn off Restricted Mode</li>
-          <li>Browse → Search "<strong>BRAT</strong>" → Install → Enable</li>
-          <li>Settings → BRAT → <strong>Add Beta Plugin</strong> → Paste:
-            <div class="cmd-box" style="margin-top:8px">
-              <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-              <code>oscarhenrycollins/obsidianclaw</code>
-            </div>
-          </li>
-          <li>Enable the "OpenClaw" plugin in Community Plugins</li>
-          <li>The setup wizard will open. Paste your Tailscale URL and auth token.</li>
+          <li>Install <a href="https://obsidian.md" target="_blank">Obsidian</a></li>
+          <li>Settings → Community Plugins → BRAT → Add Beta Plugin</li>
         </ol>
-        <div class="note" style="margin-top:12px;margin-bottom:0">
-          <strong>Pro tip:</strong> Get <a href="https://obsidian.md/sync" target="_blank">Obsidian Sync</a> ($4/mo) to keep notes and plugin config synced across all devices.
-        </div>
+        <div class="cmd" onclick="copyEl(this)">oscarhenrycollins/obsidianclaw</div>
       </div>
 
-      <div class="connect-card">
-        <h3>🌐 Web Browser</h3>
-        <p>Just open your Tailscale URL in any browser. Enter your token when asked. Works anywhere on your network.</p>
+      <div class="connect-opt">
+        <h3>🌐 Browser</h3>
+        <p>Open your Tailscale URL in any browser.</p>
       </div>
 
-      <div style="margin-top:32px;text-align:center;padding:24px;background:#e6f7ed;border-radius:12px">
-        <p style="font-size:22px;font-weight:600">🎉 You're all set!</p>
-        <p style="margin-top:8px;color:#555">Your AI assistant is running 24/7 and ready to help.</p>
-        <p style="margin-top:12px;font-size:15px;color:#888">Questions? Join the <a href="https://discord.com/invite/clawd" style="color:#0066cc">OpenClaw Discord</a></p>
+      <div class="done-box">
+        <h3>🎉 You're set!</h3>
+        <p>Your AI is running 24/7.<br>Questions? <a href="https://discord.com/invite/clawd">Join Discord</a></p>
       </div>
 
       <div class="btn-row" style="justify-content:center">
-        <button class="secondary" onclick="prevStep()">← Back</button>
+        <button class="btn btn-back" onclick="back()">← Back</button>
       </div>
     `
   },
 ];
 
-// Get visible steps (filtered by path)
-function getVisibleSteps() {
-  return steps.filter(s => !s.if || s.if());
-}
+function getVisible() { return steps.filter(s => !s.if || s.if()); }
 
-// Render current step
 function render() {
-  const visible = getVisibleSteps();
-  const step = visible[state.step];
+  const vis = getVisible();
+  const step = vis[S.step];
   if (!step) return;
-
-  const pct = (state.step / (visible.length - 1)) * 100;
-  document.getElementById('progressBar').style.width = pct + '%';
-
-  const displayNum = state.step + 1;
-
-  const html = `
-    <div class="step">
-      <div class="step-header">
-        <div class="step-num">${displayNum}</div>
-        <h2>${step.title}</h2>
-      </div>
-      ${step.render()}
-    </div>
-  `;
-
-  document.getElementById('app').innerHTML = html;
+  document.getElementById('progressBar').style.width = (S.step / (vis.length - 1) * 100) + '%';
+  document.getElementById('app').innerHTML = `<div class="card">${step.render()}</div>`;
   if (step.onMount) step.onMount();
 }
 
-function nextStep() {
-  const visible = getVisibleSteps();
-  if (state.step < visible.length - 1) {
-    state.step++;
-    render();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+function next() { S.step++; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+function back() { if (S.step > 0) { S.step--; render(); window.scrollTo({top:0,behavior:'smooth'}); } }
+function toggle(id, on) { document.getElementById(id).disabled = !on; }
+
+function saveAccounts() {
+  const brave = document.getElementById('braveInput').value.trim();
+  if (!brave) return alert('Please paste your Brave Search API key.');
+  S.braveKey = brave;
+  next();
+}
+
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function copyEl(el) {
+  navigator.clipboard.writeText(el.textContent);
+  el.classList.add('copied');
+  setTimeout(() => el.classList.remove('copied'), 2000);
+}
+
+// Build the local install one-liner
+function buildLocalScript() {
+  return `curl -fsSL https://openclaw.ai/install.sh | bash && \\
+openclaw config set tools.web.search.apiKey "${S.braveKey}" && \\
+openclaw config set gateway.bind loopback && \\
+openclaw config set gateway.tailscale.mode serve && \\
+openclaw config set gateway.auth.mode token && \\
+openclaw config set gateway.auth.allowTailscale true && \\
+openclaw models auth setup-token --provider anthropic && \\
+openclaw gateway start`;
+}
+
+// -- Cloud: Hostinger API --
+
+async function hostingerApi(method, path, body) {
+  const key = S.hostingerKey || document.getElementById('hostingerInput')?.value.trim();
+  const res = await fetch('/api/hostinger', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ apiKey: key, method, path, body })
+  });
+  return res.json();
+}
+
+async function loadRegions() {
+  const sel = document.getElementById('regionSelect');
+  try {
+    const data = await hostingerApi('GET', '/api/vps/v1/data-centers');
+    if (Array.isArray(data)) {
+      sel.innerHTML = data.map(dc =>
+        `<option value="${dc.id}">${dc.location || dc.name} (${dc.country || ''})</option>`
+      ).join('');
+    } else {
+      sel.innerHTML = '<option value="">Enter your API key first, then reload</option>';
+    }
+  } catch {
+    sel.innerHTML = `
+      <option value="2">🇺🇸 North America</option>
+      <option value="13">🇪🇺 Europe</option>
+      <option value="22">🇸🇬 Asia</option>
+      <option value="5">🇬🇧 UK</option>
+    `;
   }
 }
 
-function prevStep() {
-  if (state.step > 0) {
-    state.step--;
-    render();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+async function createServer() {
+  S.hostingerKey = document.getElementById('hostingerInput').value.trim();
+  S.region = document.getElementById('regionSelect').value;
+
+  if (!S.hostingerKey) return alert('Please paste your Hostinger API key.');
+  if (!S.region) return alert('Please pick a server location.');
+
+  next(); // Show progress screen
+
+  try {
+    updateStatus('Uploading setup script...');
+
+    // 1. Create post-install script
+    const script = `#!/bin/bash
+set -e
+export DEBIAN_FRONTEND=noninteractive
+
+# Install Node.js
+curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+apt-get install -y nodejs
+
+# Install OpenClaw
+curl -fsSL https://openclaw.ai/install.sh | bash
+
+# Configure
+openclaw config set tools.web.search.apiKey "${S.braveKey}"
+openclaw config set gateway.bind loopback
+openclaw config set gateway.tailscale.mode serve
+openclaw config set gateway.auth.mode token
+openclaw config set gateway.auth.allowTailscale true
+
+# Install Tailscale
+curl -fsSL https://tailscale.com/install.sh | sh
+
+# Start gateway
+openclaw gateway start
+`;
+
+    const scriptRes = await hostingerApi('POST', '/api/vps/v1/post-install-scripts', {
+      name: 'OpenClaw Setup',
+      content: script
+    });
+
+    updateStatus('Creating your server...');
+
+    // 2. Create VPS
+    const vmRes = await hostingerApi('POST', '/api/vps/v1/virtual-machines', {
+      plan: 'hostingercom-vps-kvm1-usd-1m',
+      data_center_id: parseInt(S.region),
+      template_id: 1002, // Ubuntu 22.04
+      hostname: 'openclaw-bot',
+      post_install_script_id: scriptRes.id
+    });
+
+    S.vmId = vmRes.id;
+    updateStatus('Server created! Installing OpenClaw...<br>This takes 2-5 minutes.');
+
+    // 3. Poll until running
+    let attempts = 0;
+    while (attempts < 60) {
+      await sleep(5000);
+      attempts++;
+      const status = await hostingerApi('GET', `/api/vps/v1/virtual-machines/${S.vmId}`);
+      if (status.state === 'running' || status.status === 'running') {
+        S.vmIp = status.ipv4?.[0]?.address || status.ip || status.ipv4_address;
+        updateStatus(`Server is ready!<br>IP: <strong>${S.vmIp || 'check Hostinger dashboard'}</strong>`);
+        await sleep(2000);
+        next(); // Go to connect step
+        return;
+      }
+      updateStatus(`Setting up... (${attempts * 5}s)<br>Still working. Don't close this page.`);
+    }
+
+    updateStatus('Taking longer than expected.<br>Check your <a href="https://hpanel.hostinger.com" target="_blank">Hostinger dashboard</a> for status.');
+
+  } catch (err) {
+    updateStatus(`Something went wrong: ${err.message}<br><br><button class="btn btn-primary" onclick="back()">← Try Again</button>`);
   }
 }
 
-function choose(type) {
-  state.hostingChoice = type;
-  nextStep();
+function updateStatus(html) {
+  const el = document.getElementById('statusText');
+  if (el) el.innerHTML = html;
 }
 
-function saveKeys() {
-  const brave = document.getElementById('braveKeyInput').value.trim();
-  if (!brave) return alert('Brave Search API key is required. Get one free at brave.com/search/api');
-  state.keys.brave = brave;
-  state.keys.google = document.getElementById('googleKeyInput')?.value.trim() || '';
-  state.keys.elevenlabs = document.getElementById('elevenlabsKeyInput')?.value.trim() || '';
-  state.keys.venice = document.getElementById('veniceKeyInput')?.value.trim() || '';
-  nextStep();
-}
-
-function toggleBtn(btnId, enabled) {
-  document.getElementById(btnId).disabled = !enabled;
-}
-
-function copyCmd(btn) {
-  const code = btn.parentElement.querySelector('code');
-  navigator.clipboard.writeText(code.textContent);
-  btn.textContent = 'Copied!';
-  setTimeout(() => btn.textContent = 'Copy', 2000);
-}
-
-function escapeHtml(str) {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // Start
 render();
