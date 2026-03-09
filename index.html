@@ -8,7 +8,7 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:Georgia,serif;background:#fff;color:#222;font-size:19px;line-height:1.9;-webkit-font-smoothing:antialiased}
-    .w{max-width:460px;margin:0 auto;padding:80px 24px 60px}
+    .w{max-width:620px;margin:0 auto;padding:80px 24px 60px}
     h1{font-size:28px;font-weight:400;line-height:1.4;margin-bottom:6px}
     .sub{color:#999;font-size:16px;margin-bottom:56px}
     p{margin-bottom:20px}
@@ -54,7 +54,7 @@ s1:()=>`
 <h1>Set up your AI assistant</h1>
 <p class="sub">Takes about 10 minutes.</p>
 
-<p>First, install <a href="https://claude.ai/download" target="_blank">Claude Code</a>. It will walk you through creating a Claude account and choosing a plan. We recommend the $200/mo Max plan.</p>
+<p>First, install <a href="https://claude.ai/download" target="_blank">Claude Code</a>. It will walk you through creating a Claude account and choosing a plan. We recommend the $200/mo Max plan, but you can start at $20/mo and upgrade later as you hit the limits.</p>
 
 <p>Once installed, open Terminal (on Mac: press Cmd+Space, type <em>Terminal</em>, hit Enter) and run this:</p>
 
@@ -64,11 +64,19 @@ s1:()=>`
 
 <input type="password" id="in1" placeholder="Paste your Claude token" autocomplete="off">
 
-<p>Next, create a free account at <a href="https://brave.com/search/api" target="_blank">Brave Search API</a>. This lets your AI search the web. After signing up, you'll see your API key on the dashboard. Copy it and paste it here:</p>
+<button onclick="s1()">Next</button>
+`,
+
+s1b:()=>`
+<h1>Web search</h1>
+<p class="sub">So your AI can search the internet.</p>
+
+<p>Create a free account at <a href="https://brave.com/search/api" target="_blank">Brave Search API</a>. After signing up, you'll see your API key on the dashboard. Copy it and paste it here:</p>
 
 <input type="password" id="in2" placeholder="Paste your Brave Search key" autocomplete="off">
 
-<button onclick="s1()">Next</button>
+<button onclick="s1b()">Next</button>
+<a class="back" onclick="S.v='s1';render()">← Back</a>
 `,
 
 s2:()=>`
@@ -85,7 +93,7 @@ s2:()=>`
 <select id="in4"><option value="2">North America</option><option value="13">Europe</option><option value="22">Asia</option><option value="5">UK</option><option value="8">South America</option></select>
 </div>
 <button onclick="s2()">Set up my AI</button>
-<a class="back" onclick="S.v='s1';render()">← Back</a>
+<a class="back" onclick="S.v='s1b';render()">← Back</a>
 `,
 
 creating:()=>`
@@ -137,7 +145,8 @@ connect:()=>`
 };
 
 function pk(p,el){S.path=p;document.querySelectorAll('.pick-card').forEach(c=>c.classList.remove('on'));el.classList.add('on');const e=document.getElementById('ce');if(e)e.classList.toggle('show',p==='cloud')}
-function s1(){S.claude=document.getElementById('in1').value.trim();S.brave=document.getElementById('in2').value.trim();if(!S.claude)return alert('Paste your Claude token.');if(!S.brave)return alert('Paste your Brave key.');S.v='s2';render()}
+function s1(){S.claude=document.getElementById('in1').value.trim();if(!S.claude)return alert('Paste your Claude token.');S.v='s1b';render()}
+function s1b(){S.brave=document.getElementById('in2').value.trim();if(!S.brave)return alert('Paste your Brave Search key.');S.v='s2';render()}
 function s2(){if(!S.path)return alert('Pick cloud or local.');if(S.path==='local'){S.v='local';render();return}S.hkey=document.getElementById('in3').value.trim();S.region=document.getElementById('in4').value;if(!S.hkey)return alert('Paste your Hostinger key.');S.v='creating';render();createServer()}
 
 function lscript(){return`curl -fsSL https://openclaw.ai/install.sh | bash -s -- --no-onboard && \\
