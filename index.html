@@ -4,280 +4,146 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bot Setup Guide</title>
-  <meta name="description" content="Get your own 24/7 AI assistant.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='70' font-size='70'>🤖</text></svg>">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Georgia, 'Times New Roman', serif;
-      background: #fff;
-      color: #1a1a1a;
-      font-size: 18px;
-      line-height: 1.8;
-      -webkit-font-smoothing: antialiased;
-    }
-    .wrap { max-width: 540px; margin: 0 auto; padding: 60px 24px 80px; }
-
-    h1 { font-size: 36px; font-weight: 700; line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.5px; }
-    .subtitle { color: #666; font-size: 20px; margin-bottom: 60px; }
-
-    h2 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #999; margin-bottom: 24px; margin-top: 48px; font-family: -apple-system, system-ui, sans-serif; }
-
-    p { margin-bottom: 16px; color: #333; }
-    a { color: #1a1a1a; text-decoration: underline; text-underline-offset: 3px; }
-    a:hover { color: #000; }
-
-    .steps { margin: 16px 0 24px; padding-left: 24px; }
-    .steps li { margin-bottom: 8px; color: #444; }
-    .steps code { font-family: 'SF Mono', Menlo, monospace; font-size: 15px; background: #f5f5f5; padding: 2px 6px; border-radius: 3px; }
-
-    label { display: block; font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; font-family: -apple-system, system-ui, sans-serif; }
-    input, select {
-      display: block; width: 100%; padding: 14px 16px;
-      font-size: 16px; font-family: 'SF Mono', Menlo, monospace;
-      border: 1px solid #ddd; border-radius: 6px;
-      background: #fafafa; color: #1a1a1a;
-      margin-bottom: 8px;
-    }
-    input:focus, select:focus { outline: none; border-color: #999; background: #fff; }
-    input::placeholder { color: #bbb; }
-    .hint { font-size: 14px; color: #999; margin-bottom: 32px; font-family: -apple-system, system-ui, sans-serif; }
-    .hint a { color: #999; }
-
-    .pick { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
-    .pick-card {
-      padding: 28px 20px; text-align: center; cursor: pointer;
-      border: 1px solid #e0e0e0; border-radius: 8px;
-      transition: border-color 0.15s;
-      font-family: -apple-system, system-ui, sans-serif;
-    }
-    .pick-card:hover { border-color: #999; }
-    .pick-card.on { border-color: #1a1a1a; background: #fafafa; }
-    .pick-card .icon { font-size: 36px; margin-bottom: 12px; }
-    .pick-card .title { font-size: 16px; font-weight: 600; color: #1a1a1a; }
-    .pick-card .desc { font-size: 13px; color: #999; margin-top: 4px; }
-
-    .cloud-extra { display: none; margin-top: 8px; }
-    .cloud-extra.show { display: block; }
-
-    .plans { display: flex; gap: 8px; margin-bottom: 32px; font-family: -apple-system, system-ui, sans-serif; }
-    .plan { flex: 1; text-align: center; padding: 12px 8px; border: 1px solid #e0e0e0; border-radius: 6px; }
-    .plan .amt { font-size: 20px; font-weight: 700; color: #1a1a1a; }
-    .plan .name { font-size: 12px; color: #999; margin-top: 2px; }
-    .plan.pick { border-color: #1a1a1a; }
-    .plan.pick .name { color: #1a1a1a; }
-
-    .cmd {
-      font-family: 'SF Mono', Menlo, monospace; font-size: 14px;
-      background: #f5f5f5; border: 1px solid #e5e5e5; border-radius: 6px;
-      padding: 16px; margin: 16px 0 8px;
-      white-space: pre-wrap; word-break: break-all; line-height: 1.6;
-      cursor: pointer; position: relative; color: #333;
-    }
-    .cmd:hover { background: #f0f0f0; }
-    .cmd::after { content: 'Click to copy'; position: absolute; top: 8px; right: 12px; font-size: 11px; color: #bbb; font-family: -apple-system, system-ui, sans-serif; }
-    .cmd.copied::after { content: 'Copied'; color: #666; }
-
-    button {
-      display: block; width: 100%; padding: 16px;
-      font-size: 16px; font-weight: 600;
-      font-family: -apple-system, system-ui, sans-serif;
-      background: #1a1a1a; color: #fff;
-      border: none; border-radius: 6px; cursor: pointer;
-      margin-top: 40px; transition: background 0.15s;
-    }
-    button:hover { background: #333; }
-
-    .back { display: inline-block; font-size: 14px; color: #999; margin-top: 16px; cursor: pointer; font-family: -apple-system, system-ui, sans-serif; text-decoration: none; }
-    .back:hover { color: #666; }
-
-    .spinner { width: 32px; height: 32px; border: 2px solid #e0e0e0; border-top-color: #1a1a1a; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 40px auto 20px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .status { text-align: center; color: #666; font-size: 16px; }
-    .status strong { color: #1a1a1a; }
-
-    hr { border: none; border-top: 1px solid #eee; margin: 48px 0; }
-
-    .section { margin-top: 40px; }
-    .section h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; font-family: Georgia, serif; }
-    .section ol { margin-left: 24px; margin-top: 8px; line-height: 2; color: #444; font-size: 16px; }
-
-    .done { text-align: center; margin-top: 48px; padding: 40px 0; }
-    .done h3 { font-size: 28px; margin-bottom: 8px; }
-    .done p { color: #666; }
-
-    footer { text-align: center; color: #ccc; font-size: 13px; padding: 0 24px 40px; font-family: -apple-system, system-ui, sans-serif; }
-    footer a { color: #ccc; text-decoration: none; }
-
-    @media (max-width: 480px) {
-      h1 { font-size: 28px; }
-      .pick { grid-template-columns: 1fr; }
-      .plans { flex-direction: column; }
-    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:Georgia,serif;background:#fff;color:#1a1a1a;font-size:18px;line-height:1.8;-webkit-font-smoothing:antialiased}
+    .w{max-width:480px;margin:0 auto;padding:80px 24px 60px}
+    h1{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:48px;letter-spacing:-0.5px}
+    a{color:#1a1a1a;text-underline-offset:3px}
+    p{margin-bottom:16px;color:#444}
+    label{display:block;font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:6px;font-family:-apple-system,system-ui,sans-serif}
+    input,select{display:block;width:100%;padding:14px 16px;font-size:16px;font-family:'SF Mono',Menlo,monospace;border:1px solid #ddd;border-radius:6px;background:#fafafa;color:#1a1a1a;margin-bottom:6px}
+    input:focus,select:focus{outline:none;border-color:#999;background:#fff}
+    input::placeholder{color:#ccc}
+    .hint{font-size:13px;color:#aaa;margin-bottom:0;font-family:-apple-system,system-ui,sans-serif}
+    .hint a{color:#aaa}
+    .pick{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0 32px}
+    .pick-card{padding:28px 16px;text-align:center;cursor:pointer;border:1px solid #e0e0e0;border-radius:8px;transition:border-color .15s;font-family:-apple-system,system-ui,sans-serif}
+    .pick-card:hover{border-color:#999}
+    .pick-card.on{border-color:#1a1a1a}
+    .pick-card .i{font-size:32px;margin-bottom:10px}
+    .pick-card .t{font-size:15px;font-weight:600}
+    .pick-card .d{font-size:12px;color:#aaa;margin-top:2px}
+    .plans{display:flex;gap:8px;margin:0 0 32px;font-family:-apple-system,system-ui,sans-serif}
+    .plan{flex:1;text-align:center;padding:10px 6px;border:1px solid #e0e0e0;border-radius:6px}
+    .plan .a{font-size:18px;font-weight:700}
+    .plan .n{font-size:11px;color:#aaa;margin-top:1px}
+    .plan.s{border-color:#1a1a1a}
+    .plan.s .n{color:#1a1a1a}
+    .cmd{font-family:'SF Mono',Menlo,monospace;font-size:13px;background:#f5f5f5;border:1px solid #e5e5e5;border-radius:6px;padding:14px;margin:12px 0;white-space:pre-wrap;word-break:break-all;line-height:1.6;cursor:pointer;position:relative;color:#333}
+    .cmd:hover{background:#f0f0f0}
+    .cmd::after{content:'Copy';position:absolute;top:8px;right:10px;font-size:11px;color:#ccc;font-family:-apple-system,system-ui,sans-serif}
+    .cmd.copied::after{content:'Copied';color:#999}
+    button{display:block;width:100%;padding:16px;font-size:16px;font-weight:600;font-family:-apple-system,system-ui,sans-serif;background:#1a1a1a;color:#fff;border:none;border-radius:6px;cursor:pointer;margin-top:40px}
+    button:hover{background:#333}
+    .back{font-size:13px;color:#ccc;margin-top:12px;cursor:pointer;font-family:-apple-system,system-ui,sans-serif;text-decoration:none;display:inline-block}
+    .back:hover{color:#999}
+    .spinner{width:28px;height:28px;border:2px solid #e0e0e0;border-top-color:#1a1a1a;border-radius:50%;animation:s .7s linear infinite;margin:60px auto 16px}
+    @keyframes s{to{transform:rotate(360deg)}}
+    .st{text-align:center;color:#999;font-size:15px}
+    .st strong{color:#1a1a1a}
+    hr{border:none;border-top:1px solid #eee;margin:40px 0}
+    .sec h3{font-size:20px;font-weight:700;margin-bottom:8px}
+    .sec ol{margin:8px 0 0 22px;line-height:2;color:#444;font-size:16px}
+    .sec code{font-family:'SF Mono',Menlo,monospace;font-size:14px;background:#f5f5f5;padding:1px 5px;border-radius:3px}
+    .done{text-align:center;margin-top:48px}
+    .done h3{font-size:24px;margin-bottom:6px}
+    .done p{color:#aaa;font-size:15px}
+    .cloud-extra{display:none}
+    .cloud-extra.show{display:block}
+    footer{text-align:center;color:#ccc;font-size:12px;padding:0 24px 40px;font-family:-apple-system,system-ui,sans-serif}
+    footer a{color:#ccc;text-decoration:none}
+    @media(max-width:480px){h1{font-size:26px}.pick{grid-template-columns:1fr}.plans{flex-direction:column}}
   </style>
 </head>
 <body>
-
-<div class="wrap" id="app"></div>
-
-<footer>
-  <a href="https://humanitylabs.org">Humanity Labs</a> · <a href="https://openclaw.ai">OpenClaw</a> · <a href="https://discord.com/invite/clawd">Discord</a>
-</footer>
-
+<div class="w" id="app"></div>
+<footer><a href="https://www.botsetupguide.com">botsetupguide.com</a> · by <a href="https://humanitylabs.org">humanitylabs.org</a></footer>
 <script>
-const S = { view: 'form', path: null, claude: '', brave: '', hostinger: '', region: '' };
+const S={v:'s1',path:null,claude:'',brave:'',hkey:'',region:''};
+function render(){document.getElementById('app').innerHTML=V[S.v]();window.scrollTo({top:0,behavior:'smooth'})}
 
-function render() {
-  document.getElementById('app').innerHTML = views[S.view]();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-const views = {
-  form: () => `
+const V={
+  // Step 1: Claude + Brave
+  s1:()=>`
     <h1>Set up your AI assistant</h1>
-    <p class="subtitle">One form. We handle the rest.</p>
-
-    <h2>Claude subscription</h2>
-    <p>Your AI runs on Claude by Anthropic. <a href="https://claude.ai/upgrade" target="_blank">Subscribe here</a>, then generate a setup token:</p>
-    <ol class="steps">
-      <li>Install <a href="https://claude.ai/download" target="_blank">Claude Code</a></li>
-      <li>Open Terminal, run <code>claude setup-token</code></li>
-      <li>Copy the token</li>
-    </ol>
+    <p><a href="https://claude.ai/upgrade" target="_blank">Subscribe to Claude</a>, then generate a token:</p>
+    <ol style="margin:0 0 20px 22px;color:#444"><li>Install <a href="https://claude.ai/download" target="_blank">Claude Code</a></li><li>Run <code style="font-family:'SF Mono',Menlo,monospace;font-size:15px;background:#f5f5f5;padding:1px 5px;border-radius:3px">claude setup-token</code> in Terminal</li><li>Copy the token</li></ol>
     <div class="plans">
-      <div class="plan"><div class="amt">$20</div><div class="name">Pro</div></div>
-      <div class="plan"><div class="amt">$100</div><div class="name">Max 5x</div></div>
-      <div class="plan pick"><div class="amt">$200</div><div class="name">Max 20x ★</div></div>
+      <div class="plan"><div class="a">$20</div><div class="n">Pro</div></div>
+      <div class="plan"><div class="a">$100</div><div class="n">Max 5x</div></div>
+      <div class="plan s"><div class="a">$200</div><div class="n">Max 20x ★</div></div>
     </div>
     <label>Setup token</label>
-    <input type="password" id="in_claude" placeholder="Paste your token" autocomplete="off">
-    <div class="hint">Stays in your browser. We never see it.</div>
+    <input type="password" id="in1" placeholder="Paste token" autocomplete="off">
+    <p class="hint" style="margin-bottom:32px">Stays in your browser.</p>
+    <p><a href="https://brave.com/search/api" target="_blank">Get a Brave Search key</a> (free).</p>
+    <label>Brave Search key</label>
+    <input type="password" id="in2" placeholder="Paste key" autocomplete="off">
+    <button onclick="s1go()">Next</button>
+  `,
 
-    <h2>Web search</h2>
-    <p>So your AI can search the internet. <a href="https://brave.com/search/api" target="_blank">Get a free key here.</a></p>
-    <label>Brave Search API key</label>
-    <input type="password" id="in_brave" placeholder="Paste your key" autocomplete="off">
-    <div class="hint">Free tier. $5 in credits per month.</div>
-
-    <h2>Where to install</h2>
+  // Step 2: Where
+  s2:()=>`
+    <h1>Where should it run?</h1>
     <div class="pick">
-      <div class="pick-card${S.path==='cloud'?' on':''}" onclick="pick('cloud',this)">
-        <div class="icon">☁️</div>
-        <div class="title">Cloud server</div>
-        <div class="desc">~$5/mo · always on</div>
+      <div class="pick-card${S.path==='cloud'?' on':''}" onclick="pk('cloud',this)">
+        <div class="i">☁️</div><div class="t">Cloud</div><div class="d">~$5/mo</div>
       </div>
-      <div class="pick-card${S.path==='local'?' on':''}" onclick="pick('local',this)">
-        <div class="icon">💻</div>
-        <div class="title">My computer</div>
-        <div class="desc">Free · Mac, Linux, Pi</div>
+      <div class="pick-card${S.path==='local'?' on':''}" onclick="pk('local',this)">
+        <div class="i">💻</div><div class="t">My computer</div><div class="d">Free</div>
       </div>
     </div>
-
-    <div class="cloud-extra${S.path==='cloud'?' show':''}" id="cloud_extra">
-      <p>We use <a href="https://www.hostinger.com/vps-hosting?REFERRALCODE=XLSMIGUELN7E" target="_blank">Hostinger</a> to create your server automatically. Sign up, add a payment method, then go to <strong>Account → API</strong> to create a key.</p>
+    <div class="cloud-extra${S.path==='cloud'?' show':''}" id="ce">
+      <p>Sign up at <a href="https://www.hostinger.com/vps-hosting?REFERRALCODE=XLSMIGUELN7E" target="_blank">Hostinger</a>. Go to <strong>Account → API</strong> to create a key.</p>
       <label>Hostinger API key</label>
-      <input type="password" id="in_hostinger" placeholder="Paste your key" autocomplete="off">
-      <div class="hint">We'll create a KVM 2 server for you.</div>
+      <input type="password" id="in3" placeholder="Paste key" autocomplete="off">
+      <p class="hint" style="margin-bottom:20px">We'll create a KVM 2 server.</p>
       <label>Server location</label>
-      <select id="in_region">
-        <option value="2">North America</option>
-        <option value="13">Europe</option>
-        <option value="22">Asia</option>
-        <option value="5">United Kingdom</option>
-        <option value="8">South America</option>
-      </select>
+      <select id="in4"><option value="2">North America</option><option value="13">Europe</option><option value="22">Asia</option><option value="5">UK</option><option value="8">South America</option></select>
     </div>
-
-    <button onclick="go()">Set up my AI</button>
+    <button onclick="s2go()">Set up my AI</button>
+    <a class="back" onclick="S.v='s1';render()">← Back</a>
   `,
 
-  creating: () => `
+  // Creating
+  creating:()=>`
     <h1>Creating your server</h1>
-    <p class="subtitle">This takes 2-5 minutes.</p>
     <div class="spinner"></div>
-    <p class="status" id="status_text">Uploading setup script...</p>
+    <p class="st" id="stxt">Uploading script...</p>
   `,
 
-  local: () => `
-    <h1>Run this in Terminal</h1>
-    <p class="subtitle">One command. It installs and configures everything.</p>
-    <div class="cmd" onclick="copy(this)">${esc(localScript())}</div>
-    <p style="color:#999;font-size:14px;font-family:-apple-system,system-ui,sans-serif">The command will pause once to connect Tailscale. Follow the link it prints.</p>
-    <button onclick="S.view='connect';render()">Done — show me how to connect</button>
-    <a class="back" onclick="S.view='form';render()">← Back</a>
+  // Local
+  local:()=>`
+    <h1>Paste this in Terminal</h1>
+    <div class="cmd" onclick="cp(this)">${esc(lscript())}</div>
+    <button onclick="S.v='connect';render()">Done</button>
+    <a class="back" onclick="S.v='s2';render()">← Back</a>
   `,
 
-  connect: () => `
-    <h1>Connect to your AI</h1>
-    <p class="subtitle">Your assistant is running. Pick how to talk to it.</p>
-
-    <div class="section">
-      <h3>Telegram</h3>
-      <p>Chat like you're texting a friend.</p>
-      <ol>
-        <li>Message <a href="https://t.me/botfather" target="_blank">@BotFather</a> on Telegram</li>
-        <li>Send <code>/newbot</code>, follow the prompts</li>
-        <li>Copy the token, then run:</li>
-      </ol>
-      <div class="cmd" onclick="copy(this)">openclaw channels add --channel telegram --token YOUR_BOT_TOKEN && openclaw gateway restart</div>
-    </div>
-
+  // Connect
+  connect:()=>`
+    <h1>Connect</h1>
+    <div class="sec"><h3>Telegram</h3>
+    <ol><li>Message <a href="https://t.me/botfather" target="_blank">@BotFather</a>, send <code>/newbot</code></li><li>Copy the token, run:</li></ol>
+    <div class="cmd" onclick="cp(this)">openclaw channels add --channel telegram --token YOUR_BOT_TOKEN && openclaw gateway restart</div></div>
     <hr>
-
-    <div class="section">
-      <h3>Obsidian</h3>
-      <p>Chat inside your notes app, synced across all devices.</p>
-      <ol>
-        <li>Install <a href="https://obsidian.md" target="_blank">Obsidian</a></li>
-        <li>Settings → Community Plugins → Install <strong>BRAT</strong></li>
-        <li>BRAT → Add Beta Plugin:</li>
-      </ol>
-      <div class="cmd" onclick="copy(this)">oscarhenrycollins/obsidianclaw</div>
-      <p>Paste your Tailscale URL and token in the setup wizard.</p>
-    </div>
-
+    <div class="sec"><h3>Obsidian</h3>
+    <ol><li>Install <a href="https://obsidian.md" target="_blank">Obsidian</a> + BRAT plugin</li><li>BRAT → Add Beta Plugin:</li></ol>
+    <div class="cmd" onclick="cp(this)">oscarhenrycollins/obsidianclaw</div></div>
     <hr>
-
-    <div class="section">
-      <h3>Browser</h3>
-      <p>Open your Tailscale URL in any browser. Enter your token when asked.</p>
-    </div>
-
-    <div class="done">
-      <h3>You're set.</h3>
-      <p>Your AI is running 24/7. Questions? <a href="https://discord.com/invite/clawd">Join Discord.</a></p>
-    </div>
-
-    <a class="back" onclick="S.view='form';render()">← Start over</a>
+    <div class="sec"><h3>Browser</h3><p>Open your Tailscale URL in any browser.</p></div>
+    <div class="done"><h3>You're set.</h3><p>Your AI is running 24/7.</p></div>
+    <a class="back" onclick="S.v='s1';render()">← Start over</a>
   `
 };
 
-function pick(p, el) {
-  S.path = p;
-  document.querySelectorAll('.pick-card').forEach(c => c.classList.remove('on'));
-  el.classList.add('on');
-  const extra = document.getElementById('cloud_extra');
-  if (extra) extra.classList.toggle('show', p === 'cloud');
-}
+function pk(p,el){S.path=p;document.querySelectorAll('.pick-card').forEach(c=>c.classList.remove('on'));el.classList.add('on');const e=document.getElementById('ce');if(e)e.classList.toggle('show',p==='cloud')}
+function s1go(){S.claude=document.getElementById('in1').value.trim();S.brave=document.getElementById('in2').value.trim();if(!S.claude)return alert('Paste your Claude setup token.');if(!S.brave)return alert('Paste your Brave Search key.');S.v='s2';render()}
+function s2go(){if(!S.path)return alert('Pick cloud or local.');if(S.path==='local'){S.v='local';render();return}S.hkey=document.getElementById('in3').value.trim();S.region=document.getElementById('in4').value;if(!S.hkey)return alert('Paste your Hostinger API key.');S.v='creating';render();createServer()}
 
-function go() {
-  S.claude = document.getElementById('in_claude').value.trim();
-  S.brave = document.getElementById('in_brave').value.trim();
-  if (!S.claude) return alert('Paste your Claude setup token.');
-  if (!S.brave) return alert('Paste your Brave Search API key.');
-  if (!S.path) return alert('Choose where to install.');
-
-  if (S.path === 'local') { S.view = 'local'; render(); return; }
-
-  S.hostinger = document.getElementById('in_hostinger').value.trim();
-  S.region = document.getElementById('in_region').value;
-  if (!S.hostinger) return alert('Paste your Hostinger API key.');
-  S.view = 'creating'; render();
-  createServer();
-}
-
-function localScript() {
-  return `curl -fsSL https://openclaw.ai/install.sh | bash -s -- --no-onboard && \\
+function lscript(){return`curl -fsSL https://openclaw.ai/install.sh | bash -s -- --no-onboard && \\
 openclaw config set tools.web.search.apiKey "${S.brave}" && \\
 openclaw config set gateway.bind loopback && \\
 openclaw config set gateway.tailscale.mode serve && \\
@@ -286,11 +152,9 @@ openclaw config set gateway.auth.allowTailscale true && \\
 echo "${S.claude}" | openclaw models auth paste-token --provider anthropic --yes && \\
 curl -fsSL https://tailscale.com/install.sh | sh && \\
 sudo tailscale up && \\
-openclaw gateway start`;
-}
+openclaw gateway start`}
 
-function serverScript() {
-  return `#!/bin/bash
+function sscript(){return`#!/bin/bash
 set -e
 export DEBIAN_FRONTEND=noninteractive
 curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
@@ -303,55 +167,28 @@ openclaw config set gateway.auth.mode token
 openclaw config set gateway.auth.allowTailscale true
 echo "${S.claude}" | openclaw models auth paste-token --provider anthropic --yes
 curl -fsSL https://tailscale.com/install.sh | sh
-openclaw gateway start`;
+openclaw gateway start`}
+
+async function api(m,p,b){const r=await fetch('/api/hostinger',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({apiKey:S.hkey,method:m,path:p,body:b})});return r.json()}
+
+async function createServer(){
+  try{
+    st('Uploading script...');
+    const s=await api('POST','/api/vps/v1/post-install-scripts',{name:'OC-'+Date.now(),content:sscript()});
+    if(!s.id)throw new Error(s.message||'Upload failed');
+    st('Creating server...');
+    const vm=await api('POST','/api/vps/v1/virtual-machines',{plan:'hostingercom-vps-kvm2-usd-1m',data_center_id:parseInt(S.region),template_id:1002,hostname:'openclaw-ai',post_install_script_id:s.id});
+    const id=vm.id||vm.virtual_machine_id;if(!id)throw new Error(vm.message||'Creation failed');
+    st('Installing...');
+    for(let i=0;i<60;i++){await slp(5000);try{const r=await api('GET',`/api/vps/v1/virtual-machines/${id}`);if((r.state||r.status)==='running'){S.v='connect';render();return}}catch{}st(`Installing... ${i*5}s`)}
+    st('Check <a href="https://hpanel.hostinger.com" target="_blank">Hostinger dashboard</a>.');
+  }catch(e){st(e.message)}
 }
 
-async function api(method, path, body) {
-  const r = await fetch('/api/hostinger', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ apiKey: S.hostinger, method, path, body })
-  });
-  return r.json();
-}
-
-async function createServer() {
-  try {
-    setStatus('Uploading setup script...');
-    const s = await api('POST', '/api/vps/v1/post-install-scripts', { name: 'OpenClaw ' + Date.now(), content: serverScript() });
-    if (!s.id) throw new Error(s.message || 'Script upload failed');
-
-    setStatus('Creating server...');
-    const vm = await api('POST', '/api/vps/v1/virtual-machines', {
-      plan: 'hostingercom-vps-kvm2-usd-1m',
-      data_center_id: parseInt(S.region),
-      template_id: 1002,
-      hostname: 'openclaw-ai',
-      post_install_script_id: s.id
-    });
-    const id = vm.id || vm.virtual_machine_id;
-    if (!id) throw new Error(vm.message || 'Server creation failed');
-
-    setStatus('Server created. Installing everything...');
-    for (let i = 0; i < 60; i++) {
-      await sleep(5000);
-      try {
-        const st = await api('GET', `/api/vps/v1/virtual-machines/${id}`);
-        if ((st.state || st.status) === 'running') {
-          S.view = 'connect'; render(); return;
-        }
-      } catch {}
-      setStatus(`Installing... ${i * 5}s`);
-    }
-    setStatus('Taking longer than expected. <a href="https://hpanel.hostinger.com" target="_blank">Check Hostinger.</a>');
-  } catch (e) {
-    setStatus(`Something went wrong: ${e.message}`);
-  }
-}
-
-function setStatus(h) { const el = document.getElementById('status_text'); if (el) el.innerHTML = h; }
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function copy(el) { navigator.clipboard.writeText(el.textContent); el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 2000); }
+function st(h){const el=document.getElementById('stxt');if(el)el.innerHTML=h}
+function slp(ms){return new Promise(r=>setTimeout(r,ms))}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function cp(el){navigator.clipboard.writeText(el.textContent);el.classList.add('copied');setTimeout(()=>el.classList.remove('copied'),2000)}
 
 render();
 </script>
