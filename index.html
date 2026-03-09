@@ -54,16 +54,19 @@ s1:()=>`
 <h1>Set up your AI assistant</h1>
 <p class="sub">Takes about 10 minutes.</p>
 
-<p><a href="https://claude.ai/upgrade" target="_blank">Subscribe to Claude</a> ($200/mo Max plan recommended), then get your token:</p>
-<ol>
-<li>Install <a href="https://claude.ai/download" target="_blank">Claude Code</a></li>
-<li>Run <code>claude setup-token</code> in Terminal</li>
-<li>Copy the token</li>
-</ol>
+<p>First, install <a href="https://claude.ai/download" target="_blank">Claude Code</a>. It will walk you through creating a Claude account and choosing a plan. We recommend the $200/mo Max plan.</p>
+
+<p>Once installed, open Terminal (on Mac: press Cmd+Space, type <em>Terminal</em>, hit Enter) and run this:</p>
+
+<div class="cmd" onclick="cp(this)">claude setup-token</div>
+
+<p>It will print a long token. Copy the whole thing and paste it here:</p>
+
 <input type="password" id="in1" placeholder="Paste your Claude token" autocomplete="off">
 
-<p>Get a <a href="https://brave.com/search/api" target="_blank">Brave Search</a> key (free) so your AI can search the web.</p>
-<input type="password" id="in2" placeholder="Paste your Brave key" autocomplete="off">
+<p>Next, create a free account at <a href="https://brave.com/search/api" target="_blank">Brave Search API</a>. This lets your AI search the web. After signing up, you'll see your API key on the dashboard. Copy it and paste it here:</p>
+
+<input type="password" id="in2" placeholder="Paste your Brave Search key" autocomplete="off">
 
 <button onclick="s1()">Next</button>
 `,
@@ -169,6 +172,9 @@ function st(h){const el=document.getElementById('stxt');if(el)el.innerHTML=h}
 function slp(ms){return new Promise(r=>setTimeout(r,ms))}
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function cp(el){const t=el.textContent;navigator.clipboard.writeText(t);const o=el.style.background;el.style.background='#e8e8e8';setTimeout(()=>el.style.background=o,300)}
+
+// Strip newlines on paste into any input
+document.addEventListener('paste',e=>{if(e.target.tagName==='INPUT'){e.preventDefault();const t=(e.clipboardData||window.clipboardData).getData('text').replace(/[\r\n]+/g,'').trim();e.target.value=t}});
 
 render();
 </script>
