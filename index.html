@@ -8,148 +8,585 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:Georgia,serif;background:#fff;color:#222;font-size:19px;line-height:1.9;-webkit-font-smoothing:antialiased}
-    .w{max-width:620px;margin:0 auto;padding:80px 24px 60px}
-    h1{font-size:28px;font-weight:400;line-height:1.4;margin-bottom:6px}
-    .sub{color:#999;font-size:16px;margin-bottom:56px}
+    header{padding:20px 24px;font-family:-apple-system,system-ui,sans-serif;font-size:14px;color:#999;letter-spacing:.3px;text-align:center}
+    header a{color:#999;text-decoration:none}
+    header a:hover{color:#222}
+    .w{max-width:800px;margin:0 auto;padding:40px 24px 60px}
+    h1{font-size:28px;font-weight:400;line-height:1.4;margin-bottom:32px}
+    h1 em{font-style:italic;font-weight:400}
+    h1 a{color:#222;text-decoration:none}
+    h2{font-size:22px;font-weight:400;margin:40px 0 16px}
+    .hint{color:#999;font-size:15px;line-height:1.6;margin:-8px 0 24px;font-family:-apple-system,system-ui,sans-serif}
+    .example{font-family:Menlo,monospace;font-size:12px;color:#bbb;background:#fafafa;padding:8px 12px;border-radius:4px;margin:-12px 0 20px;word-break:break-all}
+    .warn{color:#c44;font-size:15px;font-family:-apple-system,system-ui,sans-serif;margin:-12px 0 20px;display:none}
+    .warn.show{display:block}
     p{margin-bottom:20px}
     a{color:#222}
     ol{margin:0 0 28px 28px}
-    ol li{margin-bottom:4px}
+    ol li{margin-bottom:8px;font-family:-apple-system,system-ui,sans-serif;font-size:16px;line-height:1.6;color:#555}
     code{font-family:Menlo,monospace;font-size:15px}
-    input,select{display:block;width:100%;padding:14px;font-size:16px;font-family:Menlo,monospace;border:1px solid #ddd;border-radius:4px;background:#fff;color:#222;margin:8px 0 28px}
+    label{display:block;font-size:15px;color:#999;margin-bottom:4px;font-family:-apple-system,system-ui,sans-serif}
+    input,select{display:block;width:100%;padding:14px;font-size:16px;font-family:Menlo,monospace;border:1px solid #ddd;border-radius:4px;background:#fff;color:#222;margin:0 0 20px}
     input:focus,select:focus{outline:none;border-color:#aaa}
     input::placeholder{color:#ccc}
-    .pick{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 28px}
-    .pick-card{padding:24px 16px;text-align:center;cursor:pointer;border:1px solid #ddd;border-radius:4px}
+    .input-text{font-family:Georgia,serif}
+    .pick{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:0 0 28px}
+    .pick-card{padding:28px 20px;cursor:pointer;border:1px solid #ddd;border-radius:4px;transition:border-color .15s}
     .pick-card:hover{border-color:#aaa}
     .pick-card.on{border-color:#222}
-    .pick .i{font-size:28px;margin-bottom:8px}
-    .pick .t{font-size:16px;font-family:-apple-system,system-ui,sans-serif}
-    .pick .d{font-size:13px;color:#999;margin-top:2px;font-family:-apple-system,system-ui,sans-serif}
-    .cmd{font-family:Menlo,monospace;font-size:13px;background:#f7f7f7;border-radius:4px;padding:14px;margin:12px 0 20px;white-space:pre-wrap;word-break:break-all;line-height:1.6;cursor:pointer;color:#333}
+    .pick .icon{font-size:28px;margin-bottom:12px}
+    .pick .title{font-size:17px;font-weight:600;margin-bottom:4px;font-family:-apple-system,system-ui,sans-serif}
+    .pick .desc{font-size:14px;color:#666;line-height:1.5;font-family:-apple-system,system-ui,sans-serif}
+    .pick .pros{color:#555;font-size:13px;margin-top:10px;font-family:-apple-system,system-ui,sans-serif;line-height:1.5}
+    .pick .cons{color:#999;font-size:13px;margin-top:4px;font-family:-apple-system,system-ui,sans-serif;line-height:1.5}
+    .cmd{font-family:Menlo,monospace;font-size:13px;background:#f7f7f7;border-radius:4px;padding:14px;margin:12px 0 20px;white-space:pre-wrap;word-break:break-all;line-height:1.6;cursor:pointer;color:#333;position:relative}
     .cmd:hover{background:#f0f0f0}
+    .cmd::after{content:'click to copy';position:absolute;right:12px;top:12px;font-size:11px;color:#ccc;font-family:-apple-system,system-ui,sans-serif}
+    .cmd:hover::after{color:#999}
+    .step-list{margin:0 0 28px;padding:0;list-style:none;font-family:-apple-system,system-ui,sans-serif;font-size:15px;line-height:1.7;color:#666}
+    .step-list li{padding:8px 0;border-bottom:1px solid #f5f5f5}
+    .step-list li:last-child{border-bottom:none}
+    .step-list .num{color:#222;font-weight:600;margin-right:8px}
     button{display:block;width:100%;padding:16px;font-size:16px;font-weight:600;font-family:-apple-system,system-ui,sans-serif;background:#222;color:#fff;border:none;border-radius:4px;cursor:pointer;margin-top:40px}
     button:hover{background:#444}
+    button:disabled{background:#ccc;cursor:not-allowed}
     .back{font-size:14px;color:#ccc;margin-top:12px;cursor:pointer;text-decoration:none;display:inline-block;font-family:-apple-system,system-ui,sans-serif}
     .back:hover{color:#999}
-    .spinner{width:24px;height:24px;border:2px solid #ddd;border-top-color:#222;border-radius:50%;animation:s .7s linear infinite;margin:60px auto 16px}
+    .spinner{width:24px;height:24px;border:2px solid #ddd;border-top-color:#222;border-radius:50%;animation:s .7s linear infinite;margin:40px auto 16px}
     @keyframes s{to{transform:rotate(360deg)}}
-    .st{text-align:center;color:#999;font-size:16px}
+    .st{text-align:center;color:#999;font-size:16px;font-family:-apple-system,system-ui,sans-serif}
     hr{border:none;border-top:1px solid #eee;margin:36px 0}
     .extra{display:none}.extra.show{display:block}
+    .optional-section{margin-top:32px;padding-top:24px;border-top:1px solid #eee}
+    .error-box{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:24px;margin:32px 0;display:none}
+    .error-box.show{display:block}
+    .error-box h3{font-size:17px;color:#991b1b;margin-bottom:8px;font-family:-apple-system,system-ui,sans-serif;font-weight:600}
+    .error-box p{font-size:15px;color:#7f1d1d;margin-bottom:12px;font-family:-apple-system,system-ui,sans-serif;line-height:1.6}
+    .error-box a{color:#991b1b}
+    .error-box button{background:#991b1b;margin-top:16px}
+    .error-box button:hover{background:#7f1d1d}
+    .section-card{background:#fafafa;border-radius:8px;padding:24px;margin:20px 0}
+    .section-card h3{font-size:17px;font-weight:600;margin-bottom:8px;font-family:-apple-system,system-ui,sans-serif}
+    .section-card p{font-size:15px;color:#666;font-family:-apple-system,system-ui,sans-serif;line-height:1.6;margin-bottom:12px}
+    .section-card .cmd{margin:8px 0 12px}
+    .section-card ol{margin:8px 0 16px 20px}
+    .section-card ol li{font-size:14px;color:#666;margin-bottom:6px}
+    .existing-link{font-size:15px;color:#999;font-family:-apple-system,system-ui,sans-serif;margin-top:32px;text-align:center}
+    .existing-link a{color:#999;text-decoration:underline}
+    .existing-link a:hover{color:#222}
+    .success-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:24px;margin:20px 0;text-align:center}
+    .success-box .icon{font-size:48px;margin-bottom:12px}
+    .success-box h3{font-size:20px;font-weight:600;margin-bottom:8px;font-family:-apple-system,system-ui,sans-serif}
+    .success-box p{font-size:15px;color:#666;font-family:-apple-system,system-ui,sans-serif;line-height:1.6;margin-bottom:0}
+    .upgrade-cta{background:#fafafa;border:1px solid #eee;border-radius:8px;padding:24px;margin:32px 0;text-align:center}
+    .upgrade-cta h3{font-size:17px;font-weight:600;margin-bottom:8px;font-family:-apple-system,system-ui,sans-serif}
+    .upgrade-cta p{font-size:15px;color:#666;font-family:-apple-system,system-ui,sans-serif;line-height:1.6;margin-bottom:0}
+    .upgrade-cta a{color:#222;font-weight:600}
     footer{text-align:center;color:#ccc;font-size:12px;padding:0 24px 40px;font-family:-apple-system,system-ui,sans-serif}
     footer a{color:#ccc;text-decoration:none}
-    @media(max-width:480px){.pick{grid-template-columns:1fr}h1{font-size:24px}}
+    @media(max-width:520px){.pick{grid-template-columns:1fr}h1{font-size:24px}}
   </style>
 </head>
 <body>
+<header><a href="/" onclick="goHome();return false">BotSetupGuide.com</a></header>
 <div class="w" id="app"></div>
 <footer><a href="https://www.botsetupguide.com">botsetupguide.com</a> · by <a href="https://humanitylabs.org">humanitylabs.org</a></footer>
 <script>
-const S={v:'s1',path:null,claude:'',brave:'',hkey:'',region:''};
+const S={v:'s1',path:null,mode:null,claude:'',brave:'',hkey:'',tgtoken:'',agents:['','','']};
+
+function totalSteps(){return S.mode==='quick'?6:6}
+const stepNum={s1:1,s2:2,s3:3,s4:4,s5:5,creating:6,local:6,quicklocal:6,quicktelegram:6,connect:6};
+function btnLabel(text){const n=stepNum[S.v]||1;const t=totalSteps();return n<t?`${text} (${n} of ${t})`:`${text}`}
 function render(){document.getElementById('app').innerHTML=V[S.v]();window.scrollTo({top:0,behavior:'smooth'})}
+function goHome(){S.v='s1';history.pushState(null,'','/');render()}
 
 const V={
 s1:()=>`
-<h1>Set up your AI assistant</h1>
-<p class="sub">Takes about 10 minutes.</p>
+<h1>Set up your <a href="https://openclaw.ai" target="_blank"><em>OpenClaw</em></a> bot</h1>
 
-<p>First, install <a href="https://claude.ai/download" target="_blank">Claude Code</a>. It will walk you through creating a Claude account and choosing a plan. We recommend the $200/mo Max plan, but you can start at $20/mo and upgrade later as you hit the limits.</p>
+<p>Where will your bot run?</p>
+<p class="hint">It needs a dedicated machine that stays on. Not the computer you use day-to-day.</p>
 
-<p>Once installed, open Terminal (on Mac: press Cmd+Space, type <em>Terminal</em>, hit Enter) and run this:</p>
+<div class="pick">
+<div class="pick-card${S.path==='cloud'?' on':''}" onclick="pk('cloud',this)">
+<div class="icon">☁️</div>
+<div class="title">Rent a cloud server</div>
+<div class="desc">We rent a virtual computer for you from Hostinger and set it up automatically.</div>
+<div class="pros">✓ Always on, we handle the setup</div>
+<div class="cons">⊘ Monthly cost, relies on Hostinger</div>
+</div>
+<div class="pick-card${S.path==='local'?' on':''}" onclick="pk('local',this)">
+<div class="icon">🖥</div>
+<div class="title">Use a dedicated computer</div>
+<div class="desc">A Mac mini, old laptop, or any spare machine you're not using. Wipe it clean and use it only for this.</div>
+<div class="pros">✓ You own it, no monthly fee</div>
+<div class="cons">⊘ Must stay powered on and connected</div>
+</div>
+</div>
+
+<div class="extra${S.path==='cloud'?' show':''}" id="ce">
+<ol>
+<li>Go to <a href="https://www.hostinger.com/vps-hosting?REFERRALCODE=XLSMIGUELN7E" target="_blank">Hostinger VPS Hosting</a> and find the <strong>KVM 2</strong> plan ("Most Popular"). Click <strong>"Choose plan"</strong>.</li>
+<li>Change the period dropdown from "24 months" to <strong>"1 month"</strong>. You should see <strong>$11.19/mo</strong> (renews at $24.99/mo). Skip the daily backup upsell.</li>
+<li>Pick the server location closest to you, create your account, and complete the purchase.</li>
+<li>In the dashboard: profile icon (top right), then <strong>Account</strong>, then <strong>API</strong> (left sidebar), then <strong>"Create API token"</strong>. Copy it.</li>
+</ol>
+<p>Paste your API key here:</p>
+<input type="password" id="in3" placeholder="Paste your Hostinger API key" autocomplete="off">
+<div class="example">Looks like: hstgr_a1b2c3d4e5...about 40 characters long</div>
+<div class="warn" id="w3"></div>
+</div>
+
+<button onclick="s1n()">${btnLabel('Next')}</button>
+<p class="existing-link">Already have a bot running? <a href="/upgrade" onclick="goUpgrade();return false">Add remote access &amp; note sync</a></p>
+`,
+
+s2:()=>`
+<h1>Install Claude Code</h1>
+
+<p>Download and install <a href="https://claude.ai/download" target="_blank">Claude Code</a>. It will walk you through creating a Claude account and choosing a plan.</p>
+<p class="hint">We recommend the $200/mo Max plan. You can start at $20/mo and upgrade anytime. No commitment needed.</p>
+
+<p>Once installed, open a terminal and run this command:</p>
+<p class="hint"><strong>Mac:</strong> press Cmd+Space, type Terminal, hit Enter. <strong>Windows:</strong> press Win+X, select Terminal.</p>
 
 <div class="cmd" onclick="cp(this)">claude setup-token</div>
 
 <p>It will print a long token. Copy the whole thing and paste it here:</p>
 
 <input type="password" id="in1" placeholder="Paste your Claude token" autocomplete="off">
+<div class="example">Looks like: sk-ant-cc01-a1b2c3d4e5f6...about 200 characters long</div>
+<div class="warn" id="w1"></div>
 
-<button onclick="s1()">Next</button>
-`,
-
-s1b:()=>`
-<h1>Web search</h1>
-<p class="sub">So your AI can search the internet.</p>
-
-<p>Create a free account at <a href="https://brave.com/search/api" target="_blank">Brave Search API</a>. After signing up, you'll see your API key on the dashboard. Copy it and paste it here:</p>
-
-<input type="password" id="in2" placeholder="Paste your Brave Search key" autocomplete="off">
-
-<button onclick="s1b()">Next</button>
+<button onclick="s2n()">${btnLabel('Next')}</button>
 <a class="back" onclick="S.v='s1';render()">← Back</a>
 `,
 
-s2:()=>`
-<h1>Where should it run?</h1>
-<p class="sub">Pick one.</p>
+s3:()=>`
+<h1>Web search</h1>
+
+<p>Create a free account at <a href="https://brave.com/search/api" target="_blank">Brave Search API</a>.</p>
+<p class="hint">This lets your bot search the internet. Free plan, no credit card needed.</p>
+
+<p>After signing up, copy your API key from the dashboard and paste it here:</p>
+
+<input type="password" id="in2" placeholder="Paste your Brave Search key" autocomplete="off">
+<div class="example">Looks like: BSAQx9p5B-69...about 30 characters long</div>
+<div class="warn" id="w2"></div>
+
+<button onclick="s3n()">${btnLabel('Next')}</button>
+<a class="back" onclick="S.v='s2';render()">← Back</a>
+`,
+
+s4:()=>`
+<h1>Name your bots</h1>
+
+<p>Give your first bot a name. This is who you'll be talking to every day.</p>
+
+<label>First bot (required)</label>
+<input type="text" id="ag1" class="input-text" placeholder="e.g. Jarvis, Nova, Atlas" value="${esc(S.agents[0])}" autocomplete="off">
+
+<div class="optional-section">
+<p>Want additional bots? You don't have to use them, but it's much easier to create them now than to add them later.</p>
+<p class="hint">Some people like having one for work, one for personal stuff, or one with a different personality.</p>
+
+<label>Second bot (optional)</label>
+<input type="text" id="ag2" class="input-text" placeholder="e.g. Friday, Echo" value="${esc(S.agents[1])}" autocomplete="off">
+
+<label>Third bot (optional)</label>
+<input type="text" id="ag3" class="input-text" placeholder="e.g. Sage, Pixel" value="${esc(S.agents[2])}" autocomplete="off">
+</div>
+
+<button onclick="s4n()">${btnLabel('Next')}</button>
+<a class="back" onclick="S.v='s3';render()">← Back</a>
+`,
+
+s5:()=>`
+<h1>Choose your setup</h1>
+
+<p>How much do you want to set up right now?</p>
+
 <div class="pick">
-<div class="pick-card${S.path==='cloud'?' on':''}" onclick="pk('cloud',this)"><div class="i">☁️</div><div class="t">Cloud</div><div class="d">~$5/mo, always on</div></div>
-<div class="pick-card${S.path==='local'?' on':''}" onclick="pk('local',this)"><div class="i">💻</div><div class="t">My computer</div><div class="d">Free</div></div>
+<div class="pick-card${S.mode==='quick'?' on':''}" onclick="pkMode('quick',this)">
+<div class="icon">📱</div>
+<div class="title">Quick setup</div>
+<div class="desc">Get your bot running on Telegram. Chat from your phone in minutes. You can always add more later.</div>
+<div class="pros">✓ Fast, simple, no extra accounts needed</div>
+<div class="cons">⊘ Telegram only, no browser or note sync</div>
 </div>
-<div class="extra${S.path==='cloud'?' show':''}" id="ce">
-<p>Sign up at <a href="https://www.hostinger.com/vps-hosting?REFERRALCODE=XLSMIGUELN7E" target="_blank">Hostinger</a>, then go to Account → API and create a key.</p>
-<input type="password" id="in3" placeholder="Paste your Hostinger key" autocomplete="off">
-<p>Server location</p>
-<select id="in4"><option value="2">North America</option><option value="13">Europe</option><option value="22">Asia</option><option value="5">UK</option><option value="8">South America</option></select>
+<div class="pick-card${S.mode==='full'?' on':''}" onclick="pkMode('full',this)">
+<div class="icon">🔧</div>
+<div class="title">Full setup</div>
+<div class="desc">Everything above, plus access your bot from any device via browser, and sync notes across all your devices with Obsidian.</div>
+<div class="pros">✓ Browser access, Obsidian notes, multi-device</div>
+<div class="cons">⊘ Takes longer, requires Tailscale + Obsidian accounts</div>
 </div>
-<button onclick="s2()">Set up my AI</button>
-<a class="back" onclick="S.v='s1b';render()">← Back</a>
+</div>
+
+<button onclick="s5n()">${btnLabel('Next')}</button>
+<a class="back" onclick="S.v='s4';render()">← Back</a>
+`,
+
+quicklocal:()=>`
+<h1>Install your bot</h1>
+
+<p>Open a terminal on your <strong>dedicated machine</strong> (not your everyday computer) and paste this command.</p>
+<p class="hint"><strong>Mac:</strong> press Cmd+Space, type Terminal, hit Enter. <strong>Windows:</strong> press Win+X, select Terminal.</p>
+
+<div class="cmd" onclick="cp(this)">${esc(quickLocalScript())}</div>
+
+<p>Here's what it does:</p>
+<ul class="step-list">
+<li><span class="num">1.</span> Installs <strong>OpenClaw</strong>, the software that runs your bot</li>
+<li><span class="num">2.</span> Saves your Brave Search key so your bot can search the web</li>
+<li><span class="num">3.</span> Connects your Claude account so your bot can think and respond</li>
+<li><span class="num">4.</span> Starts your bot</li>
+</ul>
+
+<button onclick="S.v='quicktelegram';render()">Done, it finished</button>
+<a class="back" onclick="S.v='s5';render()">← Back</a>
+`,
+
+quicktelegram:()=>`
+<h1>Connect Telegram</h1>
+
+<p>Now let's connect your bot to Telegram so you can chat from your phone.</p>
+
+<div class="section-card">
+<h3>Create your Telegram bot</h3>
+<ol>
+<li>Open Telegram and message <a href="https://t.me/botfather" target="_blank">@BotFather</a></li>
+<li>Send <code>/newbot</code></li>
+<li>Choose a name (e.g. "${esc(S.agents[0])}")</li>
+<li>Choose a username (must end in "bot", e.g. "${esc(S.agents[0].toLowerCase().replace(/\s+/g,''))}bot")</li>
+<li>BotFather will give you a token. Copy it.</li>
+</ol>
+</div>
+
+<p>Paste your Telegram bot token here:</p>
+<input type="password" id="tgtoken" placeholder="Paste your Telegram bot token" value="${esc(S.tgtoken)}" autocomplete="off">
+<div class="example">Looks like: 7123456789:AAH...about 46 characters long</div>
+<div class="warn" id="wtg"></div>
+
+<p>Run this command on your bot's machine:</p>
+<div class="cmd" onclick="cp(this)">${esc(tgCmd())}</div>
+<p class="hint">This connects your Telegram bot to OpenClaw and restarts the server.</p>
+
+<button onclick="tgNext()">Done, it's connected</button>
+<a class="back" onclick="S.v=${S.path==='cloud'?"'creating'":"'quicklocal'"};render()">← Back</a>
+`,
+
+quickdone:()=>`
+<div class="success-box">
+<div class="icon">🎉</div>
+<h3>Your bot is live!</h3>
+<p>Open Telegram and send a message to your bot. It should respond.</p>
+</div>
+
+<p>That's it. Your bot is running 24/7 and you can chat with it anytime from Telegram.</p>
+
+<div class="upgrade-cta">
+<h3>Want more?</h3>
+<p>You can add browser access from any device, a web dashboard, and Obsidian note sync across all your devices.</p>
+<p style="margin-top:12px"><a href="/upgrade" onclick="goUpgrade();return false">Add remote access &amp; note sync →</a></p>
+</div>
+
+<p style="text-align:center;margin-top:32px"><a class="back" onclick="goHome()">← Start over</a></p>
+`,
+
+local:()=>`
+<h1>Run the setup command</h1>
+
+<p>Open a terminal on your <strong>dedicated machine</strong> (not your everyday computer) and paste this command.</p>
+<p class="hint"><strong>Mac:</strong> press Cmd+Space, type Terminal, hit Enter. <strong>Windows:</strong> press Win+X, select Terminal.</p>
+
+<div class="cmd" onclick="cp(this)">${esc(fullLocalScript())}</div>
+
+<p>Here's what it does:</p>
+<ul class="step-list">
+<li><span class="num">1.</span> Installs <strong>OpenClaw</strong>, the software that runs your bot</li>
+<li><span class="num">2.</span> Saves your Brave Search key so your bot can search the web</li>
+<li><span class="num">3.</span> Configures secure networking so you can access your bot from any device</li>
+<li><span class="num">4.</span> Connects your Claude account so your bot can think and respond</li>
+<li><span class="num">5.</span> Installs <strong>Tailscale</strong>, a secure private network that connects all your devices</li>
+<li><span class="num">6.</span> Installs <strong>Obsidian Headless</strong>, which syncs your notes between your bot and all your devices</li>
+<li><span class="num">7.</span> Starts your bot</li>
+</ul>
+
+<p>During setup, it will ask you to log in to <strong>Tailscale</strong>. Follow the link it shows and sign in with any account (Google, Apple, etc). This creates a secure private network between your devices.</p>
+
+<button onclick="S.v='connect';render()">Done, it finished</button>
+<a class="back" onclick="S.v='s5';render()">← Back</a>
 `,
 
 creating:()=>`
 <h1>Creating your server</h1>
-<p class="sub">This takes a few minutes.</p>
-<div class="spinner"></div>
-<p class="st" id="stxt">Setting up...</p>
-`,
-
-local:()=>`
-<h1>Paste this in Terminal</h1>
-<p class="sub">One command. It does everything.</p>
-<div class="cmd" onclick="cp(this)">${esc(lscript())}</div>
-<button onclick="S.v='connect';render()">Done</button>
-<a class="back" onclick="S.v='s2';render()">← Back</a>
+<div id="spinwrap"><div class="spinner"></div></div>
+<p class="st" id="stxt">Connecting to Hostinger...</p>
+<div class="error-box" id="ebox">
+<h3 id="etitle">Something went wrong</h3>
+<p id="edesc"></p>
+<button onclick="retryOrBack()">Try again</button>
+<a class="back" onclick="S.v='s1';render()" style="margin-top:16px;display:block">← Go back and check your keys</a>
+</div>
 `,
 
 connect:()=>`
-<h1>Connect</h1>
-<p class="sub">Your AI is running. Pick how to talk to it.</p>
+<h1>Connect your devices</h1>
+<p class="hint">Your bot is installed. Now let's connect everything.</p>
 
-<p><strong>Telegram</strong></p>
+<div class="section-card">
+<h3>💬 Talk to your bot via Telegram</h3>
+<p>The easiest way to chat with your bot from your phone.</p>
 <ol>
-<li>Message <a href="https://t.me/botfather" target="_blank">@BotFather</a>, send /newbot</li>
-<li>Copy the token, then run:</li>
+<li>Open Telegram and message <a href="https://t.me/botfather" target="_blank">@BotFather</a></li>
+<li>Send <code>/newbot</code> and follow the steps to create a bot</li>
+<li>Copy the token BotFather gives you, then run:</li>
 </ol>
 <div class="cmd" onclick="cp(this)">openclaw channels add --channel telegram --token YOUR_BOT_TOKEN && openclaw gateway restart</div>
+<p class="hint">Replace YOUR_BOT_TOKEN with the token you copied from BotFather.</p>
+</div>
 
 <hr>
 
-<p><strong>Obsidian</strong></p>
+<div class="section-card">
+<h3>📝 Set up Obsidian Sync</h3>
+<p>Your bot uses <a href="https://obsidian.md" target="_blank">Obsidian</a> to sync notes across all your devices. This is how your bot's memory stays in sync with you.</p>
+<p>You'll need an <a href="https://obsidian.md/sync" target="_blank">Obsidian Sync</a> subscription ($4/mo). Once you have one, run these commands on your bot's machine:</p>
+<div class="cmd" onclick="cp(this)">ob login</div>
+<p>Enter your Obsidian account email and password when prompted. Then set up your vault:</p>
+<div class="cmd" onclick="cp(this)">mkdir -p ~/vault && cd ~/vault && ob sync-setup --vault "My Vault"</div>
+<p>Finally, start continuous sync so changes show up everywhere:</p>
+<div class="cmd" onclick="cp(this)">ob sync --continuous &</div>
+<p class="hint" style="margin-top:8px">This runs in the background and keeps your bot's notes in sync with Obsidian on your phone, tablet, and computer.</p>
+</div>
+
+<hr>
+
+<div class="section-card">
+<h3>📓 Talk to your bot via Obsidian</h3>
+<p>Chat with your bot right inside Obsidian using the OpenClaw plugin.</p>
 <ol>
-<li>Install <a href="https://obsidian.md" target="_blank">Obsidian</a> and the BRAT plugin</li>
-<li>BRAT → Add Beta Plugin:</li>
+<li>Install <a href="https://obsidian.md" target="_blank">Obsidian</a> on your phone and computer</li>
+<li>Install the BRAT plugin (Settings → Community plugins → Browse → search "BRAT")</li>
+<li>In BRAT settings, click "Add Beta Plugin" and enter:</li>
 </ol>
 <div class="cmd" onclick="cp(this)">oscarhenrycollins/obsidianclaw</div>
+<p class="hint">The plugin will guide you through connecting to your bot.</p>
+</div>
 
 <hr>
 
-<p><strong>Browser</strong></p>
-<p>Open your Tailscale URL in any browser.</p>
+<div class="section-card">
+<h3>🌐 Talk to your bot via browser</h3>
+<p>Open your Tailscale URL in any browser on any device connected to your Tailscale network.</p>
+<p class="hint">You can find your URL by running <code>tailscale status</code> on your bot's machine.</p>
+</div>
 
 <hr>
 
-<p style="text-align:center;color:#999;margin-top:40px">You're set. Your AI is running 24/7.</p>
+<p style="text-align:center;color:#999;margin-top:40px;font-family:-apple-system,system-ui,sans-serif">You're all set. Your bot is running 24/7. 🎉</p>
 
-<a class="back" onclick="S.v='s1';render()">← Start over</a>
+<a class="back" onclick="goHome()">← Start over</a>
+`,
+
+// --- Upgrade flow ---
+
+upgrade1:()=>`
+<h1>Add remote access &amp; note sync</h1>
+
+<p>This guide adds <strong>Tailscale</strong> (access your bot from any device) and <strong>Obsidian</strong> (sync notes between your bot and all your devices) to an existing OpenClaw setup.</p>
+
+<p class="hint">You should already have OpenClaw installed and running. If not, <a href="/" onclick="goHome();return false">start from the beginning</a>.</p>
+
+<div class="section-card">
+<h3>Verify your bot is running</h3>
+<p>Open a terminal on your bot's machine and run:</p>
+<div class="cmd" onclick="cp(this)">openclaw status</div>
+<p>You should see your bot listed and the gateway running. If you get "command not found", you need to <a href="/" onclick="goHome();return false">install OpenClaw first</a>.</p>
+</div>
+
+<button onclick="S.v='upgrade2';render()">My bot is running, let's go</button>
+`,
+
+upgrade2:()=>`
+<h1>Install Tailscale</h1>
+
+<p><a href="https://tailscale.com" target="_blank">Tailscale</a> creates a secure private network between all your devices. This is how you'll access your bot from your phone, laptop, or any other device without exposing it to the internet.</p>
+
+<p>Run this on your bot's machine:</p>
+
+<div class="cmd" onclick="cp(this)">openclaw config set gateway.bind loopback && \\
+openclaw config set gateway.tailscale.mode serve && \\
+openclaw config set gateway.auth.allowTailscale true && \\
+curl -fsSL https://tailscale.com/install.sh | sh && \\
+sudo tailscale up && \\
+openclaw gateway restart</div>
+
+<p>Here's what it does:</p>
+<ul class="step-list">
+<li><span class="num">1.</span> Configures your bot's networking for secure remote access</li>
+<li><span class="num">2.</span> Installs Tailscale</li>
+<li><span class="num">3.</span> Connects to your Tailscale network (you'll be asked to log in)</li>
+<li><span class="num">4.</span> Restarts your bot with the new settings</li>
+</ul>
+
+<p>During setup, it will ask you to log in to <strong>Tailscale</strong>. Follow the link it shows and sign in with any account (Google, Apple, etc).</p>
+
+<div class="section-card">
+<h3>🌐 Browser access is now live</h3>
+<p>After this step, you can open your bot in any browser on any device connected to your Tailscale network.</p>
+<p>Find your URL by running: <code>tailscale status</code></p>
+</div>
+
+<button onclick="S.v='upgrade3';render()">Done, Tailscale is connected</button>
+<a class="back" onclick="S.v='upgrade1';render()">← Back</a>
+`,
+
+upgrade3:()=>`
+<h1>Set up Obsidian</h1>
+
+<p>Obsidian syncs your bot's notes, memory, and workspace across all your devices. Think of it as a shared brain between you and your bot.</p>
+
+<div class="section-card">
+<h3>📝 Install Obsidian Sync on your bot's machine</h3>
+<p>You'll need an <a href="https://obsidian.md/sync" target="_blank">Obsidian Sync</a> subscription ($4/mo).</p>
+<p>Install Obsidian Headless and set up sync:</p>
+<div class="cmd" onclick="cp(this)">npm install -g obsidian-headless && \\
+ob login</div>
+<p>Enter your Obsidian account email and password when prompted. Then set up your vault:</p>
+<div class="cmd" onclick="cp(this)">mkdir -p ~/vault && cd ~/vault && ob sync-setup --vault "My Vault"</div>
+<p>Start continuous sync:</p>
+<div class="cmd" onclick="cp(this)">ob sync --continuous &</div>
+</div>
+
+<hr>
+
+<div class="section-card">
+<h3>📓 Chat with your bot inside Obsidian</h3>
+<p>Install the OpenClaw plugin to talk to your bot right inside Obsidian on your phone and computer.</p>
+<ol>
+<li>Install <a href="https://obsidian.md" target="_blank">Obsidian</a> on your phone and computer</li>
+<li>Install the BRAT plugin (Settings → Community plugins → Browse → search "BRAT")</li>
+<li>In BRAT settings, click "Add Beta Plugin" and enter:</li>
+</ol>
+<div class="cmd" onclick="cp(this)">oscarhenrycollins/obsidianclaw</div>
+<p class="hint">The plugin will guide you through connecting to your bot.</p>
+</div>
+
+<hr>
+
+<div class="success-box">
+<div class="icon">🎉</div>
+<h3>Full setup complete!</h3>
+<p>Your bot is now accessible via Telegram, browser, and Obsidian across all your devices.</p>
+</div>
+
+<a class="back" onclick="goHome()">← Start over</a>
 `
 };
 
 function pk(p,el){S.path=p;document.querySelectorAll('.pick-card').forEach(c=>c.classList.remove('on'));el.classList.add('on');const e=document.getElementById('ce');if(e)e.classList.toggle('show',p==='cloud')}
-function s1(){S.claude=document.getElementById('in1').value.trim();if(!S.claude)return alert('Paste your Claude token.');S.v='s1b';render()}
-function s1b(){S.brave=document.getElementById('in2').value.trim();if(!S.brave)return alert('Paste your Brave Search key.');S.v='s2';render()}
-function s2(){if(!S.path)return alert('Pick cloud or local.');if(S.path==='local'){S.v='local';render();return}S.hkey=document.getElementById('in3').value.trim();S.region=document.getElementById('in4').value;if(!S.hkey)return alert('Paste your Hostinger key.');S.v='creating';render();createServer()}
+function pkMode(m,el){S.mode=m;document.querySelectorAll('.pick-card').forEach(c=>c.classList.remove('on'));el.classList.add('on')}
 
-function lscript(){return`curl -fsSL https://openclaw.ai/install.sh | bash -s -- --no-onboard && \\
+function warn(id,msg){const el=document.getElementById(id);if(el){el.textContent=msg;el.classList.toggle('show',!!msg)}}
+
+function validateClaude(v){
+  if(!v)return 'Paste your Claude token above.';
+  if(v.length<20)return 'This looks too short. The token is usually about 200 characters. Make sure you copied the whole thing.';
+  return '';
+}
+function validateBrave(v){
+  if(!v)return 'Paste your Brave Search API key above.';
+  if(v.length<15)return 'This looks too short. The key is about 30 characters. Check your Brave Search dashboard.';
+  return '';
+}
+function validateHostinger(v){
+  if(!v)return 'Paste your Hostinger API key above.';
+  if(v.length<10)return 'This looks too short. Go to your Hostinger dashboard → Account → API to find the right key.';
+  return '';
+}
+function validateTelegram(v){
+  if(!v)return 'Paste your Telegram bot token above.';
+  if(v.length<30)return 'This looks too short. The token from BotFather is about 46 characters.';
+  if(!v.includes(':'))return 'This doesn\'t look right. Telegram tokens have a colon in the middle, like 7123456789:AAH...';
+  return '';
+}
+
+function s1n(){
+  if(!S.path)return alert('Pick where your bot will run.');
+  if(S.path==='cloud'){
+    const k=document.getElementById('in3').value.trim();
+    const err=validateHostinger(k);
+    if(err){warn('w3',err);return}
+    warn('w3','');
+    S.hkey=k;
+  }
+  S.v='s2';render();
+}
+function s2n(){
+  const v=document.getElementById('in1').value.trim();
+  const err=validateClaude(v);
+  if(err){warn('w1',err);return}
+  warn('w1','');
+  S.claude=v;
+  S.v='s3';render();
+}
+function s3n(){
+  const v=document.getElementById('in2').value.trim();
+  const err=validateBrave(v);
+  if(err){warn('w2',err);return}
+  warn('w2','');
+  S.brave=v;
+  S.v='s4';render();
+}
+function s4n(){
+  S.agents[0]=document.getElementById('ag1').value.trim();
+  S.agents[1]=document.getElementById('ag2').value.trim();
+  S.agents[2]=document.getElementById('ag3').value.trim();
+  if(!S.agents[0])return alert('Name your first bot.');
+  S.v='s5';render();
+}
+function s5n(){
+  if(!S.mode)return alert('Choose a setup type.');
+  if(S.mode==='quick'){
+    if(S.path==='local'){S.v='quicklocal';render();return}
+    S.v='creating';render();createServer();
+  }else{
+    if(S.path==='local'){S.v='local';render();return}
+    S.v='creating';render();createServer();
+  }
+}
+
+function tgCmd(){
+  const t=S.tgtoken||'YOUR_BOT_TOKEN';
+  return `openclaw channels add --channel telegram --token ${t} && openclaw gateway restart`;
+}
+function tgNext(){
+  const v=document.getElementById('tgtoken').value.trim();
+  const err=validateTelegram(v);
+  if(err){warn('wtg',err);return}
+  warn('wtg','');
+  S.tgtoken=v;
+  S.v='quickdone';render();
+}
+
+// Update tgtoken live so the command updates
+document.addEventListener('input',e=>{
+  if(e.target.id==='tgtoken'){
+    S.tgtoken=e.target.value.trim();
+    const cmdEl=e.target.parentElement.querySelector('.cmd:last-of-type');
+    if(cmdEl)cmdEl.textContent=tgCmd();
+  }
+});
+
+function quickLocalScript(){return`curl -fsSL https://openclaw.ai/install.sh | bash -s -- --no-onboard && \\
+openclaw config set tools.web.search.apiKey "${S.brave}" && \\
+openclaw config set gateway.auth.mode token && \\
+echo "${S.claude}" | openclaw models auth paste-token --provider anthropic --yes && \\
+openclaw gateway start`}
+
+function fullLocalScript(){return`curl -fsSL https://openclaw.ai/install.sh | bash -s -- --no-onboard && \\
 openclaw config set tools.web.search.apiKey "${S.brave}" && \\
 openclaw config set gateway.bind loopback && \\
 openclaw config set gateway.tailscale.mode serve && \\
@@ -158,9 +595,21 @@ openclaw config set gateway.auth.allowTailscale true && \\
 echo "${S.claude}" | openclaw models auth paste-token --provider anthropic --yes && \\
 curl -fsSL https://tailscale.com/install.sh | sh && \\
 sudo tailscale up && \\
+npm install -g obsidian-headless && \\
 openclaw gateway start`}
 
-function sscript(){return`#!/bin/bash
+function quickServerScript(){return`#!/bin/bash
+set -e
+export DEBIAN_FRONTEND=noninteractive
+curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+apt-get install -y nodejs
+curl -fsSL https://openclaw.ai/install.sh | bash -s -- --no-onboard
+openclaw config set tools.web.search.apiKey "${S.brave}"
+openclaw config set gateway.auth.mode token
+echo "${S.claude}" | openclaw models auth paste-token --provider anthropic --yes
+openclaw gateway start`}
+
+function fullServerScript(){return`#!/bin/bash
 set -e
 export DEBIAN_FRONTEND=noninteractive
 curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
@@ -173,19 +622,96 @@ openclaw config set gateway.auth.mode token
 openclaw config set gateway.auth.allowTailscale true
 echo "${S.claude}" | openclaw models auth paste-token --provider anthropic --yes
 curl -fsSL https://tailscale.com/install.sh | sh
+npm install -g obsidian-headless
 openclaw gateway start`}
 
+function sscript(){return S.mode==='quick'?quickServerScript():fullServerScript()}
+
 async function api(m,p,b){const r=await fetch('/api/hostinger',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({apiKey:S.hkey,method:m,path:p,body:b})});return r.json()}
-async function createServer(){try{st('Uploading script...');const s=await api('POST','/api/vps/v1/post-install-scripts',{name:'OC-'+Date.now(),content:sscript()});if(!s.id)throw new Error(s.message||'Upload failed');st('Creating server...');const vm=await api('POST','/api/vps/v1/virtual-machines',{plan:'hostingercom-vps-kvm2-usd-1m',data_center_id:parseInt(S.region),template_id:1002,hostname:'openclaw-ai',post_install_script_id:s.id});const id=vm.id||vm.virtual_machine_id;if(!id)throw new Error(vm.message||'Creation failed');st('Installing...');for(let i=0;i<60;i++){await slp(5000);try{const r=await api('GET',`/api/vps/v1/virtual-machines/${id}`);if((r.state||r.status)==='running'){S.v='connect';render();return}}catch{}st(`Installing... ${i*5}s`)}st('Check <a href="https://hpanel.hostinger.com" target="_blank">Hostinger dashboard</a>.')}catch(e){st(e.message)}}
+
+function showError(title,desc){
+  const sw=document.getElementById('spinwrap');if(sw)sw.style.display='none';
+  const stEl=document.getElementById('stxt');if(stEl)stEl.style.display='none';
+  const eb=document.getElementById('ebox');if(eb)eb.classList.add('show');
+  const et=document.getElementById('etitle');if(et)et.textContent=title;
+  const ed=document.getElementById('edesc');if(ed)ed.innerHTML=desc;
+}
+
+function retryOrBack(){
+  const eb=document.getElementById('ebox');if(eb)eb.classList.remove('show');
+  const sw=document.getElementById('spinwrap');if(sw)sw.style.display='';
+  const stEl=document.getElementById('stxt');if(stEl){stEl.style.display='';stEl.textContent='Retrying...'}
+  createServer();
+}
+
+async function createServer(){
+  try{
+    st('Uploading setup script to Hostinger...');
+    let s;
+    try{
+      s=await api('POST','/api/vps/v1/post-install-scripts',{name:'OC-'+Date.now(),content:sscript()});
+    }catch(e){
+      showError('Could not connect to Hostinger','Check your internet connection and try again.');return;
+    }
+    if(!s.id){
+      if(s.message&&(s.message.includes('auth')||s.message.includes('token')||s.message.includes('401')||s.message.includes('403'))){
+        showError('Your Hostinger API key is invalid','The key you entered was not accepted by Hostinger. Go to your <a href="https://hpanel.hostinger.com/account/api" target="_blank">Hostinger dashboard → Account → API</a>, create a new token, and go back to paste the new one.');
+      }else{
+        showError('Hostinger rejected the request',`Error: "${s.message||'Unknown error'}". Double-check your API key at <a href="https://hpanel.hostinger.com/account/api" target="_blank">Hostinger → Account → API</a>.`);
+      }
+      return;
+    }
+    st('Creating your server (this takes 1-2 minutes)...');
+    let vm;
+    try{
+      vm=await api('POST','/api/vps/v1/virtual-machines',{plan:'hostingercom-vps-kvm2-usd-1m',template_id:1002,hostname:'openclaw-ai',post_install_script_id:s.id});
+    }catch(e){
+      showError('Could not create server','The connection to Hostinger was lost. Check your internet and try again.');return;
+    }
+    const id=vm.id||vm.virtual_machine_id;
+    if(!id){
+      if(vm.message&&(vm.message.includes('payment')||vm.message.includes('billing')||vm.message.includes('balance'))){
+        showError('Payment issue on Hostinger','Hostinger needs a valid payment method before it can create a server. Go to <a href="https://hpanel.hostinger.com" target="_blank">hpanel.hostinger.com</a>, make sure you have a credit card on file, then come back and try again.');
+      }else if(vm.message&&vm.message.includes('limit')){
+        showError('Server limit reached','Your Hostinger account has reached its server limit. You may need to upgrade your Hostinger plan or delete an old server at <a href="https://hpanel.hostinger.com" target="_blank">hpanel.hostinger.com</a>.');
+      }else{
+        showError('Could not create the server',`Hostinger said: "${vm.message||'Unknown error'}". Try again, or check your <a href="https://hpanel.hostinger.com" target="_blank">Hostinger dashboard</a> for details.`);
+      }
+      return;
+    }
+    st('Server created! Waiting for it to come online...');
+    for(let i=0;i<60;i++){
+      await slp(5000);
+      try{
+        const r=await api('GET',`/api/vps/v1/virtual-machines/${id}`);
+        if((r.state||r.status)==='running'){
+          if(S.mode==='quick'){S.v='quicktelegram';render();return}
+          S.v='connect';render();return;
+        }
+        st(`Still setting up... ${Math.floor(i*5/60)}m ${(i*5)%60}s`);
+      }catch{}
+    }
+    showError('Server is taking too long','Your server was created but hasn\'t come online after 5 minutes. Check your <a href="https://hpanel.hostinger.com" target="_blank">Hostinger dashboard</a> to see its status.');
+  }catch(e){
+    showError('Something unexpected happened',`Error: "${e.message}". Try again, or <a href="https://hpanel.hostinger.com" target="_blank">check your Hostinger dashboard</a>.`);
+  }
+}
 function st(h){const el=document.getElementById('stxt');if(el)el.innerHTML=h}
 function slp(ms){return new Promise(r=>setTimeout(r,ms))}
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function cp(el){const t=el.textContent;navigator.clipboard.writeText(t);const o=el.style.background;el.style.background='#e8e8e8';setTimeout(()=>el.style.background=o,300)}
+function cp(el){const t=el.textContent.replace('click to copy','').trim();navigator.clipboard.writeText(t);const o=el.style.background;el.style.background='#e8e8e8';setTimeout(()=>el.style.background=o,300)}
 
-// Strip newlines on paste into any input
 document.addEventListener('paste',e=>{if(e.target.tagName==='INPUT'){e.preventDefault();const t=(e.clipboardData||window.clipboardData).getData('text').replace(/[\r\n]+/g,'').trim();e.target.value=t}});
 
-render();
+// URL routing
+function goUpgrade(){S.v='upgrade1';history.pushState(null,'','/upgrade');render()}
+function route(){
+  const p=window.location.pathname;
+  if(p==='/upgrade'||p==='/upgrade/'){S.v='upgrade1';render();return true}
+  return false;
+}
+window.addEventListener('popstate',()=>{if(!route()){S.v='s1';render()}});
+if(!route())render();
 </script>
 </body>
 </html>
