@@ -609,14 +609,9 @@ upgrade2:()=>`
 4. Set up HTTPS proxy for the gateway:
    <code>sudo tailscale serve --bg --https 443 http://127.0.0.1:18789</code>
 
-5. Set up the workspace file server:
-   Download it: <code>curl -fsSL -o /usr/local/bin/openclaw-fileserver.js https://usemyclaw.com/file-server.js</code>
-   Set it up as a persistent background service on port 18790 (use systemd on Linux or launchd on Mac).
-   Then expose it via Tailscale: <code>sudo tailscale serve --bg --https 18795 http://127.0.0.1:18790</code>
+5. Restart the gateway: <code>openclaw gateway restart</code>
 
-6. Restart the gateway: <code>openclaw gateway restart</code>
-
-7. Send me my connection details:
+6. Send me my connection details:
    • Gateway URL: https:// followed by this machine's Tailscale hostname (find it with: <code>tailscale status</code>)
    • Auth token: from the config file at <code>~/.config/openclaw/config.yaml</code> under <code>gateway.auth.token</code>
 
@@ -645,7 +640,7 @@ upgrade3:()=>`
 <h3>💬 After you log in</h3>
 <p>Go back to your chat with your bot and tell it:</p>
 <div class="cmd" onclick="cp(this)">I've logged into Tailscale, continue with the setup</div>
-<p>Your bot will finish configuring the gateway, file server, and HTTPS access.</p>
+<p>Your bot will finish configuring the gateway and HTTPS access.</p>
 </div>
 
 <div class="section-card">
